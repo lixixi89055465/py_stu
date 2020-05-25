@@ -9,7 +9,10 @@ y = [15, 13, 14.5, 17, 20, 25, 26, 26, 27, 22, 18, 15]
 # 绘图
 plt.plot(x, y)
 # 设置x轴刻度
-plt.xticks(range(2, 26, 2))
+# plt.xticks(range(2, 26, 1))
+_xtick_labels = [i / 2.0 for i in range(4, 49)]
+plt.xticks(_xtick_labels[::3])
+plt.yticks(y)
 
 # 可以保存为svg矢量图格式，放大不会有锯齿
 # plt.savefig("./sig_size.png")  # 保存图片
