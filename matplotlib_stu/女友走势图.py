@@ -4,7 +4,8 @@ import matplotlib
 from matplotlib import font_manager
 import random
 
-my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
+# my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
+my_font = font_manager.FontProperties(fname="C:\Windows\Fonts\msyh.ttc")
 y = [1, 0, 1, 1, 2, 4, 3, 2, 3, 4, 4, 5, 6, 5, 4, 3, 3, 1, 1, 1]
 x = range(11, 31)
 
