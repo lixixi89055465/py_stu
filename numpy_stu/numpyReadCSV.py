@@ -50,3 +50,24 @@ t2 = t2.astype(float)
 # nan 是float 型，不能直接复制给int 型数值
 t2[3, 4] = np.nan
 print(t2)
+print(np.isnan(t2))
+
+# t2[np.isnan(t2)]=0
+# print(t2)
+print(np.sum(t2))
+np.sum(t2)
+t3=np.arange(0,12).reshape(3,4)
+print(t3)
+print(np.sum(t3, axis=0))
+print(np.sum(t3, axis=1))
+print(t2)
+print(t2.sum(axis=0))
+print(t2.mean(axis=0))
+print(np.median(t2))
+print(t2.max(axis=0))
+print(t2.min(axis=0))
+print(np.ptp(t2))
+np.ptp(t2,axis=0)
+np.ptp(t2,axis=1)
+
+print(t2.std(axis=0))
