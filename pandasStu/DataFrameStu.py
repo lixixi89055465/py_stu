@@ -23,4 +23,11 @@ d2 = [
 ]
 t2=pd.DataFrame(d2)
 print(t2)
-
+print(t2.mean())
+print(t2.fillna(t2.mean()))
+t3=t2.dropna(axis=0,how='any')
+print(t3)
+t3=t2.dropna(axis=0,how='all')
+print(t3)
+t2.dropna(axis=0,how='any',inplace=True)
+print(t2)

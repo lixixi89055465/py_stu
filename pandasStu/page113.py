@@ -13,3 +13,4 @@ print(df.info())
 # 使用dataFrame中排序的方法
 df.sort_values(by="Count_AnimalName")
 print(df)
+t2=pd.DataFrame()
