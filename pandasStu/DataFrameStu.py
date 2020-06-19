@@ -19,15 +19,26 @@ print(type(t1))
 d2 = [
     {"name": "xiaohong", "age": 32, "tel": 10010},
     {"name": "xiaogang", "tel": 10000},
-    {"name": "xiaowang", "age": 32}
+    {"name": "xiaowang", "age": 22}
 ]
-t2=pd.DataFrame(d2)
+t2 = pd.DataFrame(d2)
 print(t2)
 print(t2.mean())
 print(t2.fillna(t2.mean()))
-t3=t2.dropna(axis=0,how='any')
+t3 = t2.dropna(axis=0, how='any')
 print(t3)
-t3=t2.dropna(axis=0,how='all')
+t3 = t2.dropna(axis=0, how='all')
 print(t3)
-t2.dropna(axis=0,how='any',inplace=True)
+# t2.dropna(axis=0,how='any',inplace=True)
 print(t2)
+t2.fillna(0)
+print(t2)
+t2.fillna(100)
+print(t2)
+print(t2.fillna(100))
+print(t2.fillna(t2.mean()))
+t2['age'].fillna(t2['age'].mean())
+
+t2['age'][1] = np.nan
+print(t2)
+print(t2['age'].mean())
