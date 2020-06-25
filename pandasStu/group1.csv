@@ -1,0 +1,5877 @@
+('AD', '7')       Brand
+0  Starbucks('AE', 'AJ')       Brand
+1  Starbucks
+2  Starbucks('AE', 'AZ')        Brand
+3   Starbucks
+4   Starbucks
+5   Starbucks
+6   Starbucks
+7   Starbucks
+8   Starbucks
+9   Starbucks
+10  Starbucks
+11  Starbucks
+12  Starbucks
+13  Starbucks
+14  Starbucks
+15  Starbucks
+16  Starbucks
+17  Starbucks
+18  Starbucks
+19  Starbucks
+20  Starbucks
+21  Starbucks
+22  Starbucks
+23  Starbucks
+24  Starbucks
+25  Starbucks
+26  Starbucks
+27  Starbucks
+28  Starbucks
+29  Starbucks
+30  Starbucks
+31  Starbucks
+32  Starbucks
+33  Starbucks
+34  Starbucks
+35  Starbucks
+36  Starbucks
+37  Starbucks
+38  Starbucks
+39  Starbucks
+40  Starbucks
+41  Starbucks
+42  Starbucks
+43  Starbucks
+44  Starbucks
+45  Starbucks
+46  Starbucks
+47  Starbucks
+48  Starbucks
+49  Starbucks
+50  Starbucks('AE', 'DU')         Brand
+51   Starbucks
+52   Starbucks
+53   Starbucks
+54   Starbucks
+55   Starbucks
+..         ...
+128  Starbucks
+129  Starbucks
+130  Starbucks
+131  Starbucks
+132  Starbucks
+
+[82 rows x 1 columns]('AE', 'FU')         Brand
+133  Starbucks
+134  Starbucks('AE', 'RK')         Brand
+135  Starbucks
+136  Starbucks
+137  Starbucks('AE', 'SH')         Brand
+138  Starbucks
+139  Starbucks
+140  Starbucks
+141  Starbucks
+142  Starbucks
+143  Starbucks('AE', 'UQ')         Brand
+144  Starbucks('AR', 'B')         Brand
+145  Starbucks
+146  Starbucks
+147  Starbucks
+148  Starbucks
+149  Starbucks
+150  Starbucks
+151  Starbucks
+152  Starbucks
+153  Starbucks
+154  Starbucks
+155  Starbucks
+156  Starbucks
+157  Starbucks
+158  Starbucks
+159  Starbucks
+160  Starbucks
+161  Starbucks
+162  Starbucks
+163  Starbucks
+164  Starbucks
+165  Starbucks('AR', 'C')         Brand
+166  Starbucks
+167  Starbucks
+168  Starbucks
+169  Starbucks
+170  Starbucks
+..         ...
+234  Starbucks
+235  Starbucks
+236  Starbucks
+237  Starbucks
+238  Starbucks
+
+[73 rows x 1 columns]('AR', 'M')         Brand
+239  Starbucks
+240  Starbucks
+241  Starbucks
+242  Starbucks
+243  Starbucks('AR', 'S')         Brand
+244  Starbucks
+245  Starbucks
+246  Starbucks('AR', 'X')         Brand
+247  Starbucks
+248  Starbucks
+249  Starbucks
+250  Starbucks
+251  Starbucks
+252  Starbucks('AT', '3')         Brand
+253  Starbucks('AT', '5')         Brand
+254  Starbucks
+255  Starbucks
+256  Starbucks('AT', '9')         Brand
+257  Starbucks
+258  Starbucks
+259  Starbucks
+260  Starbucks
+261  Starbucks
+262  Starbucks
+263  Starbucks
+264  Starbucks
+265  Starbucks
+266  Starbucks
+267  Starbucks
+268  Starbucks
+269  Starbucks
+270  Starbucks('AU', 'NSW')         Brand
+271  Starbucks
+272  Starbucks
+273  Starbucks
+274  Starbucks
+275  Starbucks
+276  Starbucks
+277  Starbucks
+278  Starbucks
+279  Starbucks('AU', 'QLD')         Brand
+280  Starbucks
+281  Starbucks
+282  Starbucks
+283  Starbucks
+284  Starbucks
+285  Starbucks
+286  Starbucks
+287  Starbucks('AU', 'VIC')         Brand
+288  Starbucks
+289  Starbucks
+290  Starbucks
+291  Starbucks
+292  Starbucks('AW', 'AW')         Brand
+293  Starbucks
+294  Starbucks
+295  Starbucks('AZ', 'BA')         Brand
+296  Starbucks
+297  Starbucks
+298  Starbucks('AZ', 'SAB')         Brand
+299  Starbucks('BE', 'BE')         Brand
+300  Starbucks
+301  Starbucks
+302  Starbucks
+303  Starbucks('BE', 'VAN')         Brand
+304  Starbucks('BE', 'VBR')         Brand
+305  Starbucks
+306  Starbucks('BE', 'VLG')         Brand
+307  Starbucks
+308  Starbucks
+309  Starbucks
+310  Starbucks
+311  Starbucks
+312  Starbucks
+313  Starbucks
+314  Starbucks
+315  Starbucks
+316  Starbucks('BE', 'WAL')         Brand
+317  Starbucks
+318  Starbucks('BG', '2')         Brand
+319  Starbucks('BG', '23')         Brand
+320  Starbucks
+321  Starbucks
+322  Starbucks
+323  Starbucks('BH', '13')         Brand
+324  Starbucks
+325  Starbucks
+326  Starbucks
+327  Starbucks
+328  Starbucks
+329  Starbucks
+330  Starbucks
+331  Starbucks
+332  Starbucks
+333  Starbucks
+334  Starbucks
+335  Starbucks
+336  Starbucks
+337  Starbucks
+338  Starbucks
+339  Starbucks('BH', '14')         Brand
+340  Starbucks
+341  Starbucks('BH', '15')         Brand
+342  Starbucks
+343  Starbucks
+344  Starbucks('BN', 'BE')         Brand
+345  Starbucks('BN', 'BM')         Brand
+346  Starbucks
+347  Starbucks
+348  Starbucks('BN', 'TU')         Brand
+349  Starbucks('BO', 'S')         Brand
+350  Starbucks
+351  Starbucks
+352  Starbucks
+353  Starbucks('BR', 'RJ')         Brand
+354  Starbucks
+355  Starbucks
+356  Starbucks
+357  Starbucks
+358  Starbucks
+359  Starbucks
+360  Starbucks
+361  Starbucks
+362  Starbucks
+363  Starbucks
+364  Starbucks
+365  Starbucks
+366  Starbucks
+367  Starbucks
+368  Starbucks
+369  Starbucks
+370  Starbucks
+371  Starbucks
+372  Starbucks
+373  Starbucks
+374  Starbucks
+375  Starbucks
+376  Starbucks('BR', 'SP')         Brand
+377  Starbucks
+378  Starbucks
+379  Starbucks
+380  Starbucks
+381  Starbucks
+..         ...
+451  Starbucks
+452  Starbucks
+453  Starbucks
+454  Starbucks
+455  Starbucks
+
+[79 rows x 1 columns]('BS', 'BI')         Brand
+456  Starbucks('BS', 'NS')         Brand
+457  Starbucks
+458  Starbucks
+459  Starbucks
+460  Starbucks
+461  Starbucks
+462  Starbucks
+463  Starbucks
+464  Starbucks
+465  Starbucks('CA', 'AB')         Brand
+466  Starbucks
+467  Starbucks
+468  Starbucks
+469  Starbucks
+470  Starbucks
+..         ...
+749  Starbucks
+750  Starbucks
+751  Starbucks
+752  Starbucks
+753  Starbucks
+
+[288 rows x 1 columns]('CA', 'BC')          Brand
+754   Starbucks
+755   Starbucks
+756   Starbucks
+757   Starbucks
+758   Starbucks
+...         ...
+1161  Starbucks
+1162  Starbucks
+1163  Starbucks
+1164  Starbucks
+1165  Starbucks
+
+[412 rows x 1 columns]('CA', 'MB')          Brand
+1166  Starbucks
+1167  Starbucks
+1168  Starbucks
+1169  Starbucks
+1170  Starbucks
+1171  Starbucks
+1172  Starbucks
+1173  Starbucks
+1174  Starbucks
+1175  Starbucks
+1176  Starbucks
+1177  Starbucks
+1178  Starbucks
+1179  Starbucks
+1180  Starbucks
+1181  Starbucks
+1182  Starbucks
+1183  Starbucks
+1184  Starbucks
+1185  Starbucks
+1186  Starbucks
+1187  Starbucks
+1188  Starbucks
+1189  Starbucks
+1190  Starbucks
+1191  Starbucks
+1192  Starbucks
+1193  Starbucks
+1194  Starbucks
+1195  Starbucks
+1196  Starbucks
+1197  Starbucks
+1198  Starbucks
+1199  Starbucks
+1200    Teavana
+1201  Starbucks
+1202  Starbucks
+1203  Starbucks
+1204  Starbucks
+1205  Starbucks
+1206  Starbucks
+1207  Starbucks
+1208  Starbucks
+1209  Starbucks
+1210  Starbucks
+1211  Starbucks
+1212  Starbucks
+1213  Starbucks
+1214    Teavana
+1215    Teavana
+1216  Starbucks
+1217  Starbucks
+1218  Starbucks
+1219  Starbucks('CA', 'NB')          Brand
+1220  Starbucks
+1221  Starbucks
+1222  Starbucks
+1223  Starbucks
+1224  Starbucks
+1225  Starbucks
+1226    Teavana
+1227  Starbucks
+1228  Starbucks
+1229  Starbucks
+1230  Starbucks
+1231    Teavana
+1232  Starbucks
+1233  Starbucks('CA', 'NL')          Brand
+1234  Starbucks
+1235  Starbucks
+1236  Starbucks
+1237  Starbucks
+1238  Starbucks
+1239  Starbucks
+1240  Starbucks('CA', 'NS')          Brand
+1241  Starbucks
+1242  Starbucks
+1243  Starbucks
+1244  Starbucks
+1245  Starbucks
+1246  Starbucks
+1247  Starbucks
+1248  Starbucks
+1249  Starbucks
+1250  Starbucks
+1251  Starbucks
+1252  Starbucks
+1253  Starbucks
+1254  Starbucks
+1255  Starbucks
+1256  Starbucks
+1257  Starbucks
+1258  Starbucks
+1259  Starbucks
+1260  Starbucks('CA', 'ON')          Brand
+1261  Starbucks
+1262  Starbucks
+1263  Starbucks
+1264  Starbucks
+1265  Starbucks
+...         ...
+1790  Starbucks
+1791  Starbucks
+1792  Starbucks
+1793  Starbucks
+1794  Starbucks
+
+[534 rows x 1 columns]('CA', 'PE')          Brand
+1795  Starbucks
+1796  Starbucks('CA', 'QC')          Brand
+1797  Starbucks
+1798  Starbucks
+1799  Starbucks
+1800  Starbucks
+1801  Starbucks
+...         ...
+1897  Starbucks
+1898  Starbucks
+1899  Starbucks
+1900  Starbucks
+1901  Starbucks
+
+[105 rows x 1 columns]('CA', 'SK')          Brand
+1902  Starbucks
+1903  Starbucks
+1904  Starbucks
+1905  Starbucks
+1906  Starbucks
+1907  Starbucks
+1908  Starbucks
+1909  Starbucks
+1910  Starbucks
+1911  Starbucks
+1912  Starbucks
+1913  Starbucks
+1914  Starbucks
+1915  Starbucks
+1916  Starbucks
+1917  Starbucks
+1918  Starbucks
+1919  Starbucks
+1920  Starbucks
+1921  Starbucks
+1922  Starbucks
+1923  Starbucks
+1924  Starbucks
+1925  Starbucks
+1926  Starbucks
+1927  Starbucks
+1928  Starbucks
+1929  Starbucks
+1930  Starbucks
+1931  Starbucks('CA', 'YT')          Brand
+1932  Starbucks
+1933  Starbucks('CH', 'AG')          Brand
+1934  Starbucks
+1935  Starbucks
+1936  Starbucks('CH', 'BE')          Brand
+1937  Starbucks
+1938  Starbucks
+1939  Starbucks
+1940  Starbucks
+1941  Starbucks('CH', 'BS')          Brand
+1942  Starbucks
+1943  Starbucks
+1944  Starbucks
+1945  Starbucks
+1946  Starbucks('CH', 'FR')          Brand
+1947  Starbucks
+1948  Starbucks('CH', 'GE')          Brand
+1949  Starbucks
+1950  Starbucks
+1951  Starbucks
+1952  Starbucks
+1953  Starbucks
+1954  Starbucks
+1955  Starbucks
+1956  Starbucks('CH', 'LU')          Brand
+1957  Starbucks
+1958  Starbucks('CH', 'SG')          Brand
+1959  Starbucks
+1960  Starbucks
+1961  Starbucks
+1962  Starbucks
+1963  Starbucks('CH', 'VD')          Brand
+1964  Starbucks
+1965  Starbucks
+1966  Starbucks
+1967  Starbucks('CH', 'ZG')          Brand
+1968  Starbucks
+1969  Starbucks('CH', 'ZH')          Brand
+1970  Starbucks
+1971  Starbucks
+1972  Starbucks
+1973  Starbucks
+1974  Starbucks
+1975  Starbucks
+1976  Starbucks
+1977  Starbucks
+1978  Starbucks
+1979  Starbucks
+1980  Starbucks
+1981  Starbucks
+1982  Starbucks
+1983  Starbucks
+1984  Starbucks
+1985  Starbucks
+1986  Starbucks
+1987  Starbucks
+1988  Starbucks
+1989  Starbucks
+1990  Starbucks
+1991  Starbucks
+1992  Starbucks
+1993  Starbucks
+1994  Starbucks('CL', 'BI')          Brand
+1995  Starbucks
+1996  Starbucks
+1997  Starbucks
+1998  Starbucks('CL', 'LI')          Brand
+1999  Starbucks('CL', 'RM')          Brand
+2000  Starbucks
+2001  Starbucks
+2002  Starbucks
+2003  Starbucks
+2004  Starbucks
+...         ...
+2082  Starbucks
+2083  Starbucks
+2084  Starbucks
+2085  Starbucks
+2086  Starbucks
+
+[87 rows x 1 columns]('CL', 'VS')          Brand
+2087  Starbucks
+2088  Starbucks
+2089  Starbucks
+2090  Starbucks('CN', '11')          Brand
+2091  Starbucks
+2092  Starbucks
+2093  Starbucks
+2094  Starbucks
+2095  Starbucks
+...         ...
+2322  Starbucks
+2323  Starbucks
+2324  Starbucks
+2325  Starbucks
+2326  Starbucks
+
+[236 rows x 1 columns]('CN', '12')          Brand
+2327  Starbucks
+2328  Starbucks
+2329  Starbucks
+2330  Starbucks
+2331  Starbucks
+2332  Starbucks
+2333  Starbucks
+2334  Starbucks
+2335  Starbucks
+2336  Starbucks
+2337  Starbucks
+2338  Starbucks
+2339  Starbucks
+2340  Starbucks
+2341  Starbucks
+2342  Starbucks
+2343  Starbucks
+2344  Starbucks
+2345  Starbucks
+2346  Starbucks
+2347  Starbucks
+2348  Starbucks
+2349  Starbucks
+2350  Starbucks
+2351  Starbucks
+2352  Starbucks
+2353  Starbucks
+2354  Starbucks
+2355  Starbucks
+2356  Starbucks
+2357  Starbucks
+2358  Starbucks
+2359  Starbucks
+2360  Starbucks
+2361  Starbucks
+2362  Starbucks
+2363  Starbucks
+2364  Starbucks
+2365  Starbucks
+2366  Starbucks
+2367  Starbucks
+2368  Starbucks
+2369  Starbucks
+2370  Starbucks
+2371  Starbucks
+2372  Starbucks
+2373  Starbucks
+2374  Starbucks
+2375  Starbucks
+2376  Starbucks
+2377  Starbucks
+2378  Starbucks
+2379  Starbucks
+2380  Starbucks
+2381  Starbucks
+2382  Starbucks
+2383  Starbucks
+2384  Starbucks('CN', '13')          Brand
+2385  Starbucks
+2386  Starbucks
+2387  Starbucks
+2388  Starbucks
+2389  Starbucks
+2390  Starbucks
+2391  Starbucks
+2392  Starbucks
+2393  Starbucks
+2394  Starbucks
+2395  Starbucks
+2396  Starbucks
+2397  Starbucks
+2398  Starbucks
+2399  Starbucks
+2400  Starbucks
+2401  Starbucks
+2402  Starbucks
+2403  Starbucks
+2404  Starbucks
+2405  Starbucks
+2406  Starbucks
+2407  Starbucks
+2408  Starbucks('CN', '14')          Brand
+2409  Starbucks
+2410  Starbucks
+2411  Starbucks
+2412  Starbucks
+2413  Starbucks
+2414  Starbucks
+2415  Starbucks
+2416  Starbucks('CN', '15')          Brand
+2417  Starbucks
+2418  Starbucks
+2419  Starbucks
+2420  Starbucks
+2421  Starbucks
+2422  Starbucks
+2423  Starbucks
+2424  Starbucks('CN', '21')          Brand
+2425  Starbucks
+2426  Starbucks
+2427  Starbucks
+2428  Starbucks
+2429  Starbucks
+2430  Starbucks
+2431  Starbucks
+2432  Starbucks
+2433  Starbucks
+2434  Starbucks
+2435  Starbucks
+2436  Starbucks
+2437  Starbucks
+2438  Starbucks
+2439  Starbucks
+2440  Starbucks
+2441  Starbucks
+2442  Starbucks
+2443  Starbucks
+2444  Starbucks
+2445  Starbucks
+2446  Starbucks
+2447  Starbucks
+2448  Starbucks
+2449  Starbucks
+2450  Starbucks
+2451  Starbucks
+2452  Starbucks
+2453  Starbucks
+2454  Starbucks
+2455  Starbucks
+2456  Starbucks
+2457  Starbucks
+2458  Starbucks
+2459  Starbucks
+2460  Starbucks
+2461  Starbucks
+2462  Starbucks
+2463  Starbucks
+2464  Starbucks
+2465  Starbucks
+2466  Starbucks
+2467  Starbucks
+2468  Starbucks
+2469  Starbucks
+2470  Starbucks
+2471  Starbucks
+2472  Starbucks
+2473  Starbucks
+2474  Starbucks
+2475  Starbucks
+2476  Starbucks
+2477  Starbucks
+2478  Starbucks
+2479  Starbucks
+2480  Starbucks
+2481  Starbucks('CN', '22')          Brand
+2482  Starbucks
+2483  Starbucks
+2484  Starbucks
+2485  Starbucks
+2486  Starbucks
+2487  Starbucks
+2488  Starbucks
+2489  Starbucks
+2490  Starbucks
+2491  Starbucks
+2492  Starbucks
+2493  Starbucks
+2494  Starbucks('CN', '23')          Brand
+2495  Starbucks
+2496  Starbucks
+2497  Starbucks
+2498  Starbucks
+2499  Starbucks
+2500  Starbucks
+2501  Starbucks
+2502  Starbucks
+2503  Starbucks
+2504  Starbucks
+2505  Starbucks
+2506  Starbucks
+2507  Starbucks
+2508  Starbucks
+2509  Starbucks
+2510  Starbucks('CN', '31')          Brand
+2511  Starbucks
+2512  Starbucks
+2513  Starbucks
+2514  Starbucks
+2515  Starbucks
+...         ...
+3057  Starbucks
+3058  Starbucks
+3059  Starbucks
+3060  Starbucks
+3061  Starbucks
+
+[551 rows x 1 columns]('CN', '32')          Brand
+3062  Starbucks
+3063  Starbucks
+3064  Starbucks
+3065  Starbucks
+3066  Starbucks
+...         ...
+3411  Starbucks
+3412  Starbucks
+3413  Starbucks
+3414  Starbucks
+3415  Starbucks
+
+[354 rows x 1 columns]('CN', '33')          Brand
+3416  Starbucks
+3417  Starbucks
+3418  Starbucks
+3419  Starbucks
+3420  Starbucks
+...         ...
+3726  Starbucks
+3727  Starbucks
+3728  Starbucks
+3729  Starbucks
+3730  Starbucks
+
+[315 rows x 1 columns]('CN', '34')          Brand
+3731  Starbucks
+3732  Starbucks
+3733  Starbucks
+3734  Starbucks
+3735  Starbucks
+3736  Starbucks
+3737  Starbucks
+3738  Starbucks
+3739  Starbucks
+3740  Starbucks
+3741  Starbucks
+3742  Starbucks
+3743  Starbucks
+3744  Starbucks
+3745  Starbucks
+3746  Starbucks
+3747  Starbucks
+3748  Starbucks
+3749  Starbucks
+3750  Starbucks
+3751  Starbucks
+3752  Starbucks
+3753  Starbucks
+3754  Starbucks
+3755  Starbucks
+3756  Starbucks('CN', '35')          Brand
+3757  Starbucks
+3758  Starbucks
+3759  Starbucks
+3760  Starbucks
+3761  Starbucks
+...         ...
+3827  Starbucks
+3828  Starbucks
+3829  Starbucks
+3830  Starbucks
+3831  Starbucks
+
+[75 rows x 1 columns]('CN', '36')          Brand
+3832  Starbucks
+3833  Starbucks
+3834  Starbucks
+3835  Starbucks
+3836  Starbucks
+3837  Starbucks
+3838  Starbucks
+3839  Starbucks
+3840  Starbucks
+3841  Starbucks
+3842  Starbucks
+3843  Starbucks
+3844  Starbucks('CN', '37')          Brand
+3845  Starbucks
+3846  Starbucks
+3847  Starbucks
+3848  Starbucks
+3849  Starbucks
+...         ...
+3915  Starbucks
+3916  Starbucks
+3917  Starbucks
+3918  Starbucks
+3919  Starbucks
+
+[75 rows x 1 columns]('CN', '41')          Brand
+3920  Starbucks
+3921  Starbucks
+3922  Starbucks
+3923  Starbucks
+3924  Starbucks
+3925  Starbucks
+3926  Starbucks
+3927  Starbucks
+3928  Starbucks
+3929  Starbucks
+3930  Starbucks
+3931  Starbucks
+3932  Starbucks
+3933  Starbucks
+3934  Starbucks
+3935  Starbucks
+3936  Starbucks
+3937  Starbucks
+3938  Starbucks
+3939  Starbucks
+3940  Starbucks('CN', '42')          Brand
+3941  Starbucks
+3942  Starbucks
+3943  Starbucks
+3944  Starbucks
+3945  Starbucks
+...         ...
+4012  Starbucks
+4013  Starbucks
+4014  Starbucks
+4015  Starbucks
+4016  Starbucks
+
+[76 rows x 1 columns]('CN', '43')          Brand
+4017  Starbucks
+4018  Starbucks
+4019  Starbucks
+4020  Starbucks
+4021  Starbucks
+4022  Starbucks
+4023  Starbucks
+4024  Starbucks
+4025  Starbucks
+4026  Starbucks
+4027  Starbucks
+4028  Starbucks
+4029  Starbucks
+4030  Starbucks
+4031  Starbucks
+4032  Starbucks
+4033  Starbucks
+4034  Starbucks
+4035  Starbucks
+4036  Starbucks
+4037  Starbucks
+4038  Starbucks
+4039  Starbucks
+4040  Starbucks
+4041  Starbucks
+4042  Starbucks
+4043  Starbucks
+4044  Starbucks
+4045  Starbucks
+4046  Starbucks
+4047  Starbucks
+4048  Starbucks
+4049  Starbucks
+4050  Starbucks
+4051  Starbucks('CN', '44')          Brand
+4052  Starbucks
+4053  Starbucks
+4054  Starbucks
+4055  Starbucks
+4056  Starbucks
+...         ...
+4380  Starbucks
+4381  Starbucks
+4382  Starbucks
+4383  Starbucks
+4384  Starbucks
+
+[333 rows x 1 columns]('CN', '45')          Brand
+4385  Starbucks
+4386  Starbucks
+4387  Starbucks
+4388  Starbucks
+4389  Starbucks
+4390  Starbucks
+4391  Starbucks
+4392  Starbucks
+4393  Starbucks
+4394  Starbucks
+4395  Starbucks
+4396  Starbucks
+4397  Starbucks
+4398  Starbucks
+4399  Starbucks
+4400  Starbucks
+4401  Starbucks
+4402  Starbucks
+4403  Starbucks
+4404  Starbucks
+4405  Starbucks('CN', '46')          Brand
+4406  Starbucks
+4407  Starbucks
+4408  Starbucks
+4409  Starbucks
+4410  Starbucks
+4411  Starbucks
+4412  Starbucks
+4413  Starbucks
+4414  Starbucks
+4415  Starbucks
+4416  Starbucks
+4417  Starbucks
+4418  Starbucks
+4419  Starbucks
+4420  Starbucks
+4421  Starbucks('CN', '50')          Brand
+4422  Starbucks
+4423  Starbucks
+4424  Starbucks
+4425  Starbucks
+4426  Starbucks
+4427  Starbucks
+4428  Starbucks
+4429  Starbucks
+4430  Starbucks
+4431  Starbucks
+4432  Starbucks
+4433  Starbucks
+4434  Starbucks
+4435  Starbucks
+4436  Starbucks
+4437  Starbucks
+4438  Starbucks
+4439  Starbucks
+4440  Starbucks
+4441  Starbucks
+4442  Starbucks
+4443  Starbucks
+4444  Starbucks
+4445  Starbucks
+4446  Starbucks
+4447  Starbucks
+4448  Starbucks
+4449  Starbucks
+4450  Starbucks
+4451  Starbucks
+4452  Starbucks
+4453  Starbucks
+4454  Starbucks
+4455  Starbucks
+4456  Starbucks
+4457  Starbucks
+4458  Starbucks
+4459  Starbucks
+4460  Starbucks
+4461  Starbucks
+4462  Starbucks('CN', '51')          Brand
+4463  Starbucks
+4464  Starbucks
+4465  Starbucks
+4466  Starbucks
+4467  Starbucks
+...         ...
+4562  Starbucks
+4563  Starbucks
+4564  Starbucks
+4565  Starbucks
+4566  Starbucks
+
+[104 rows x 1 columns]('CN', '52')          Brand
+4567  Starbucks
+4568  Starbucks
+4569  Starbucks
+4570  Starbucks
+4571  Starbucks
+4572  Starbucks
+4573  Starbucks
+4574  Starbucks
+4575  Starbucks('CN', '53')          Brand
+4576  Starbucks
+4577  Starbucks
+4578  Starbucks
+4579  Starbucks
+4580  Starbucks
+4581  Starbucks
+4582  Starbucks
+4583  Starbucks
+4584  Starbucks
+4585  Starbucks
+4586  Starbucks
+4587  Starbucks
+4588  Starbucks
+4589  Starbucks
+4590  Starbucks
+4591  Starbucks
+4592  Starbucks
+4593  Starbucks
+4594  Starbucks
+4595  Starbucks
+4596  Starbucks
+4597  Starbucks
+4598  Starbucks
+4599  Starbucks('CN', '61')          Brand
+4600  Starbucks
+4601  Starbucks
+4602  Starbucks
+4603  Starbucks
+4604  Starbucks
+4605  Starbucks
+4606  Starbucks
+4607  Starbucks
+4608  Starbucks
+4609  Starbucks
+4610  Starbucks
+4611  Starbucks
+4612  Starbucks
+4613  Starbucks
+4614  Starbucks
+4615  Starbucks
+4616  Starbucks
+4617  Starbucks
+4618  Starbucks
+4619  Starbucks
+4620  Starbucks
+4621  Starbucks
+4622  Starbucks
+4623  Starbucks
+4624  Starbucks
+4625  Starbucks
+4626  Starbucks
+4627  Starbucks
+4628  Starbucks
+4629  Starbucks
+4630  Starbucks
+4631  Starbucks
+4632  Starbucks
+4633  Starbucks
+4634  Starbucks
+4635  Starbucks
+4636  Starbucks
+4637  Starbucks
+4638  Starbucks
+4639  Starbucks
+4640  Starbucks
+4641  Starbucks('CN', '62')          Brand
+4642  Starbucks
+4643  Starbucks
+4644  Starbucks('CN', '63')          Brand
+4645  Starbucks
+4646  Starbucks
+4647  Starbucks('CN', '64')          Brand
+4648  Starbucks
+4649  Starbucks('CN', '91')          Brand
+4650  Starbucks
+4651  Starbucks
+4652  Starbucks
+4653  Starbucks
+4654  Starbucks
+...         ...
+4807  Starbucks
+4808  Starbucks
+4809  Starbucks
+4810  Starbucks
+4811  Starbucks
+
+[162 rows x 1 columns]('CN', '92')          Brand
+4812  Starbucks
+4813  Starbucks
+4814  Starbucks
+4815  Starbucks
+4816  Starbucks
+4817  Starbucks
+4818  Starbucks
+4819  Starbucks
+4820  Starbucks
+4821  Starbucks
+4822  Starbucks
+4823  Starbucks
+4824  Starbucks('CO', 'DC')          Brand
+4825  Starbucks
+4826  Starbucks
+4827  Starbucks
+4828  Starbucks
+4829  Starbucks
+4830  Starbucks
+4831  Starbucks
+4832  Starbucks
+4833  Starbucks
+4834  Starbucks
+4835  Starbucks('CR', 'A')          Brand
+4836  Starbucks
+4837  Starbucks('CR', 'SJ')          Brand
+4838  Starbucks
+4839  Starbucks
+4840  Starbucks
+4841  Starbucks
+4842  Starbucks
+4843  Starbucks
+4844  Starbucks
+4845  Starbucks
+4846  Starbucks('CW', 'CW')          Brand
+4847  Starbucks
+4848  Starbucks
+4849  Starbucks('CY', '1')          Brand
+4850  Starbucks
+4851  Starbucks
+4852  Starbucks
+4853  Starbucks('CY', '2')          Brand
+4854  Starbucks
+4855  Starbucks
+4856  Starbucks
+4857  Starbucks('CY', '3')          Brand
+4858  Starbucks('CY', '5')          Brand
+4859  Starbucks('CZ', 'JM')          Brand
+4860  Starbucks
+4861  Starbucks
+4862  Starbucks
+4863  Starbucks('CZ', 'MO')          Brand
+4864  Starbucks
+4865  Starbucks('CZ', 'PR')          Brand
+4866  Starbucks
+4867  Starbucks
+4868  Starbucks
+4869  Starbucks
+4870  Starbucks
+4871  Starbucks
+4872  Starbucks
+4873  Starbucks
+4874  Starbucks
+4875  Starbucks
+4876  Starbucks
+4877  Starbucks
+4878  Starbucks
+4879  Starbucks
+4880  Starbucks
+4881  Starbucks
+4882  Starbucks
+4883  Starbucks
+4884  Starbucks
+4885  Starbucks
+4886  Starbucks
+4887  Starbucks('DE', 'BB')          Brand
+4888  Starbucks
+4889  Starbucks('DE', 'BE')          Brand
+4890  Starbucks
+4891  Starbucks
+4892  Starbucks
+4893  Starbucks
+4894  Starbucks
+4895  Starbucks
+4896  Starbucks
+4897  Starbucks
+4898  Starbucks
+4899  Starbucks
+4900  Starbucks
+4901  Starbucks
+4902  Starbucks
+4903  Starbucks
+4904  Starbucks
+4905  Starbucks
+4906  Starbucks
+4907  Starbucks
+4908  Starbucks
+4909  Starbucks('DE', 'BW')          Brand
+4910  Starbucks
+4911  Starbucks
+4912  Starbucks
+4913  Starbucks
+4914  Starbucks
+4915  Starbucks
+4916  Starbucks
+4917  Starbucks
+4918  Starbucks
+4919  Starbucks
+4920  Starbucks
+4921  Starbucks
+4922  Starbucks
+4923  Starbucks
+4924  Starbucks
+4925  Starbucks
+4926  Starbucks
+4927  Starbucks
+4928  Starbucks
+4929  Starbucks
+4930  Starbucks('DE', 'BY')          Brand
+4931  Starbucks
+4932  Starbucks
+4933  Starbucks
+4934  Starbucks
+4935  Starbucks
+4936  Starbucks
+4937  Starbucks
+4938  Starbucks
+4939  Starbucks
+4940  Starbucks
+4941  Starbucks
+4942  Starbucks
+4943  Starbucks
+4944  Starbucks
+4945  Starbucks
+4946  Starbucks
+4947  Starbucks
+4948  Starbucks('DE', 'HB')          Brand
+4949  Starbucks
+4950  Starbucks
+4951  Starbucks
+4952  Starbucks('DE', 'HE')          Brand
+4953  Starbucks
+4954  Starbucks
+4955  Starbucks
+4956  Starbucks
+4957  Starbucks
+4958  Starbucks
+4959  Starbucks
+4960  Starbucks
+4961  Starbucks
+4962  Starbucks
+4963  Starbucks
+4964  Starbucks
+4965  Starbucks
+4966  Starbucks
+4967  Starbucks
+4968  Starbucks
+4969  Starbucks
+4970  Starbucks
+4971  Starbucks
+4972  Starbucks
+4973  Starbucks
+4974  Starbucks
+4975  Starbucks
+4976  Starbucks
+4977  Starbucks
+4978  Starbucks('DE', 'HH')          Brand
+4979  Starbucks
+4980  Starbucks
+4981  Starbucks
+4982  Starbucks
+4983  Starbucks
+4984  Starbucks
+4985  Starbucks
+4986  Starbucks
+4987  Starbucks
+4988  Starbucks
+4989  Starbucks
+4990  Starbucks
+4991  Starbucks('DE', 'NI')          Brand
+4992  Starbucks
+4993  Starbucks
+4994  Starbucks
+4995  Starbucks
+4996  Starbucks
+4997  Starbucks('DE', 'NW')          Brand
+4998  Starbucks
+4999  Starbucks
+5000  Starbucks
+5001  Starbucks
+5002  Starbucks
+5003  Starbucks
+5004  Starbucks
+5005  Starbucks
+5006  Starbucks
+5007  Starbucks
+5008  Starbucks
+5009  Starbucks
+5010  Starbucks
+5011  Starbucks
+5012  Starbucks
+5013  Starbucks
+5014  Starbucks
+5015  Starbucks
+5016  Starbucks
+5017  Starbucks
+5018  Starbucks
+5019  Starbucks
+5020  Starbucks
+5021  Starbucks
+5022  Starbucks
+5023  Starbucks
+5024  Starbucks
+5025  Starbucks
+5026  Starbucks
+5027  Starbucks
+5028  Starbucks
+5029  Starbucks
+5030  Starbucks
+5031  Starbucks('DE', 'RP')          Brand
+5032  Starbucks
+5033  Starbucks
+5034  Starbucks
+5035  Starbucks
+5036  Starbucks
+5037  Starbucks('DE', 'SH')          Brand
+5038  Starbucks
+5039  Starbucks('DE', 'SL')          Brand
+5040  Starbucks
+5041  Starbucks('DE', 'SN')          Brand
+5042  Starbucks
+5043  Starbucks
+5044  Starbucks
+5045  Starbucks
+5046  Starbucks('DE', 'TH')          Brand
+5047  Starbucks('DK', '15')          Brand
+5048  Starbucks
+5049  Starbucks
+5050  Starbucks
+5051  Starbucks('DK', '81')          Brand
+5052  Starbucks
+5053  Starbucks
+5054  Starbucks('DK', '83')          Brand
+5055  Starbucks('DK', '84')          Brand
+5056  Starbucks
+5057  Starbucks
+5058  Starbucks
+5059  Starbucks
+5060  Starbucks
+5061  Starbucks
+5062  Starbucks
+5063  Starbucks
+5064  Starbucks('DK', 'DK')          Brand
+5065  Starbucks
+5066  Starbucks
+5067  Starbucks
+5068  Starbucks('EG', 'ALX')          Brand
+5069  Starbucks('EG', 'C')          Brand
+5070  Starbucks
+5071  Starbucks
+5072  Starbucks
+5073  Starbucks
+5074  Starbucks
+5075  Starbucks
+5076  Starbucks
+5077  Starbucks
+5078  Starbucks
+5079  Starbucks
+5080  Starbucks
+5081  Starbucks
+5082  Starbucks
+5083  Starbucks
+5084  Starbucks
+5085  Starbucks
+5086  Starbucks
+5087  Starbucks
+5088  Starbucks
+5089  Starbucks
+5090  Starbucks
+5091  Starbucks
+5092  Starbucks
+5093  Starbucks
+5094  Starbucks
+5095  Starbucks
+5096  Starbucks('EG', 'JS')          Brand
+5097  Starbucks
+5098  Starbucks
+5099  Starbucks('ES', 'AB')          Brand
+5100  Starbucks('ES', 'AN')          Brand
+5101  Starbucks
+5102  Starbucks
+5103  Starbucks
+5104  Starbucks
+5105  Starbucks
+5106  Starbucks
+5107  Starbucks
+5108  Starbucks
+5109  Starbucks
+5110  Starbucks
+5111  Starbucks
+5112  Starbucks
+5113  Starbucks
+5114  Starbucks
+5115  Starbucks
+5116  Starbucks('ES', 'BI')          Brand
+5117  Starbucks
+5118  Starbucks('ES', 'C')          Brand
+5119  Starbucks
+5120  Starbucks('ES', 'CL')          Brand
+5121  Starbucks
+5122  Starbucks('ES', 'CT')          Brand
+5123  Starbucks
+5124  Starbucks
+5125  Starbucks
+5126  Starbucks
+5127  Starbucks
+5128  Starbucks
+5129  Starbucks
+5130  Starbucks
+5131  Starbucks
+5132  Starbucks
+5133  Starbucks
+5134  Starbucks
+5135  Starbucks
+5136  Starbucks
+5137  Starbucks
+5138  Starbucks
+5139  Starbucks
+5140  Starbucks
+5141  Starbucks
+5142  Starbucks('ES', 'IB')          Brand
+5143  Starbucks
+5144  Starbucks('ES', 'M')          Brand
+5145  Starbucks('ES', 'MA')          Brand
+5146  Starbucks('ES', 'MD')          Brand
+5147  Starbucks
+5148  Starbucks
+5149  Starbucks
+5150  Starbucks
+5151  Starbucks
+5152  Starbucks
+5153  Starbucks
+5154  Starbucks
+5155  Starbucks
+5156  Starbucks
+5157  Starbucks
+5158  Starbucks
+5159  Starbucks
+5160  Starbucks
+5161  Starbucks
+5162  Starbucks
+5163  Starbucks
+5164  Starbucks
+5165  Starbucks
+5166  Starbucks
+5167  Starbucks
+5168  Starbucks
+5169  Starbucks
+5170  Starbucks
+5171  Starbucks
+5172  Starbucks
+5173  Starbucks
+5174  Starbucks
+5175  Starbucks
+5176  Starbucks
+5177  Starbucks
+5178  Starbucks
+5179  Starbucks
+5180  Starbucks
+5181  Starbucks
+5182  Starbucks
+5183  Starbucks
+5184  Starbucks
+5185  Starbucks
+5186  Starbucks
+5187  Starbucks
+5188  Starbucks
+5189  Starbucks
+5190  Starbucks
+5191  Starbucks
+5192  Starbucks
+5193  Starbucks
+5194  Starbucks
+5195  Starbucks
+5196  Starbucks('ES', 'MU')          Brand
+5197  Starbucks('ES', 'SS')          Brand
+5198  Starbucks('ES', 'Z')          Brand
+5199  Starbucks('ES', 'ZAB')          Brand
+5200  Starbucks('FI', '18')          Brand
+5203  Starbucks
+5204  Starbucks
+5205  Starbucks('FI', '2')          Brand
+5201  Starbucks
+5202  Starbucks('FI', 'ES')          Brand
+5206  Starbucks
+5207  Starbucks
+5208  Starbucks('FR', 'A')          Brand
+5209  Starbucks
+5210  Starbucks('FR', 'B')          Brand
+5211  Starbucks
+5212  Starbucks
+5213  Starbucks
+5214  Starbucks
+5215  Starbucks('FR', 'C')          Brand
+5216  Starbucks('FR', 'D')          Brand
+5217  Starbucks('FR', 'F')          Brand
+5218  Starbucks('FR', 'J')          Brand
+5219  Starbucks
+5220  Starbucks
+5221  Starbucks
+5222  Starbucks
+5223  Starbucks
+...         ...
+5300  Starbucks
+5301  Starbucks
+5302  Starbucks
+5303  Starbucks
+5304  Starbucks
+
+[86 rows x 1 columns]('FR', 'K')          Brand
+5305  Starbucks('FR', 'N')          Brand
+5306  Starbucks
+5307  Starbucks('FR', 'O')          Brand
+5308  Starbucks
+5309  Starbucks
+5310  Starbucks
+5311  Starbucks
+5312  Starbucks('FR', 'R')          Brand
+5313  Starbucks
+5314  Starbucks
+5315  Starbucks
+5316  Starbucks('FR', 'S')          Brand
+5317  Starbucks('FR', 'U')          Brand
+5318  Starbucks
+5319  Starbucks
+5320  Starbucks
+5321  Starbucks
+5322  Starbucks
+5323  Starbucks
+5324  Starbucks
+5325  Starbucks
+5326  Starbucks
+5327  Starbucks
+5328  Starbucks
+5329  Starbucks
+5330  Starbucks
+5331  Starbucks('FR', 'V')          Brand
+5332  Starbucks
+5333  Starbucks
+5334  Starbucks
+5335  Starbucks
+5336  Starbucks
+5337  Starbucks
+5338  Starbucks
+5339  Starbucks
+5340  Starbucks('GB', 'ENG')          Brand
+5341  Starbucks
+5342  Starbucks
+5343  Starbucks
+5344  Starbucks
+5345  Starbucks
+...         ...
+6123  Starbucks
+6124  Starbucks
+6125  Starbucks
+6126  Starbucks
+6127  Starbucks
+
+[787 rows x 1 columns]('GB', 'NIR')          Brand
+6128  Starbucks
+6129  Starbucks
+6130  Starbucks
+6131  Starbucks
+6132  Starbucks
+6133  Starbucks
+6134  Starbucks
+6135  Starbucks
+6136  Starbucks
+6137  Starbucks
+6138  Starbucks
+6139  Starbucks
+6140  Starbucks
+6141  Starbucks
+6142  Starbucks
+6143  Starbucks
+6144  Starbucks
+6145  Starbucks
+6146  Starbucks('GB', 'SCT')          Brand
+6147  Starbucks
+6148  Starbucks
+6149  Starbucks
+6150  Starbucks
+6151  Starbucks
+...         ...
+6207  Starbucks
+6208  Starbucks
+6209  Starbucks
+6210  Starbucks
+6211  Starbucks
+
+[65 rows x 1 columns]('GB', 'WLS')          Brand
+6212  Starbucks
+6213  Starbucks
+6214  Starbucks
+6215  Starbucks
+6216  Starbucks
+6217  Starbucks
+6218  Starbucks
+6219  Starbucks
+6220  Starbucks
+6221  Starbucks
+6222  Starbucks
+6223  Starbucks
+6224  Starbucks
+6225  Starbucks
+6226  Starbucks
+6227  Starbucks
+6228  Starbucks
+6229  Starbucks
+6230  Starbucks
+6231  Starbucks
+6232  Starbucks
+6233  Starbucks
+6234  Starbucks
+6235  Starbucks
+6236  Starbucks
+6237  Starbucks
+6238  Starbucks
+6239  Starbucks
+6240  Starbucks
+6241  Starbucks('GR', 'A1')          Brand
+6242  Starbucks
+6243  Starbucks
+6244  Starbucks
+6245  Starbucks
+6246  Starbucks
+6247  Starbucks
+6248  Starbucks
+6249  Starbucks
+6250  Starbucks
+6251  Starbucks
+6252  Starbucks
+6253  Starbucks
+6254  Starbucks
+6255  Starbucks
+6256  Starbucks
+6257  Starbucks
+6258  Starbucks
+6259  Starbucks
+6260  Starbucks
+6261  Starbucks('GR', 'B')          Brand
+6262  Starbucks
+6263  Starbucks('GR', 'L')          Brand
+6264  Starbucks
+6265  Starbucks('GR', 'M')          Brand
+6266  Starbucks
+6267  Starbucks
+6268  Starbucks
+6269  Starbucks('GT', 'GU')          Brand
+6270  Starbucks
+6271  Starbucks
+6272  Starbucks
+6273  Starbucks
+6274  Starbucks
+6275  Starbucks
+6276  Starbucks('HU', 'BU')          Brand
+6277  Starbucks
+6278  Starbucks
+6279  Starbucks
+6280  Starbucks
+6281  Starbucks
+6282  Starbucks
+6283  Starbucks
+6284  Starbucks
+6285  Starbucks
+6286  Starbucks
+6287  Starbucks
+6288  Starbucks
+6289  Starbucks
+6290  Starbucks
+6291  Starbucks
+6292  Starbucks('ID', 'BA')          Brand
+6293  Starbucks
+6294  Starbucks
+6295  Starbucks
+6296  Starbucks
+6297  Starbucks
+6298  Starbucks
+6299  Starbucks
+6300  Starbucks
+6301  Starbucks
+6302  Starbucks
+6303  Starbucks
+6304  Starbucks('ID', 'BT')          Brand
+6305  Starbucks
+6306  Starbucks
+6307  Starbucks
+6308  Starbucks
+6309  Starbucks
+6310  Starbucks
+6311  Starbucks
+6312  Starbucks
+6313  Starbucks
+6314  Starbucks
+6315  Starbucks('ID', 'JB')          Brand
+6316  Starbucks
+6317  Starbucks
+6318  Starbucks
+6319  Starbucks
+6320  Starbucks
+6321  Starbucks
+6322  Starbucks
+6323  Starbucks
+6324  Starbucks
+6325  Starbucks
+6326  Starbucks
+6327  Starbucks
+6328  Starbucks
+6329  Starbucks('ID', 'JI')          Brand
+6330  Starbucks
+6331  Starbucks
+6332  Starbucks
+6333  Starbucks
+6334  Starbucks
+6335  Starbucks
+6336  Starbucks
+6337  Starbucks
+6338  Starbucks
+6339  Starbucks('ID', 'JK')          Brand
+6340  Starbucks
+6341  Starbucks
+6342  Starbucks
+6343  Starbucks
+6344  Starbucks
+...         ...
+6412  Starbucks
+6413  Starbucks
+6414  Starbucks
+6415  Starbucks
+6416  Starbucks
+
+[77 rows x 1 columns]('ID', 'JT')          Brand
+6417  Starbucks
+6418  Starbucks('ID', 'JW')          Brand
+6419  Starbucks
+6420  Starbucks
+6421  Starbucks
+6422  Starbucks
+6423  Starbucks
+...         ...
+6517  Starbucks
+6518  Starbucks
+6519  Starbucks
+6520  Starbucks
+6521  Starbucks
+
+[103 rows x 1 columns]('ID', 'KA')          Brand
+6522  Starbucks
+6523  Starbucks
+6524  Starbucks
+6525  Starbucks
+6526  Starbucks('ID', 'KI')          Brand
+6527  Starbucks('ID', 'NU')          Brand
+6528  Starbucks
+6529  Starbucks
+6530  Starbucks
+6531  Starbucks
+6532  Starbucks
+6533  Starbucks
+6534  Starbucks
+6535  Starbucks('ID', 'RI')          Brand
+6536  Starbucks
+6537  Starbucks('ID', 'SL')          Brand
+6538  Starbucks
+6539  Starbucks
+6540  Starbucks('ID', 'SM')          Brand
+6541  Starbucks
+6542  Starbucks
+6543  Starbucks
+6544  Starbucks
+6545  Starbucks
+6546  Starbucks
+6547  Starbucks
+6548  Starbucks
+6549  Starbucks
+6550  Starbucks('ID', 'SN')          Brand
+6551  Starbucks
+6552  Starbucks
+6553  Starbucks('ID', 'SS')          Brand
+6554  Starbucks
+6555  Starbucks('ID', 'SU')          Brand
+6556  Starbucks
+6557  Starbucks
+6558  Starbucks
+6559  Starbucks('ID', 'YO')          Brand
+6560  Starbucks('IE', 'C')          Brand
+6561  Starbucks
+6562  Starbucks
+6563  Starbucks
+6564  Starbucks
+6565  Starbucks
+6566  Starbucks
+6567  Starbucks
+6568  Starbucks
+6569  Starbucks
+6570  Starbucks
+6571  Starbucks
+6572  Starbucks
+6573  Starbucks
+6574  Starbucks
+6575  Starbucks('IE', 'L')          Brand
+6576  Starbucks
+6577  Starbucks
+6578  Starbucks
+6579  Starbucks
+6580  Starbucks
+6581  Starbucks
+6582  Starbucks
+6583  Starbucks
+6584  Starbucks
+6585  Starbucks
+6586  Starbucks
+6587  Starbucks
+6588  Starbucks
+6589  Starbucks
+6590  Starbucks
+6591  Starbucks
+6592  Starbucks
+6593  Starbucks
+6594  Starbucks
+6595  Starbucks
+6596  Starbucks
+6597  Starbucks
+6598  Starbucks
+6599  Starbucks
+6600  Starbucks
+6601  Starbucks
+6602  Starbucks
+6603  Starbucks
+6604  Starbucks
+6605  Starbucks
+6606  Starbucks
+6607  Starbucks
+6608  Starbucks
+6609  Starbucks
+6610  Starbucks
+6611  Starbucks
+6612  Starbucks
+6613  Starbucks
+6614  Starbucks
+6615  Starbucks
+6616  Starbucks
+6617  Starbucks
+6618  Starbucks
+6619  Starbucks
+6620  Starbucks
+6621  Starbucks
+6622  Starbucks
+6623  Starbucks
+6624  Starbucks
+6625  Starbucks
+6626  Starbucks
+6627  Starbucks
+6628  Starbucks('IE', 'M')          Brand
+6629  Starbucks
+6630  Starbucks
+6631  Starbucks
+6632  Starbucks
+6633  Starbucks('IN', 'AP')          Brand
+6634  Starbucks
+6635  Starbucks
+6636  Starbucks
+6637  Starbucks
+6638  Starbucks
+6639  Starbucks('IN', 'DL')          Brand
+6640  Starbucks
+6641  Starbucks
+6642  Starbucks
+6643  Starbucks
+6644  Starbucks
+6645  Starbucks
+6646  Starbucks
+6647  Starbucks
+6648  Starbucks
+6649  Starbucks
+6650  Starbucks
+6651  Starbucks
+6652  Starbucks
+6653  Starbucks
+6654  Starbucks
+6655  Starbucks
+6656  Starbucks
+6657  Starbucks('IN', 'HR')          Brand
+6658  Starbucks
+6659  Starbucks
+6660  Starbucks
+6661  Starbucks
+6662  Starbucks
+6663  Starbucks('IN', 'KA')          Brand
+6664  Starbucks
+6665  Starbucks
+6666  Starbucks
+6667  Starbucks
+6668  Starbucks
+6669  Starbucks
+6670  Starbucks
+6671  Starbucks
+6672  Starbucks('IN', 'MH')          Brand
+6673  Starbucks
+6674  Starbucks
+6675  Starbucks
+6676  Starbucks
+6677  Starbucks
+6678  Starbucks
+6679  Starbucks
+6680  Starbucks
+6681  Starbucks
+6682  Starbucks
+6683  Starbucks
+6684  Starbucks
+6685  Starbucks
+6686  Starbucks
+6687  Starbucks
+6688  Starbucks
+6689  Starbucks
+6690  Starbucks
+6691  Starbucks
+6692  Starbucks
+6693  Starbucks
+6694  Starbucks
+6695  Starbucks
+6696  Starbucks
+6697  Starbucks
+6698  Starbucks
+6699  Starbucks
+6700  Starbucks
+6701  Starbucks
+6702  Starbucks
+6703  Starbucks
+6704  Starbucks
+6705  Starbucks
+6706  Starbucks
+6707  Starbucks
+6708  Starbucks
+6709  Starbucks
+6710  Starbucks
+6711  Starbucks
+6712  Starbucks
+6713  Starbucks
+6714  Starbucks
+6715  Starbucks('IN', 'TN')          Brand
+6716  Starbucks
+6717  Starbucks
+6718  Starbucks
+6719  Starbucks
+6720  Starbucks('IN', 'UP')          Brand
+6721  Starbucks('JO', 'AM')          Brand
+6722  Starbucks
+6723  Starbucks
+6724  Starbucks
+6725  Starbucks
+6726  Starbucks
+6727  Starbucks
+6728  Starbucks
+6729  Starbucks
+6730  Starbucks
+6731  Starbucks
+6732  Starbucks
+6733  Starbucks
+6734  Starbucks
+6735  Starbucks
+6736  Starbucks
+6737  Starbucks('JO', 'IR')          Brand
+6738  Starbucks('JP', '1')          Brand
+6739  Starbucks
+6740  Starbucks
+6741  Starbucks
+6742  Starbucks
+6743  Starbucks
+6744  Starbucks
+6745  Starbucks
+6746  Starbucks
+6747  Starbucks
+6748  Starbucks
+6749  Starbucks
+6750  Starbucks
+6751  Starbucks
+6752  Starbucks
+6753  Starbucks
+6754  Starbucks
+6755  Starbucks
+6756  Starbucks
+6757  Starbucks
+6758  Starbucks
+6759  Starbucks
+6760  Starbucks
+6761  Starbucks
+6762  Starbucks
+6763  Starbucks
+6764  Starbucks
+6765  Starbucks
+6766  Starbucks
+6767  Starbucks
+6768  Starbucks
+6769  Starbucks
+6770  Starbucks
+6771  Starbucks
+6772  Starbucks('JP', '10')          Brand
+6873  Starbucks
+6874  Starbucks
+6875  Starbucks
+6876  Starbucks
+6877  Starbucks
+6878  Starbucks
+6879  Starbucks
+6880  Starbucks
+6881  Starbucks
+6882  Starbucks
+6883  Starbucks
+6884  Starbucks
+6885  Starbucks('JP', '11')          Brand
+6886  Starbucks
+6887  Starbucks
+6888  Starbucks
+6889  Starbucks
+6890  Starbucks
+6891  Starbucks
+6892  Starbucks
+6893  Starbucks
+6894  Starbucks
+6895  Starbucks
+6896  Starbucks
+6897  Starbucks
+6898  Starbucks
+6899  Starbucks
+6900  Starbucks
+6901  Starbucks
+6902  Starbucks
+6903  Starbucks
+6904  Starbucks
+6905  Starbucks
+6906  Starbucks
+6907  Starbucks
+6908  Starbucks
+6909  Starbucks
+6910  Starbucks
+6911  Starbucks
+6912  Starbucks
+6913  Starbucks
+6914  Starbucks
+6915  Starbucks
+6916  Starbucks
+6917  Starbucks
+6918  Starbucks
+6919  Starbucks
+6920  Starbucks
+6921  Starbucks
+6922  Starbucks
+6923  Starbucks
+6924  Starbucks
+6925  Starbucks
+6926  Starbucks
+6927  Starbucks
+6928  Starbucks
+6929  Starbucks
+6930  Starbucks
+6931  Starbucks
+6932  Starbucks
+6933  Starbucks
+6934  Starbucks
+6935  Starbucks
+6936  Starbucks
+6937  Starbucks
+6938  Starbucks
+6939  Starbucks
+6940  Starbucks
+6941  Starbucks
+6942  Starbucks
+6943  Starbucks('JP', '12')          Brand
+6944  Starbucks
+6945  Starbucks
+6946  Starbucks
+6947  Starbucks
+6948  Starbucks
+6949  Starbucks
+6950  Starbucks
+6951  Starbucks
+6952  Starbucks
+6953  Starbucks
+6954  Starbucks
+6955  Starbucks
+6956  Starbucks
+6957  Starbucks
+6958  Starbucks
+6959  Starbucks
+6960  Starbucks
+6961  Starbucks
+6962  Starbucks
+6963  Starbucks
+6964  Starbucks
+6965  Starbucks
+6966  Starbucks
+6967  Starbucks
+6968  Starbucks
+6969  Starbucks
+6970  Starbucks
+6971  Starbucks
+6972  Starbucks
+6973  Starbucks
+6974  Starbucks
+6975  Starbucks
+6976  Starbucks
+6977  Starbucks
+6978  Starbucks
+6979  Starbucks
+6980  Starbucks
+6981  Starbucks
+6982  Starbucks
+6983  Starbucks
+6984  Starbucks
+6985  Starbucks
+6986  Starbucks
+6987  Starbucks
+6988  Starbucks
+6989  Starbucks
+6990  Starbucks
+6991  Starbucks
+6992  Starbucks
+6993  Starbucks
+6994  Starbucks
+6995  Starbucks
+6996  Starbucks
+6997  Starbucks
+6998  Starbucks
+6999  Starbucks
+7000  Starbucks
+7001  Starbucks
+7002  Starbucks
+7003  Starbucks('JP', '13')          Brand
+7004  Starbucks
+7005  Starbucks
+7006  Starbucks
+7007  Starbucks
+7008  Starbucks
+...         ...
+7304  Starbucks
+7305  Starbucks
+7306  Starbucks
+7307  Starbucks
+7308  Starbucks
+
+[305 rows x 1 columns]('JP', '14')          Brand
+7309  Starbucks
+7310  Starbucks
+7311  Starbucks
+7312  Starbucks
+7313  Starbucks
+...         ...
+7406  Starbucks
+7407  Starbucks
+7408  Starbucks
+7409  Starbucks
+7410  Starbucks
+
+[102 rows x 1 columns]('JP', '15')          Brand
+7411  Starbucks
+7412  Starbucks
+7413  Starbucks
+7414  Starbucks
+7415  Starbucks
+7416  Starbucks
+7417  Starbucks
+7418  Starbucks
+7419  Starbucks
+7420  Starbucks('JP', '16')          Brand
+7421  Starbucks
+7422  Starbucks
+7423  Starbucks
+7424  Starbucks
+7425  Starbucks
+7426  Starbucks
+7427  Starbucks
+7428  Starbucks
+7429  Starbucks('JP', '17')          Brand
+7430  Starbucks
+7431  Starbucks
+7432  Starbucks
+7433  Starbucks
+7434  Starbucks
+7435  Starbucks
+7436  Starbucks
+7437  Starbucks
+7438  Starbucks
+7439  Starbucks('JP', '18')          Brand
+7440  Starbucks
+7441  Starbucks
+7442  Starbucks
+7443  Starbucks
+7444  Starbucks('JP', '19')          Brand
+7445  Starbucks
+7446  Starbucks
+7447  Starbucks
+7448  Starbucks
+7449  Starbucks
+7450  Starbucks
+7451  Starbucks
+7452  Starbucks
+7453  Starbucks
+7454  Starbucks('JP', '2')          Brand
+6773  Starbucks
+6774  Starbucks
+6775  Starbucks
+6776  Starbucks
+6777  Starbucks
+6778  Starbucks
+6779  Starbucks
+6780  Starbucks('JP', '20')          Brand
+7455  Starbucks
+7456  Starbucks
+7457  Starbucks
+7458  Starbucks
+7459  Starbucks
+7460  Starbucks
+7461  Starbucks
+7462  Starbucks
+7463  Starbucks
+7464  Starbucks
+7465  Starbucks
+7466  Starbucks
+7467  Starbucks
+7468  Starbucks
+7469  Starbucks
+7470  Starbucks
+7471  Starbucks('JP', '21')          Brand
+7472  Starbucks
+7473  Starbucks
+7474  Starbucks
+7475  Starbucks
+7476  Starbucks
+7477  Starbucks
+7478  Starbucks
+7479  Starbucks
+7480  Starbucks
+7481  Starbucks
+7482  Starbucks('JP', '22')          Brand
+7483  Starbucks
+7484  Starbucks
+7485  Starbucks
+7486  Starbucks
+7487  Starbucks
+7488  Starbucks
+7489  Starbucks
+7490  Starbucks
+7491  Starbucks
+7492  Starbucks
+7493  Starbucks
+7494  Starbucks
+7495  Starbucks
+7496  Starbucks
+7497  Starbucks
+7498  Starbucks
+7499  Starbucks
+7500  Starbucks
+7501  Starbucks
+7502  Starbucks
+7503  Starbucks
+7504  Starbucks
+7505  Starbucks
+7506  Starbucks
+7507  Starbucks
+7508  Starbucks
+7509  Starbucks
+7510  Starbucks
+7511  Starbucks
+7512  Starbucks
+7513  Starbucks('JP', '23')          Brand
+7514  Starbucks
+7515  Starbucks
+7516  Starbucks
+7517  Starbucks
+7518  Starbucks
+...         ...
+7589  Starbucks
+7590  Starbucks
+7591  Starbucks
+7592  Starbucks
+7593  Starbucks
+
+[80 rows x 1 columns]('JP', '24')          Brand
+7594  Starbucks
+7595  Starbucks
+7596  Starbucks
+7597  Starbucks
+7598  Starbucks
+7599  Starbucks
+7600  Starbucks
+7601  Starbucks
+7602  Starbucks
+7603  Starbucks
+7604  Starbucks
+7605  Starbucks
+7606  Starbucks
+7607  Starbucks('JP', '25')          Brand
+7608  Starbucks
+7609  Starbucks
+7610  Starbucks
+7611  Starbucks
+7612  Starbucks
+7613  Starbucks
+7614  Starbucks
+7615  Starbucks
+7616  Starbucks
+7617  Starbucks
+7618  Starbucks
+7619  Starbucks
+7620  Starbucks('JP', '26')          Brand
+7621  Starbucks
+7622  Starbucks
+7623  Starbucks
+7624  Starbucks
+7625  Starbucks
+7626  Starbucks
+7627  Starbucks
+7628  Starbucks
+7629  Starbucks
+7630  Starbucks
+7631  Starbucks
+7632  Starbucks
+7633  Starbucks
+7634  Starbucks
+7635  Starbucks
+7636  Starbucks
+7637  Starbucks
+7638  Starbucks
+7639  Starbucks
+7640  Starbucks
+7641  Starbucks
+7642  Starbucks
+7643  Starbucks
+7644  Starbucks
+7645  Starbucks
+7646  Starbucks
+7647  Starbucks
+7648  Starbucks('JP', '27')          Brand
+7649  Starbucks
+7650  Starbucks
+7651  Starbucks
+7652  Starbucks
+7653  Starbucks
+...         ...
+7742  Starbucks
+7743  Starbucks
+7744  Starbucks
+7745  Starbucks
+7746  Starbucks
+
+[98 rows x 1 columns]('JP', '28')          Brand
+7747  Starbucks
+7748  Starbucks
+7749  Starbucks
+7750  Starbucks
+7751  Starbucks
+7752  Starbucks
+7753  Starbucks
+7754  Starbucks
+7755  Starbucks
+7756  Starbucks
+7757  Starbucks
+7758  Starbucks
+7759  Starbucks
+7760  Starbucks
+7761  Starbucks
+7762  Starbucks
+7763  Starbucks
+7764  Starbucks
+7765  Starbucks
+7766  Starbucks
+7767  Starbucks
+7768  Starbucks
+7769  Starbucks
+7770  Starbucks
+7771  Starbucks
+7772  Starbucks
+7773  Starbucks
+7774  Starbucks
+7775  Starbucks
+7776  Starbucks
+7777  Starbucks
+7778  Starbucks
+7779  Starbucks
+7780  Starbucks
+7781  Starbucks
+7782  Starbucks
+7783  Starbucks
+7784  Starbucks
+7785  Starbucks
+7786  Starbucks
+7787  Starbucks
+7788  Starbucks
+7789  Starbucks
+7790  Starbucks('JP', '29')          Brand
+7791  Starbucks
+7792  Starbucks
+7793  Starbucks
+7794  Starbucks
+7795  Starbucks
+7796  Starbucks
+7797  Starbucks
+7798  Starbucks
+7799  Starbucks
+7800  Starbucks('JP', '3')          Brand
+6781  Starbucks
+6782  Starbucks
+6783  Starbucks
+6784  Starbucks
+6785  Starbucks
+6786  Starbucks('JP', '30')          Brand
+7801  Starbucks
+7802  Starbucks
+7803  Starbucks
+7804  Starbucks
+7805  Starbucks('JP', '31')          Brand
+7806  Starbucks
+7807  Starbucks
+7808  Starbucks('JP', '32')          Brand
+7809  Starbucks
+7810  Starbucks
+7811  Starbucks('JP', '33')          Brand
+7812  Starbucks
+7813  Starbucks
+7814  Starbucks
+7815  Starbucks
+7816  Starbucks
+7817  Starbucks
+7818  Starbucks
+7819  Starbucks
+7820  Starbucks
+7821  Starbucks('JP', '34')          Brand
+7822  Starbucks
+7823  Starbucks
+7824  Starbucks
+7825  Starbucks
+7826  Starbucks
+7827  Starbucks
+7828  Starbucks
+7829  Starbucks
+7830  Starbucks
+7831  Starbucks
+7832  Starbucks
+7833  Starbucks
+7834  Starbucks
+7835  Starbucks
+7836  Starbucks
+7837  Starbucks
+7838  Starbucks
+7839  Starbucks('JP', '35')          Brand
+7840  Starbucks
+7841  Starbucks
+7842  Starbucks
+7843  Starbucks('JP', '36')          Brand
+7844  Starbucks
+7845  Starbucks
+7846  Starbucks('JP', '37')          Brand
+7847  Starbucks
+7848  Starbucks
+7849  Starbucks
+7850  Starbucks
+7851  Starbucks
+7852  Starbucks
+7853  Starbucks
+7854  Starbucks
+7855  Starbucks('JP', '38')          Brand
+7856  Starbucks
+7857  Starbucks
+7858  Starbucks
+7859  Starbucks
+7860  Starbucks
+7861  Starbucks
+7862  Starbucks
+7863  Starbucks('JP', '39')          Brand
+7864  Starbucks
+7865  Starbucks
+7866  Starbucks
+7867  Starbucks('JP', '4')          Brand
+6787  Starbucks
+6788  Starbucks
+6789  Starbucks
+6790  Starbucks
+6791  Starbucks
+6792  Starbucks
+6793  Starbucks
+6794  Starbucks
+6795  Starbucks
+6796  Starbucks
+6797  Starbucks
+6798  Starbucks
+6799  Starbucks
+6800  Starbucks
+6801  Starbucks
+6802  Starbucks
+6803  Starbucks
+6804  Starbucks('JP', '40')          Brand
+7868  Starbucks
+7869  Starbucks
+7870  Starbucks
+7871  Starbucks
+7872  Starbucks
+7873  Starbucks
+7874  Starbucks
+7875  Starbucks
+7876  Starbucks
+7877  Starbucks
+7878  Starbucks
+7879  Starbucks
+7880  Starbucks
+7881  Starbucks
+7882  Starbucks
+7883  Starbucks
+7884  Starbucks
+7885  Starbucks
+7886  Starbucks
+7887  Starbucks
+7888  Starbucks
+7889  Starbucks
+7890  Starbucks
+7891  Starbucks
+7892  Starbucks
+7893  Starbucks
+7894  Starbucks
+7895  Starbucks
+7896  Starbucks
+7897  Starbucks
+7898  Starbucks
+7899  Starbucks
+7900  Starbucks
+7901  Starbucks
+7902  Starbucks
+7903  Starbucks
+7904  Starbucks
+7905  Starbucks
+7906  Starbucks
+7907  Starbucks
+7908  Starbucks
+7909  Starbucks
+7910  Starbucks
+7911  Starbucks
+7912  Starbucks
+7913  Starbucks
+7914  Starbucks
+7915  Starbucks('JP', '41')          Brand
+7916  Starbucks
+7917  Starbucks
+7918  Starbucks
+7919  Starbucks
+7920  Starbucks
+7921  Starbucks
+7922  Starbucks
+7923  Starbucks('JP', '42')          Brand
+7924  Starbucks
+7925  Starbucks
+7926  Starbucks
+7927  Starbucks
+7928  Starbucks
+7929  Starbucks
+7930  Starbucks
+7931  Starbucks
+7932  Starbucks('JP', '43')          Brand
+7933  Starbucks
+7934  Starbucks
+7935  Starbucks
+7936  Starbucks
+7937  Starbucks
+7938  Starbucks
+7939  Starbucks('JP', '44')          Brand
+7940  Starbucks
+7941  Starbucks
+7942  Starbucks
+7943  Starbucks
+7944  Starbucks
+7945  Starbucks
+7946  Starbucks
+7947  Starbucks('JP', '45')          Brand
+7948  Starbucks
+7949  Starbucks
+7950  Starbucks
+7951  Starbucks('JP', '46')          Brand
+7952  Starbucks
+7953  Starbucks
+7954  Starbucks
+7955  Starbucks('JP', '47')          Brand
+7956  Starbucks
+7957  Starbucks
+7958  Starbucks
+7959  Starbucks
+7960  Starbucks
+7961  Starbucks
+7962  Starbucks
+7963  Starbucks
+7964  Starbucks
+7965  Starbucks
+7966  Starbucks
+7967  Starbucks
+7968  Starbucks
+7969  Starbucks
+7970  Starbucks
+7971  Starbucks
+7972  Starbucks
+7973  Starbucks
+7974  Starbucks
+7975  Starbucks('JP', '5')          Brand
+6805  Starbucks
+6806  Starbucks
+6807  Starbucks
+6808  Starbucks
+6809  Starbucks
+6810  Starbucks('JP', '6')          Brand
+6811  Starbucks
+6812  Starbucks
+6813  Starbucks
+6814  Starbucks
+6815  Starbucks('JP', '7')          Brand
+6816  Starbucks
+6817  Starbucks
+6818  Starbucks
+6819  Starbucks
+6820  Starbucks
+6821  Starbucks
+6822  Starbucks
+6823  Starbucks('JP', '8')          Brand
+6824  Starbucks
+6825  Starbucks
+6826  Starbucks
+6827  Starbucks
+6828  Starbucks
+6829  Starbucks
+6830  Starbucks
+6831  Starbucks
+6832  Starbucks
+6833  Starbucks
+6834  Starbucks
+6835  Starbucks
+6836  Starbucks
+6837  Starbucks
+6838  Starbucks
+6839  Starbucks
+6840  Starbucks
+6841  Starbucks
+6842  Starbucks
+6843  Starbucks
+6844  Starbucks
+6845  Starbucks
+6846  Starbucks
+6847  Starbucks
+6848  Starbucks
+6849  Starbucks
+6850  Starbucks
+6851  Starbucks
+6852  Starbucks
+6853  Starbucks('JP', '9')          Brand
+6854  Starbucks
+6855  Starbucks
+6856  Starbucks
+6857  Starbucks
+6858  Starbucks
+6859  Starbucks
+6860  Starbucks
+6861  Starbucks
+6862  Starbucks
+6863  Starbucks
+6864  Starbucks
+6865  Starbucks
+6866  Starbucks
+6867  Starbucks
+6868  Starbucks
+6869  Starbucks
+6870  Starbucks
+6871  Starbucks
+6872  Starbucks('KH', '12')          Brand
+7976  Starbucks
+7977  Starbucks
+7978  Starbucks
+7979  Starbucks('KR', '11')          Brand
+7980  Starbucks
+7981  Starbucks
+7982  Starbucks
+7983  Starbucks
+7984  Starbucks
+...         ...
+8365  Starbucks
+8366  Starbucks
+8367  Starbucks
+8368  Starbucks
+8369  Starbucks
+
+[390 rows x 1 columns]('KR', '26')          Brand
+8370  Starbucks
+8371  Starbucks
+8372  Starbucks
+8373  Starbucks
+8374  Starbucks
+...         ...
+8449  Starbucks
+8450  Starbucks
+8451  Starbucks
+8452  Starbucks
+8453  Starbucks
+
+[84 rows x 1 columns]('KR', '27')          Brand
+8454  Starbucks
+8455  Starbucks
+8456  Starbucks
+8457  Starbucks
+8458  Starbucks
+8459  Starbucks
+8460  Starbucks
+8461  Starbucks
+8462  Starbucks
+8463  Starbucks
+8464  Starbucks
+8465  Starbucks
+8466  Starbucks
+8467  Starbucks
+8468  Starbucks
+8469  Starbucks
+8470  Starbucks
+8471  Starbucks
+8472  Starbucks
+8473  Starbucks
+8474  Starbucks
+8475  Starbucks
+8476  Starbucks
+8477  Starbucks
+8478  Starbucks
+8479  Starbucks
+8480  Starbucks
+8481  Starbucks
+8482  Starbucks
+8483  Starbucks
+8484  Starbucks
+8485  Starbucks
+8486  Starbucks
+8487  Starbucks
+8488  Starbucks
+8489  Starbucks
+8490  Starbucks
+8491  Starbucks
+8492  Starbucks
+8493  Starbucks
+8494  Starbucks
+8495  Starbucks
+8496  Starbucks
+8497  Starbucks
+8498  Starbucks
+8499  Starbucks
+8500  Starbucks
+8501  Starbucks
+8502  Starbucks
+8503  Starbucks('KR', '28')          Brand
+8504  Starbucks
+8505  Starbucks
+8506  Starbucks
+8507  Starbucks
+8508  Starbucks
+8509  Starbucks
+8510  Starbucks
+8511  Starbucks
+8512  Starbucks
+8513  Starbucks
+8514  Starbucks
+8515  Starbucks
+8516  Starbucks
+8517  Starbucks
+8518  Starbucks
+8519  Starbucks
+8520  Starbucks
+8521  Starbucks
+8522  Starbucks
+8523  Starbucks
+8524  Starbucks
+8525  Starbucks
+8526  Starbucks
+8527  Starbucks
+8528  Starbucks
+8529  Starbucks
+8530  Starbucks
+8531  Starbucks
+8532  Starbucks
+8533  Starbucks
+8534  Starbucks
+8535  Starbucks
+8536  Starbucks
+8537  Starbucks
+8538  Starbucks
+8539  Starbucks
+8540  Starbucks
+8541  Starbucks('KR', '29')          Brand
+8542  Starbucks
+8543  Starbucks
+8544  Starbucks
+8545  Starbucks
+8546  Starbucks
+8547  Starbucks
+8548  Starbucks
+8549  Starbucks
+8550  Starbucks
+8551  Starbucks
+8552  Starbucks
+8553  Starbucks
+8554  Starbucks
+8555  Starbucks
+8556  Starbucks
+8557  Starbucks
+8558  Starbucks
+8559  Starbucks
+8560  Starbucks
+8561  Starbucks
+8562  Starbucks
+8563  Starbucks
+8564  Starbucks
+8565  Starbucks
+8566  Starbucks
+8567  Starbucks
+8568  Starbucks
+8569  Starbucks
+8570  Starbucks
+8571  Starbucks
+8572  Starbucks
+8573  Starbucks
+8574  Starbucks
+8575  Starbucks
+8576  Starbucks
+8577  Starbucks
+8578  Starbucks('KR', '30')          Brand
+8579  Starbucks
+8580  Starbucks
+8581  Starbucks
+8582  Starbucks
+8583  Starbucks
+8584  Starbucks
+8585  Starbucks
+8586  Starbucks
+8587  Starbucks
+8588  Starbucks
+8589  Starbucks
+8590  Starbucks
+8591  Starbucks
+8592  Starbucks
+8593  Starbucks
+8594  Starbucks
+8595  Starbucks
+8596  Starbucks
+8597  Starbucks
+8598  Starbucks
+8599  Starbucks
+8600  Starbucks
+8601  Starbucks
+8602  Starbucks
+8603  Starbucks
+8604  Starbucks
+8605  Starbucks
+8606  Starbucks
+8607  Starbucks
+8608  Starbucks
+8609  Starbucks
+8610  Starbucks
+8611  Starbucks
+8612  Starbucks
+8613  Starbucks
+8614  Starbucks
+8615  Starbucks('KR', '31')          Brand
+8616  Starbucks
+8617  Starbucks
+8618  Starbucks
+8619  Starbucks
+8620  Starbucks
+8621  Starbucks
+8622  Starbucks
+8623  Starbucks
+8624  Starbucks
+8625  Starbucks
+8626  Starbucks
+8627  Starbucks
+8628  Starbucks
+8629  Starbucks
+8630  Starbucks
+8631  Starbucks
+8632  Starbucks
+8633  Starbucks
+8634  Starbucks
+8635  Starbucks
+8636  Starbucks
+8637  Starbucks('KR', '41')          Brand
+8638  Starbucks
+8639  Starbucks
+8640  Starbucks
+8641  Starbucks
+8642  Starbucks
+...         ...
+8814  Starbucks
+8815  Starbucks
+8816  Starbucks
+8817  Starbucks
+8818  Starbucks
+
+[181 rows x 1 columns]('KR', '42')          Brand
+8819  Starbucks
+8820  Starbucks
+8821  Starbucks
+8822  Starbucks
+8823  Starbucks
+8824  Starbucks
+8825  Starbucks
+8826  Starbucks
+8827  Starbucks
+8828  Starbucks
+8829  Starbucks
+8830  Starbucks
+8831  Starbucks
+8832  Starbucks
+8833  Starbucks
+8834  Starbucks
+8835  Starbucks
+8836  Starbucks('KR', '43')          Brand
+8837  Starbucks
+8838  Starbucks
+8839  Starbucks
+8840  Starbucks
+8841  Starbucks
+8842  Starbucks
+8843  Starbucks
+8844  Starbucks
+8845  Starbucks
+8846  Starbucks
+8847  Starbucks
+8848  Starbucks
+8849  Starbucks('KR', '44')          Brand
+8850  Starbucks
+8851  Starbucks
+8852  Starbucks
+8853  Starbucks
+8854  Starbucks
+8855  Starbucks
+8856  Starbucks
+8857  Starbucks
+8858  Starbucks
+8859  Starbucks
+8860  Starbucks
+8861  Starbucks
+8862  Starbucks
+8863  Starbucks
+8864  Starbucks
+8865  Starbucks
+8866  Starbucks('KR', '45')          Brand
+8867  Starbucks
+8868  Starbucks
+8869  Starbucks
+8870  Starbucks
+8871  Starbucks
+8872  Starbucks
+8873  Starbucks
+8874  Starbucks
+8875  Starbucks
+8876  Starbucks
+8877  Starbucks
+8878  Starbucks
+8879  Starbucks('KR', '46')          Brand
+8880  Starbucks
+8881  Starbucks
+8882  Starbucks
+8883  Starbucks
+8884  Starbucks
+8885  Starbucks
+8886  Starbucks
+8887  Starbucks
+8888  Starbucks
+8889  Starbucks
+8890  Starbucks('KR', '47')          Brand
+8891  Starbucks
+8892  Starbucks
+8893  Starbucks
+8894  Starbucks
+8895  Starbucks
+8896  Starbucks
+8897  Starbucks
+8898  Starbucks
+8899  Starbucks
+8900  Starbucks
+8901  Starbucks
+8902  Starbucks
+8903  Starbucks
+8904  Starbucks
+8905  Starbucks
+8906  Starbucks
+8907  Starbucks
+8908  Starbucks
+8909  Starbucks
+8910  Starbucks
+8911  Starbucks
+8912  Starbucks
+8913  Starbucks
+8914  Starbucks
+8915  Starbucks
+8916  Starbucks
+8917  Starbucks
+8918  Starbucks
+8919  Starbucks
+8920  Starbucks
+8921  Starbucks
+8922  Starbucks
+8923  Starbucks
+8924  Starbucks
+8925  Starbucks('KR', '48')          Brand
+8926  Starbucks
+8927  Starbucks
+8928  Starbucks
+8929  Starbucks
+8930  Starbucks
+8931  Starbucks
+8932  Starbucks
+8933  Starbucks
+8934  Starbucks
+8935  Starbucks
+8936  Starbucks
+8937  Starbucks
+8938  Starbucks
+8939  Starbucks
+8940  Starbucks
+8941  Starbucks
+8942  Starbucks
+8943  Starbucks
+8944  Starbucks
+8945  Starbucks
+8946  Starbucks
+8947  Starbucks
+8948  Starbucks
+8949  Starbucks
+8950  Starbucks
+8951  Starbucks
+8952  Starbucks
+8953  Starbucks
+8954  Starbucks
+8955  Starbucks
+8956  Starbucks
+8957  Starbucks
+8958  Starbucks
+8959  Starbucks('KR', '49')          Brand
+8960  Starbucks
+8961  Starbucks
+8962  Starbucks
+8963  Starbucks
+8964  Starbucks
+8965  Starbucks
+8966  Starbucks
+8967  Starbucks
+8968  Starbucks
+8969  Starbucks
+8970  Starbucks
+8971  Starbucks
+8972  Starbucks('KW', 'AH')          Brand
+8973  Starbucks
+8974  Starbucks
+8975  Starbucks
+8976  Starbucks
+8977  Starbucks
+8978  Starbucks
+8979  Starbucks
+8980  Starbucks
+8981  Starbucks
+8982  Starbucks('KW', 'FA')          Brand
+8983  Starbucks
+8984  Starbucks
+8985  Starbucks
+8986  Starbucks
+8987  Starbucks
+8988  Starbucks
+8989  Starbucks
+8990  Starbucks('KW', 'HA')          Brand
+8991  Starbucks
+8992  Starbucks
+8993  Starbucks
+8994  Starbucks
+8995  Starbucks
+8996  Starbucks
+8997  Starbucks
+8998  Starbucks
+8999  Starbucks
+9000  Starbucks
+9001  Starbucks
+9002  Starbucks
+9003  Starbucks
+9004  Starbucks
+9005  Starbucks
+9006  Starbucks
+9007  Starbucks
+9008  Starbucks
+9009  Starbucks
+9010  Starbucks
+9011  Starbucks
+9012  Starbucks
+9013  Starbucks
+9014  Starbucks
+9015  Starbucks
+9016  Starbucks
+9017  Starbucks
+9018  Starbucks('KW', 'JA')          Brand
+9019  Starbucks
+9020  Starbucks('KW', 'KU')          Brand
+9021  Starbucks
+9022  Starbucks
+9023  Starbucks
+9024  Starbucks
+9025  Starbucks
+9026  Starbucks
+9027  Starbucks
+9028  Starbucks
+9029  Starbucks
+9030  Starbucks
+9031  Starbucks
+9032  Starbucks
+9033  Starbucks
+9034  Starbucks
+9035  Starbucks
+9036  Starbucks
+9037  Starbucks
+9038  Starbucks
+9039  Starbucks
+9040  Starbucks
+9041  Starbucks
+9042  Starbucks
+9043  Starbucks
+9044  Starbucks
+9045  Starbucks
+9046  Starbucks
+9047  Starbucks
+9048  Starbucks
+9049  Starbucks
+9050  Starbucks
+9051  Starbucks
+9052  Starbucks
+9053  Starbucks
+9054  Starbucks
+9055  Starbucks
+9056  Starbucks
+9057  Starbucks
+9058  Starbucks
+9059  Starbucks
+9060  Starbucks
+9061  Starbucks
+9062  Starbucks
+9063  Starbucks
+9064  Starbucks
+9065  Starbucks
+9066  Starbucks
+9067  Starbucks
+9068  Starbucks
+9069  Starbucks
+9070  Starbucks
+9071  Starbucks
+9072  Starbucks
+9073  Starbucks('KW', 'MU')          Brand
+9074  Starbucks
+9075  Starbucks
+9076  Starbucks
+9077  Starbucks
+9078  Starbucks('KZ', 'ALA')          Brand
+9079  Starbucks
+9080  Starbucks
+9081  Starbucks
+9082  Starbucks
+9083  Starbucks
+9084  Starbucks('KZ', 'AST')          Brand
+9085  Starbucks
+9086  Starbucks('LB', 'BA')          Brand
+9087  Starbucks
+9088  Starbucks
+9089  Starbucks
+9090  Starbucks
+9091  Starbucks
+9092  Starbucks
+9093  Starbucks
+9094  Starbucks
+9095  Starbucks
+9096  Starbucks
+9097  Starbucks
+9098  Starbucks
+9099  Starbucks
+9100  Starbucks
+9101  Starbucks
+9102  Starbucks
+9103  Starbucks
+9104  Starbucks
+9105  Starbucks
+9106  Starbucks
+9107  Starbucks
+9108  Starbucks('LB', 'BI')          Brand
+9109  Starbucks
+9110  Starbucks
+9111  Starbucks
+9112  Starbucks
+9113  Starbucks
+9114  Starbucks('LB', 'JA')          Brand
+9115  Starbucks('LU', 'L')          Brand
+9116  Starbucks
+9117  Starbucks('MA', '11')          Brand
+9118  Starbucks
+9119  Starbucks('MA', 'MA')          Brand
+9120  Starbucks
+9121  Starbucks
+9122  Starbucks
+9123  Starbucks
+9124  Starbucks
+9125  Starbucks
+9126  Starbucks('MC', 'MC')          Brand
+9127  Starbucks
+9128  Starbucks('MX', 'AGU')          Brand
+9129  Starbucks
+9130  Starbucks
+9131  Starbucks
+9132  Starbucks
+9133  Starbucks('MX', 'BCN')          Brand
+9134  Starbucks
+9135  Starbucks
+9136  Starbucks
+9137  Starbucks
+9138  Starbucks
+9139  Starbucks
+9140  Starbucks
+9141  Starbucks
+9142  Starbucks
+9143  Starbucks
+9144  Starbucks
+9145  Starbucks
+9146  Starbucks
+9147  Starbucks
+9148  Starbucks
+9149  Starbucks
+9150  Starbucks
+9151  Starbucks('MX', 'BCS')          Brand
+9152  Starbucks
+9153  Starbucks
+9154  Starbucks
+9155  Starbucks
+9156  Starbucks
+9157  Starbucks
+9158  Starbucks
+9159  Starbucks('MX', 'CAM')          Brand
+9160  Starbucks
+9161  Starbucks('MX', 'CHH')          Brand
+9162  Starbucks
+9163  Starbucks
+9164  Starbucks
+9165  Starbucks
+9166  Starbucks
+9167  Starbucks
+9168  Starbucks
+9169  Starbucks
+9170  Starbucks
+9171  Starbucks('MX', 'CHP')          Brand
+9172  Starbucks
+9173  Starbucks('MX', 'COA')          Brand
+9174  Starbucks
+9175  Starbucks
+9176  Starbucks
+9177  Starbucks
+9178  Starbucks
+9179  Starbucks
+9180  Starbucks
+9181  Starbucks('MX', 'COL')          Brand
+9182  Starbucks
+9183  Starbucks('MX', 'DIF')          Brand
+9184  Starbucks
+9185  Starbucks
+9186  Starbucks
+9187  Starbucks
+9188  Starbucks
+...         ...
+9408  Starbucks
+9409  Starbucks
+9410  Starbucks
+9411  Starbucks
+9412  Starbucks
+
+[229 rows x 1 columns]('MX', 'DUR')          Brand
+9413  Starbucks
+9414  Starbucks('MX', 'GRO')          Brand
+9415  Starbucks
+9416  Starbucks
+9417  Starbucks
+9418  Starbucks
+9419  Starbucks
+9420  Starbucks
+9421  Starbucks('MX', 'GUA')          Brand
+9422  Starbucks
+9423  Starbucks
+9424  Starbucks
+9425  Starbucks
+9426  Starbucks
+9427  Starbucks
+9428  Starbucks
+9429  Starbucks
+9430  Starbucks
+9431  Starbucks
+9432  Starbucks
+9433  Starbucks
+9434  Starbucks
+9435  Starbucks
+9436  Starbucks
+9437  Starbucks
+9438  Starbucks
+9439  Starbucks
+9440  Starbucks
+9441  Starbucks
+9442  Starbucks('MX', 'HID')          Brand
+9443  Starbucks
+9444  Starbucks('MX', 'JAL')          Brand
+9445  Starbucks
+9446  Starbucks
+9447  Starbucks
+9448  Starbucks
+9449  Starbucks
+9450  Starbucks
+9451  Starbucks
+9452  Starbucks
+9453  Starbucks
+9454  Starbucks
+9455  Starbucks
+9456  Starbucks
+9457  Starbucks
+9458  Starbucks
+9459  Starbucks
+9460  Starbucks
+9461  Starbucks
+9462  Starbucks
+9463  Starbucks
+9464  Starbucks
+9465  Starbucks
+9466  Starbucks
+9467  Starbucks
+9468  Starbucks
+9469  Starbucks
+9470  Starbucks
+9471  Starbucks
+9472  Starbucks
+9473  Starbucks
+9474  Starbucks
+9475  Starbucks
+9476  Starbucks
+9477  Starbucks
+9478  Starbucks
+9479  Starbucks
+9480  Starbucks
+9481  Starbucks
+9482  Starbucks
+9483  Starbucks
+9484  Starbucks
+9485  Starbucks
+9486  Starbucks
+9487  Starbucks
+9488  Starbucks
+9489  Starbucks
+9490  Starbucks
+9491  Starbucks
+9492  Starbucks
+9493  Starbucks
+9494  Starbucks('MX', 'MIC')          Brand
+9495  Starbucks
+9496  Starbucks
+9497  Starbucks
+9498  Starbucks
+9499  Starbucks
+9500  Starbucks
+9501  Starbucks
+9502  Starbucks('MX', 'MOR')          Brand
+9503  Starbucks
+9504  Starbucks
+9505  Starbucks
+9506  Starbucks
+9507  Starbucks('MX', 'MX')          Brand
+9508  Starbucks
+9509  Starbucks
+9510  Starbucks
+9511  Starbucks
+9512  Starbucks
+9513  Starbucks
+9514  Starbucks
+9515  Starbucks
+9516  Starbucks
+9517  Starbucks
+9518  Starbucks
+9519  Starbucks
+9520  Starbucks
+9521  Starbucks
+9522  Starbucks
+9523  Starbucks
+9524  Starbucks
+9525  Starbucks
+9526  Starbucks
+9527  Starbucks
+9528  Starbucks
+9529  Starbucks
+9530  Starbucks
+9531  Starbucks
+9532  Starbucks
+9533  Starbucks
+9534  Starbucks
+9535  Starbucks
+9536  Starbucks
+9537  Starbucks
+9538  Starbucks
+9539  Starbucks
+9540  Starbucks
+9541  Starbucks
+9542  Starbucks
+9543  Starbucks
+9544  Starbucks
+9545  Starbucks
+9546  Starbucks
+9547  Starbucks
+9548  Starbucks
+9549  Starbucks
+9550  Starbucks
+9551  Starbucks
+9552  Starbucks
+9553  Starbucks
+9554  Starbucks
+9555  Starbucks
+9556  Starbucks
+9557  Starbucks('MX', 'NAY')          Brand
+9558  Starbucks
+9559  Starbucks('MX', 'NLE')          Brand
+9560  Starbucks
+9561  Starbucks
+9562  Starbucks
+9563  Starbucks
+9564  Starbucks
+9565  Starbucks
+9566  Starbucks
+9567  Starbucks
+9568  Starbucks
+9569  Starbucks
+9570  Starbucks
+9571  Starbucks
+9572  Starbucks
+9573  Starbucks
+9574  Starbucks
+9575  Starbucks
+9576  Starbucks
+9577  Starbucks
+9578  Starbucks
+9579  Starbucks
+9580  Starbucks
+9581  Starbucks
+9582  Starbucks
+9583  Starbucks
+9584  Starbucks
+9585  Starbucks
+9586  Starbucks
+9587  Starbucks
+9588  Starbucks
+9589  Starbucks
+9590  Starbucks
+9591  Starbucks
+9592  Starbucks
+9593  Starbucks
+9594  Starbucks
+9595  Starbucks
+9596  Starbucks
+9597  Starbucks
+9598  Starbucks
+9599  Starbucks
+9600  Starbucks
+9601  Starbucks
+9602  Starbucks
+9603  Starbucks
+9604  Starbucks('MX', 'OAX')          Brand
+9605  Starbucks('MX', 'PUE')          Brand
+9606  Starbucks
+9607  Starbucks
+9608  Starbucks
+9609  Starbucks
+9610  Starbucks
+9611  Starbucks
+9612  Starbucks
+9613  Starbucks
+9614  Starbucks
+9615  Starbucks
+9616  Starbucks
+9617  Starbucks
+9618  Starbucks
+9619  Starbucks('MX', 'QUE')          Brand
+9620  Starbucks
+9621  Starbucks
+9622  Starbucks
+9623  Starbucks
+9624  Starbucks
+9625  Starbucks
+9626  Starbucks
+9627  Starbucks
+9628  Starbucks
+9629  Starbucks('MX', 'ROO')          Brand
+9630  Starbucks
+9631  Starbucks
+9632  Starbucks
+9633  Starbucks
+9634  Starbucks
+9635  Starbucks
+9636  Starbucks
+9637  Starbucks
+9638  Starbucks
+9639  Starbucks
+9640  Starbucks
+9641  Starbucks
+9642  Starbucks
+9643  Starbucks
+9644  Starbucks
+9645  Starbucks
+9646  Starbucks
+9647  Starbucks
+9648  Starbucks
+9649  Starbucks
+9650  Starbucks
+9651  Starbucks
+9652  Starbucks
+9653  Starbucks
+9654  Starbucks
+9655  Starbucks
+9656  Starbucks('MX', 'SIN')          Brand
+9657  Starbucks
+9658  Starbucks
+9659  Starbucks
+9660  Starbucks
+9661  Starbucks
+9662  Starbucks
+9663  Starbucks
+9664  Starbucks
+9665  Starbucks
+9666  Starbucks
+9667  Starbucks('MX', 'SLP')          Brand
+9668  Starbucks
+9669  Starbucks
+9670  Starbucks
+9671  Starbucks('MX', 'SON')          Brand
+9672  Starbucks
+9673  Starbucks
+9674  Starbucks
+9675  Starbucks
+9676  Starbucks
+9677  Starbucks
+9678  Starbucks('MX', 'TAB')          Brand
+9679  Starbucks
+9680  Starbucks
+9681  Starbucks
+9682  Starbucks
+9683  Starbucks('MX', 'TAM')          Brand
+9684  Starbucks
+9685  Starbucks
+9686  Starbucks
+9687  Starbucks
+9688  Starbucks('MX', 'VER')          Brand
+9689  Starbucks
+9690  Starbucks
+9691  Starbucks
+9692  Starbucks
+9693  Starbucks
+9694  Starbucks
+9695  Starbucks
+9696  Starbucks
+9697  Starbucks
+9698  Starbucks('MX', 'YUC')          Brand
+9699  Starbucks
+9700  Starbucks
+9701  Starbucks
+9702  Starbucks
+9703  Starbucks
+9704  Starbucks('MX', 'ZAC')          Brand
+9705  Starbucks
+9706  Starbucks
+9707  Starbucks('MY', '1')          Brand
+9708  Starbucks
+9709  Starbucks
+9710  Starbucks
+9711  Starbucks
+9712  Starbucks
+9713  Starbucks
+9714  Starbucks
+9715  Starbucks
+9716  Starbucks
+9717  Starbucks
+9718  Starbucks
+9719  Starbucks
+9720  Starbucks
+9721  Starbucks
+9722  Starbucks
+9723  Starbucks
+9724  Starbucks
+9725  Starbucks
+9726  Starbucks
+9727  Starbucks('MY', '10')          Brand
+9781  Starbucks
+9782  Starbucks
+9783  Starbucks
+9784  Starbucks
+9785  Starbucks
+...         ...
+9846  Starbucks
+9847  Starbucks
+9848  Starbucks
+9849  Starbucks
+9850  Starbucks
+
+[70 rows x 1 columns]('MY', '12')          Brand
+9851  Starbucks
+9852  Starbucks
+9853  Starbucks
+9854  Starbucks
+9855  Starbucks
+9856  Starbucks
+9857  Starbucks
+9858  Starbucks
+9859  Starbucks
+9860  Starbucks('MY', '13')          Brand
+9861  Starbucks
+9862  Starbucks
+9863  Starbucks
+9864  Starbucks
+9865  Starbucks
+9866  Starbucks
+9867  Starbucks
+9868  Starbucks
+9869  Starbucks
+9870  Starbucks
+9871  Starbucks
+9872  Starbucks('MY', '14')          Brand
+9873  Starbucks
+9874  Starbucks
+9875  Starbucks
+9876  Starbucks
+9877  Starbucks
+...         ...
+9933  Starbucks
+9934  Starbucks
+9935  Starbucks
+9936  Starbucks
+9937  Starbucks
+
+[65 rows x 1 columns]('MY', '15')          Brand
+9938  Starbucks('MY', '16')          Brand
+9939  Starbucks
+9940  Starbucks
+9941  Starbucks('MY', '2')          Brand
+9728  Starbucks
+9729  Starbucks
+9730  Starbucks
+9731  Starbucks
+9732  Starbucks
+9733  Starbucks('MY', '4')          Brand
+9734  Starbucks
+9735  Starbucks
+9736  Starbucks
+9737  Starbucks
+9738  Starbucks
+9739  Starbucks('MY', '5')          Brand
+9740  Starbucks
+9741  Starbucks('MY', '6')          Brand
+9742  Starbucks
+9743  Starbucks
+9744  Starbucks
+9745  Starbucks
+9746  Starbucks
+9747  Starbucks
+9748  Starbucks
+9749  Starbucks('MY', '7')          Brand
+9750  Starbucks
+9751  Starbucks
+9752  Starbucks
+9753  Starbucks
+9754  Starbucks
+9755  Starbucks
+9756  Starbucks
+9757  Starbucks
+9758  Starbucks
+9759  Starbucks
+9760  Starbucks
+9761  Starbucks
+9762  Starbucks
+9763  Starbucks
+9764  Starbucks
+9765  Starbucks
+9766  Starbucks
+9767  Starbucks
+9768  Starbucks
+9769  Starbucks
+9770  Starbucks
+9771  Starbucks('MY', '8')          Brand
+9772  Starbucks
+9773  Starbucks
+9774  Starbucks
+9775  Starbucks
+9776  Starbucks
+9777  Starbucks
+9778  Starbucks
+9779  Starbucks
+9780  Starbucks('NL', 'GE')          Brand
+9942  Starbucks
+9943  Starbucks('NL', 'GR')          Brand
+9944  Starbucks
+9945  Starbucks('NL', 'NB')          Brand
+9946  Starbucks
+9947  Starbucks
+9948  Starbucks
+9949  Starbucks
+9950  Starbucks('NL', 'NH')          Brand
+9951  Starbucks
+9952  Starbucks
+9953  Starbucks
+9954  Starbucks
+9955  Starbucks
+9956  Starbucks
+9957  Starbucks
+9958  Starbucks
+9959  Starbucks
+9960  Starbucks
+9961  Starbucks
+9962  Starbucks
+9963  Starbucks
+9964  Starbucks
+9965  Starbucks
+9966  Starbucks
+9967  Starbucks
+9968  Starbucks
+9969  Starbucks
+9970  Starbucks
+9971  Starbucks
+9972  Starbucks
+9973  Starbucks
+9974  Starbucks
+9975  Starbucks
+9976  Starbucks
+9977  Starbucks
+9978  Starbucks('NL', 'OV')          Brand
+9979  Starbucks
+9980  Starbucks
+9981  Starbucks('NL', 'UT')          Brand
+9982  Starbucks
+9983  Starbucks
+9984  Starbucks
+9985  Starbucks
+9986  Starbucks
+9987  Starbucks
+9988  Starbucks
+9989  Starbucks('NL', 'ZH')           Brand
+9990   Starbucks
+9991   Starbucks
+9992   Starbucks
+9993   Starbucks
+9994   Starbucks
+9995   Starbucks
+9996   Starbucks
+9997   Starbucks
+9998   Starbucks
+9999   Starbucks
+10000  Starbucks('NO', '11')           Brand
+10012  Starbucks('NO', '12')           Brand
+10013  Starbucks
+10014  Starbucks('NO', '16')           Brand
+10015  Starbucks
+10016  Starbucks('NO', '17')           Brand
+10017  Starbucks('NO', '2')           Brand
+10001  Starbucks
+10002  Starbucks('NO', '3')           Brand
+10003  Starbucks
+10004  Starbucks
+10005  Starbucks
+10006  Starbucks
+10007  Starbucks
+10008  Starbucks
+10009  Starbucks
+10010  Starbucks('NO', '6')           Brand
+10011  Starbucks('NZ', 'N')           Brand
+10018  Starbucks
+10019  Starbucks
+10020  Starbucks
+10021  Starbucks
+10022  Starbucks
+10023  Starbucks
+10024  Starbucks
+10025  Starbucks
+10026  Starbucks
+10027  Starbucks
+10028  Starbucks
+10029  Starbucks
+10030  Starbucks
+10031  Starbucks
+10032  Starbucks
+10033  Starbucks
+10034  Starbucks
+10035  Starbucks
+10036  Starbucks
+10037  Starbucks
+10038  Starbucks
+10039  Starbucks
+10040  Starbucks('NZ', 'S')           Brand
+10041  Starbucks('OM', 'MA')           Brand
+10042  Starbucks
+10043  Starbucks
+10044  Starbucks
+10045  Starbucks
+10046  Starbucks
+10047  Starbucks('OM', 'MU')           Brand
+10048  Starbucks
+10049  Starbucks
+10050  Starbucks
+10051  Starbucks
+10052  Starbucks
+10053  Starbucks('PA', '1')           Brand
+10054  Starbucks('PA', '8')           Brand
+10055  Starbucks
+10056  Starbucks
+10057  Starbucks
+10058  Starbucks('PE', 'ARE')           Brand
+10059  Starbucks
+10060  Starbucks
+10061  Starbucks
+10062  Starbucks
+10063  Starbucks('PE', 'CAJ')           Brand
+10064  Starbucks('PE', 'CUS')           Brand
+10065  Starbucks
+10066  Starbucks('PE', 'ICA')           Brand
+10067  Starbucks('PE', 'JUN')           Brand
+10068  Starbucks('PE', 'LAL')           Brand
+10069  Starbucks
+10070  Starbucks('PE', 'LAM')           Brand
+10071  Starbucks('PE', 'LIM')           Brand
+10072  Starbucks
+10073  Starbucks
+10074  Starbucks
+10075  Starbucks
+10076  Starbucks
+...          ...
+10141  Starbucks
+10142  Starbucks
+10143  Starbucks
+10144  Starbucks
+10145  Starbucks
+
+[74 rows x 1 columns]('PE', 'PIU')           Brand
+10146  Starbucks
+10147  Starbucks('PH', '0')           Brand
+10148  Starbucks
+10149  Starbucks
+10150  Starbucks
+10151  Starbucks
+10152  Starbucks
+...          ...
+10232  Starbucks
+10233  Starbucks
+10234  Starbucks
+10235  Starbucks
+10236  Starbucks
+
+[89 rows x 1 columns]('PH', '1')           Brand
+10237  Starbucks
+10238  Starbucks('PH', '10')           Brand
+10285  Starbucks
+10286  Starbucks('PH', '3')           Brand
+10239  Starbucks
+10240  Starbucks
+10241  Starbucks
+10242  Starbucks
+10243  Starbucks
+10244  Starbucks
+10245  Starbucks
+10246  Starbucks
+10247  Starbucks
+10248  Starbucks
+10249  Starbucks
+10250  Starbucks
+10251  Starbucks
+10252  Starbucks
+10253  Starbucks
+10254  Starbucks
+10255  Starbucks
+10256  Starbucks
+10257  Starbucks
+10258  Starbucks
+10259  Starbucks
+10260  Starbucks
+10261  Starbucks
+10262  Starbucks
+10263  Starbucks
+10264  Starbucks('PH', '40')           Brand
+10287  Starbucks
+10288  Starbucks
+10289  Starbucks
+10290  Starbucks
+10291  Starbucks
+10292  Starbucks
+10293  Starbucks
+10294  Starbucks
+10295  Starbucks
+10296  Starbucks
+10297  Starbucks
+10298  Starbucks
+10299  Starbucks
+10300  Starbucks
+10301  Starbucks
+10302  Starbucks
+10303  Starbucks
+10304  Starbucks
+10305  Starbucks
+10306  Starbucks
+10307  Starbucks
+10308  Starbucks
+10309  Starbucks
+10310  Starbucks
+10311  Starbucks
+10312  Starbucks
+10313  Starbucks
+10314  Starbucks('PH', '41')           Brand
+10315  Starbucks
+10316  Starbucks
+10317  Starbucks
+10318  Starbucks
+10319  Starbucks
+...          ...
+10428  Starbucks
+10429  Starbucks
+10430  Starbucks
+10431  Starbucks
+10432  Starbucks
+
+[118 rows x 1 columns]('PH', '5')           Brand
+10265  Starbucks
+10266  Starbucks
+10267  Starbucks('PH', '6')           Brand
+10268  Starbucks
+10269  Starbucks
+10270  Starbucks
+10271  Starbucks('PH', '7')           Brand
+10272  Starbucks
+10273  Starbucks
+10274  Starbucks
+10275  Starbucks
+10276  Starbucks
+10277  Starbucks
+10278  Starbucks
+10279  Starbucks
+10280  Starbucks
+10281  Starbucks
+10282  Starbucks
+10283  Starbucks
+10284  Starbucks('PH', 'PH')           Brand
+10433  Starbucks
+10434  Starbucks
+10435  Starbucks
+10436  Starbucks
+10437  Starbucks
+10438  Starbucks
+10439  Starbucks
+10440  Starbucks
+10441  Starbucks
+10442  Starbucks
+10443  Starbucks
+10444  Starbucks
+10445  Starbucks('PL', 'DS')           Brand
+10446  Starbucks
+10447  Starbucks
+10448  Starbucks
+10449  Starbucks
+10450  Starbucks
+10451  Starbucks
+10452  Starbucks
+10453  Starbucks('PL', 'LD')           Brand
+10454  Starbucks('PL', 'MA')           Brand
+10455  Starbucks
+10456  Starbucks
+10457  Starbucks
+10458  Starbucks('PL', 'MZ')           Brand
+10459  Starbucks
+10460  Starbucks
+10461  Starbucks
+10462  Starbucks
+10463  Starbucks
+10464  Starbucks
+10465  Starbucks
+10466  Starbucks
+10467  Starbucks
+10468  Starbucks
+10469  Starbucks
+10470  Starbucks
+10471  Starbucks
+10472  Starbucks
+10473  Starbucks
+10474  Starbucks
+10475  Starbucks
+10476  Starbucks
+10477  Starbucks('PL', 'PM')           Brand
+10478  Starbucks
+10479  Starbucks
+10480  Starbucks
+10481  Starbucks
+10482  Starbucks
+10483  Starbucks
+10484  Starbucks('PL', 'SL')           Brand
+10485  Starbucks
+10486  Starbucks
+10487  Starbucks('PL', 'WP')           Brand
+10488  Starbucks
+10489  Starbucks
+10490  Starbucks
+10491  Starbucks
+10492  Starbucks
+10493  Starbucks
+10494  Starbucks
+10495  Starbucks('PL', 'ZP')           Brand
+10496  Starbucks
+10497  Starbucks
+10498  Starbucks('PR', 'PR')           Brand
+10499  Starbucks
+10500  Starbucks
+10501  Starbucks
+10502  Starbucks
+10503  Starbucks
+10504  Starbucks
+10505  Starbucks
+10506  Starbucks
+10507  Starbucks
+10508  Starbucks
+10509  Starbucks
+10510  Starbucks
+10511  Starbucks
+10512  Starbucks
+10513  Starbucks
+10514    Teavana
+10515  Starbucks
+10516  Starbucks
+10517  Starbucks
+10518  Starbucks
+10519  Starbucks
+10520  Starbucks
+10521  Starbucks
+10522  Starbucks('PT', '1')           Brand
+10523  Starbucks('PT', '11')           Brand
+10524  Starbucks
+10525  Starbucks
+10526  Starbucks
+10527  Starbucks
+10528  Starbucks
+10529  Starbucks
+10530  Starbucks
+10531  Starbucks
+10532  Starbucks('PT', '13')           Brand
+10533  Starbucks('QA', 'DA')           Brand
+10534  Starbucks
+10535  Starbucks
+10536  Starbucks
+10537  Starbucks
+10538  Starbucks
+10539  Starbucks
+10540  Starbucks
+10541  Starbucks
+10542  Starbucks
+10543  Starbucks
+10544  Starbucks
+10545  Starbucks
+10546  Starbucks
+10547  Starbucks
+10548  Starbucks
+10549  Starbucks
+10550  Starbucks
+10551  Starbucks('RO', 'B')           Brand
+10552  Starbucks
+10553  Starbucks
+10554  Starbucks
+10555  Starbucks
+10556  Starbucks
+10557  Starbucks
+10558  Starbucks
+10559  Starbucks
+10560  Starbucks
+10561  Starbucks
+10562  Starbucks
+10563  Starbucks('RO', 'BC')           Brand
+10564  Starbucks
+10565  Starbucks
+10566  Starbucks
+10567  Starbucks('RO', 'CJ')           Brand
+10568  Starbucks
+10569  Starbucks('RO', 'CT')           Brand
+10570  Starbucks
+10571  Starbucks('RO', 'DJ')           Brand
+10572  Starbucks('RO', 'IS')           Brand
+10573  Starbucks
+10574  Starbucks('RO', 'PH')           Brand
+10575  Starbucks('RO', 'TM')           Brand
+10576  Starbucks
+10577  Starbucks
+10578  Starbucks('RU', 'KDA')           Brand
+10579  Starbucks
+10580  Starbucks
+10581  Starbucks('RU', 'MOS')           Brand
+10582  Starbucks
+10583  Starbucks
+10584  Starbucks
+10585  Starbucks
+10586  Starbucks('RU', 'MOW')           Brand
+10587  Starbucks
+10588  Starbucks
+10589  Starbucks
+10590  Starbucks
+10591  Starbucks
+...          ...
+10657  Starbucks
+10658  Starbucks
+10659  Starbucks
+10660  Starbucks
+10661  Starbucks
+
+[75 rows x 1 columns]('RU', 'ROS')           Brand
+10662  Starbucks
+10663  Starbucks
+10664  Starbucks('RU', 'SAM')           Brand
+10665  Starbucks('RU', 'SPE')           Brand
+10666  Starbucks
+10667  Starbucks
+10668  Starbucks
+10669  Starbucks
+10670  Starbucks
+10671  Starbucks
+10672  Starbucks
+10673  Starbucks
+10674  Starbucks
+10675  Starbucks
+10676  Starbucks
+10677  Starbucks
+10678  Starbucks
+10679  Starbucks
+10680  Starbucks('RU', 'SVE')           Brand
+10681  Starbucks
+10682  Starbucks
+10683  Starbucks
+10684  Starbucks('RU', 'TYU')           Brand
+10685  Starbucks
+10686  Starbucks('RU', 'YAR')           Brand
+10687  Starbucks('SA', '1')           Brand
+10688  Starbucks
+10689  Starbucks
+10690  Starbucks
+10691  Starbucks
+10692  Starbucks
+10693  Starbucks
+10694  Starbucks
+10695  Starbucks
+10696  Starbucks
+10697  Starbucks
+10698  Starbucks
+10699  Starbucks
+10700  Starbucks
+10701  Starbucks
+10702  Starbucks
+10703  Starbucks
+10704  Starbucks
+10705  Starbucks
+10706  Starbucks
+10707  Starbucks
+10708  Starbucks
+10709  Starbucks
+10710  Starbucks
+10711  Starbucks
+10712  Starbucks
+10713  Starbucks
+10714  Starbucks
+10715  Starbucks
+10716  Starbucks
+10717  Starbucks
+10718  Starbucks
+10719  Starbucks
+10720  Starbucks
+10721  Starbucks
+10722  Starbucks
+10723  Starbucks
+10724  Starbucks
+10725  Starbucks
+10726  Starbucks
+10727  Starbucks
+10728  Starbucks
+10729  Starbucks
+10730  Starbucks
+10731  Starbucks
+10732  Starbucks
+10733  Starbucks
+10734  Starbucks
+10735  Starbucks
+10736  Starbucks('SA', '2')           Brand
+10737  Starbucks
+10738  Starbucks
+10739  Starbucks
+10740  Starbucks
+10741  Starbucks
+10742  Starbucks
+10743  Starbucks
+10744  Starbucks
+10745  Starbucks
+10746  Starbucks
+10747  Starbucks
+10748  Starbucks
+10749  Starbucks
+10750  Starbucks
+10751  Starbucks
+10752  Starbucks
+10753  Starbucks
+10754  Starbucks
+10755  Starbucks
+10756  Starbucks
+10757  Starbucks
+10758  Starbucks
+10759  Starbucks
+10760  Starbucks
+10761  Starbucks
+10762  Starbucks
+10763  Starbucks
+10764  Starbucks
+10765  Starbucks
+10766  Starbucks
+10767  Starbucks('SA', '3')           Brand
+10768  Starbucks
+10769  Starbucks
+10770  Starbucks
+10771  Starbucks
+10772  Starbucks
+10773  Starbucks('SA', '4')           Brand
+10774  Starbucks
+10775  Starbucks
+10776  Starbucks
+10777  Starbucks
+10778  Starbucks
+10779  Starbucks
+10780  Starbucks
+10781  Starbucks
+10782  Starbucks
+10783  Starbucks
+10784  Starbucks
+10785  Starbucks('SA', '6')           Brand
+10786  Starbucks
+10787  Starbucks
+10788  Starbucks('SA', '7')           Brand
+10789  Starbucks('SE', 'AB')           Brand
+10790  Starbucks
+10791  Starbucks
+10792  Starbucks
+10793  Starbucks
+10794  Starbucks
+10795  Starbucks
+10796  Starbucks
+10797  Starbucks
+10798  Starbucks
+10799  Starbucks
+10800  Starbucks
+10801  Starbucks
+10802  Starbucks
+10803  Starbucks
+10804  Starbucks('SE', 'C')           Brand
+10805  Starbucks('SE', 'O')           Brand
+10806  Starbucks('SE', 'U')           Brand
+10807  Starbucks('SG', '1')           Brand
+10808  Starbucks
+10809  Starbucks
+10810  Starbucks
+10811  Starbucks
+10812  Starbucks
+...          ...
+10877  Starbucks
+10878  Starbucks
+10879  Starbucks
+10880  Starbucks
+10881  Starbucks
+
+[74 rows x 1 columns]('SG', '2')           Brand
+10882  Starbucks
+10883  Starbucks
+10884  Starbucks
+10885  Starbucks
+10886  Starbucks
+10887  Starbucks
+10888  Starbucks
+10889  Starbucks
+10890  Starbucks
+10891  Starbucks
+10892  Starbucks
+10893  Starbucks
+10894  Starbucks
+10895  Starbucks('SG', '3')           Brand
+10896  Starbucks
+10897  Starbucks
+10898  Starbucks
+10899  Starbucks
+10900  Starbucks
+10901  Starbucks('SG', '4')           Brand
+10902  Starbucks
+10903  Starbucks
+10904  Starbucks
+10905  Starbucks
+10906  Starbucks
+10907  Starbucks
+10908  Starbucks
+10909  Starbucks
+10910  Starbucks
+10911  Starbucks
+10912  Starbucks
+10913  Starbucks
+10914  Starbucks
+10915  Starbucks
+10916  Starbucks('SG', '5')           Brand
+10917  Starbucks
+10918  Starbucks
+10919  Starbucks
+10920  Starbucks
+10921  Starbucks
+10922  Starbucks
+10923  Starbucks
+10924  Starbucks
+10925  Starbucks
+10926  Starbucks
+10927  Starbucks
+10928  Starbucks
+10929  Starbucks
+10930  Starbucks
+10931  Starbucks
+10932  Starbucks
+10933  Starbucks
+10934  Starbucks
+10935  Starbucks
+10936  Starbucks
+10937  Starbucks('SK', 'BL')           Brand
+10938  Starbucks
+10939  Starbucks
+10940  Starbucks('SV', 'LI')           Brand
+10941  Starbucks
+10942  Starbucks
+10943  Starbucks('SV', 'SA')           Brand
+10944  Starbucks('SV', 'SS')           Brand
+10945  Starbucks
+10946  Starbucks
+10947  Starbucks
+10948  Starbucks
+10949  Starbucks
+10950  Starbucks
+10951  Starbucks('TH', '10')           Brand
+10952  Starbucks
+10953  Starbucks
+10954  Starbucks
+10955  Starbucks
+10956  Starbucks
+...          ...
+11133  Starbucks
+11134  Starbucks
+11135  Starbucks
+11136  Starbucks
+11137  Starbucks
+
+[186 rows x 1 columns]('TH', '11')           Brand
+11138  Starbucks
+11139  Starbucks
+11140  Starbucks
+11141  Starbucks
+11142  Starbucks
+11143  Starbucks
+11144  Starbucks
+11145  Starbucks('TH', '12')           Brand
+11146  Starbucks
+11147  Starbucks
+11148  Starbucks
+11149  Starbucks
+11150  Starbucks
+11151  Starbucks
+11152  Starbucks
+11153  Starbucks
+11154  Starbucks
+11155  Starbucks
+11156  Starbucks('TH', '13')           Brand
+11157  Starbucks
+11158  Starbucks
+11159  Starbucks
+11160  Starbucks
+11161  Starbucks('TH', '14')           Brand
+11162  Starbucks
+11163  Starbucks
+11164  Starbucks('TH', '16')           Brand
+11165  Starbucks('TH', '20')           Brand
+11166  Starbucks
+11167  Starbucks
+11168  Starbucks
+11169  Starbucks
+11170  Starbucks
+11171  Starbucks
+11172  Starbucks
+11173  Starbucks
+11174  Starbucks('TH', '21')           Brand
+11175  Starbucks
+11176  Starbucks('TH', '24')           Brand
+11177  Starbucks
+11178  Starbucks
+11179  Starbucks
+11180  Starbucks
+11181  Starbucks('TH', '30')           Brand
+11182  Starbucks
+11183  Starbucks
+11184  Starbucks('TH', '31')           Brand
+11185  Starbucks('TH', '32')           Brand
+11186  Starbucks('TH', '34')           Brand
+11187  Starbucks
+11188  Starbucks('TH', '40')           Brand
+11189  Starbucks
+11190  Starbucks
+11191  Starbucks('TH', '41')           Brand
+11192  Starbucks
+11193  Starbucks
+11194  Starbucks('TH', '43')           Brand
+11195  Starbucks('TH', '44')           Brand
+11196  Starbucks('TH', '45')           Brand
+11197  Starbucks('TH', '50')           Brand
+11198  Starbucks
+11199  Starbucks
+11200  Starbucks
+11201  Starbucks
+11202  Starbucks
+11203  Starbucks
+11204  Starbucks
+11205  Starbucks
+11206  Starbucks
+11207  Starbucks('TH', '52')           Brand
+11208  Starbucks('TH', '57')           Brand
+11209  Starbucks('TH', '60')           Brand
+11210  Starbucks('TH', '65')           Brand
+11211  Starbucks('TH', '70')           Brand
+11212  Starbucks('TH', '73')           Brand
+11213  Starbucks
+11214  Starbucks('TH', '74')           Brand
+11215  Starbucks('TH', '77')           Brand
+11216  Starbucks
+11217  Starbucks
+11218  Starbucks('TH', '80')           Brand
+11219  Starbucks('TH', '81')           Brand
+11220  Starbucks('TH', '83')           Brand
+11221  Starbucks
+11222  Starbucks
+11223  Starbucks
+11224  Starbucks
+11225  Starbucks
+11226  Starbucks
+11227  Starbucks
+11228  Starbucks
+11229  Starbucks
+11230  Starbucks
+11231  Starbucks('TH', '84')           Brand
+11232  Starbucks
+11233  Starbucks
+11234  Starbucks('TH', '90')           Brand
+11235  Starbucks
+11236  Starbucks('TH', 'S')           Brand
+11237  Starbucks
+11238  Starbucks
+11239  Starbucks
+11240  Starbucks('TR', '1')           Brand
+11241  Starbucks
+11242  Starbucks
+11243  Starbucks
+11244  Starbucks
+11245  Starbucks
+11246  Starbucks
+11247  Starbucks
+11248  Starbucks('TR', '10')           Brand
+11320  Starbucks
+11321  Starbucks
+11322  Starbucks
+11323  Starbucks('TR', '11')           Brand
+11324  Starbucks
+11325  Starbucks('TR', '16')           Brand
+11326  Starbucks
+11327  Starbucks
+11328  Starbucks
+11329  Starbucks
+11330  Starbucks
+11331  Starbucks
+11332  Starbucks
+11333  Starbucks
+11334  Starbucks
+11335  Starbucks
+11336  Starbucks
+11337  Starbucks
+11338  Starbucks('TR', '17')           Brand
+11339  Starbucks
+11340  Starbucks('TR', '20')           Brand
+11341  Starbucks('TR', '21')           Brand
+11342  Starbucks
+11343  Starbucks('TR', '26')           Brand
+11344  Starbucks
+11345  Starbucks
+11346  Starbucks
+11347  Starbucks
+11348  Starbucks('TR', '27')           Brand
+11349  Starbucks
+11350  Starbucks
+11351  Starbucks('TR', '3')           Brand
+11249  Starbucks
+11250  Starbucks('TR', '31')           Brand
+11352  Starbucks
+11353  Starbucks
+11354  Starbucks('TR', '32')           Brand
+11355  Starbucks('TR', '33')           Brand
+11356  Starbucks
+11357  Starbucks
+11358  Starbucks
+11359  Starbucks('TR', '34')           Brand
+11360  Starbucks
+11361  Starbucks
+11362  Starbucks
+11363  Starbucks
+11364  Starbucks
+...          ...
+11515  Starbucks
+11516  Starbucks
+11517  Starbucks
+11518  Starbucks
+11519  Starbucks
+
+[160 rows x 1 columns]('TR', '35')           Brand
+11520  Starbucks
+11521  Starbucks
+11522  Starbucks
+11523  Starbucks
+11524  Starbucks
+11525  Starbucks
+11526  Starbucks
+11527  Starbucks
+11528  Starbucks
+11529  Starbucks
+11530  Starbucks
+11531  Starbucks
+11532  Starbucks
+11533  Starbucks
+11534  Starbucks
+11535  Starbucks
+11536  Starbucks
+11537  Starbucks
+11538  Starbucks
+11539  Starbucks('TR', '38')           Brand
+11540  Starbucks
+11541  Starbucks
+11542  Starbucks('TR', '41')           Brand
+11543  Starbucks
+11544  Starbucks
+11545  Starbucks
+11546  Starbucks
+11547  Starbucks
+11548  Starbucks
+11549  Starbucks
+11550  Starbucks
+11551  Starbucks
+11552  Starbucks('TR', '42')           Brand
+11553  Starbucks
+11554  Starbucks('TR', '48')           Brand
+11555  Starbucks
+11556  Starbucks
+11557  Starbucks
+11558  Starbucks
+11559  Starbucks
+11560  Starbucks
+11561  Starbucks('TR', '54')           Brand
+11562  Starbucks
+11563  Starbucks('TR', '55')           Brand
+11564  Starbucks
+11565  Starbucks
+11566  Starbucks('TR', '6')           Brand
+11251  Starbucks
+11252  Starbucks
+11253  Starbucks
+11254  Starbucks
+11255  Starbucks
+11256  Starbucks
+11257  Starbucks
+11258  Starbucks
+11259  Starbucks
+11260  Starbucks
+11261  Starbucks
+11262  Starbucks
+11263  Starbucks
+11264  Starbucks
+11265  Starbucks
+11266  Starbucks
+11267  Starbucks
+11268  Starbucks
+11269  Starbucks
+11270  Starbucks
+11271  Starbucks
+11272  Starbucks
+11273  Starbucks
+11274  Starbucks
+11275  Starbucks
+11276  Starbucks
+11277  Starbucks
+11278  Starbucks
+11279  Starbucks
+11280  Starbucks
+11281  Starbucks
+11282  Starbucks
+11283  Starbucks
+11284  Starbucks
+11285  Starbucks
+11286  Starbucks
+11287  Starbucks
+11288  Starbucks
+11289  Starbucks
+11290  Starbucks
+11291  Starbucks
+11292  Starbucks
+11293  Starbucks
+11294  Starbucks
+11295  Starbucks
+11296  Starbucks
+11297  Starbucks('TR', '7')           Brand
+11298  Starbucks
+11299  Starbucks
+11300  Starbucks
+11301  Starbucks
+11302  Starbucks
+11303  Starbucks
+11304  Starbucks
+11305  Starbucks
+11306  Starbucks
+11307  Starbucks
+11308  Starbucks
+11309  Starbucks
+11310  Starbucks
+11311  Starbucks
+11312  Starbucks
+11313  Starbucks
+11314  Starbucks('TR', '9')           Brand
+11315  Starbucks
+11316  Starbucks
+11317  Starbucks
+11318  Starbucks
+11319  Starbucks('TT', 'CHA')           Brand
+11567  Starbucks('TT', 'POS')           Brand
+11568  Starbucks('TT', 'SFO')           Brand
+11569  Starbucks('TW', 'CHA')           Brand
+11570  Starbucks
+11571  Starbucks
+11572  Starbucks
+11573  Starbucks
+11574  Starbucks
+11575  Starbucks('TW', 'CYI')           Brand
+11576  Starbucks
+11577  Starbucks
+11578  Starbucks
+11579  Starbucks
+11580  Starbucks
+11581  Starbucks('TW', 'CYQ')           Brand
+11582  Starbucks('TW', 'HSQ')           Brand
+11583  Starbucks
+11584  Starbucks
+11585  Starbucks
+11586  Starbucks('TW', 'HSZ')           Brand
+11587  Starbucks
+11588  Starbucks
+11589  Starbucks
+11590  Starbucks
+11591  Starbucks
+11592  Starbucks
+11593  Starbucks
+11594  Starbucks
+11595  Starbucks
+11596  Starbucks
+11597  Starbucks
+11598  Starbucks
+11599  Starbucks
+11600  Starbucks
+11601  Starbucks
+11602  Starbucks
+11603  Starbucks('TW', 'HUA')           Brand
+11604  Starbucks
+11605  Starbucks
+11606  Starbucks('TW', 'ILA')           Brand
+11607  Starbucks
+11608  Starbucks
+11609  Starbucks
+11610  Starbucks('TW', 'KEE')           Brand
+11611  Starbucks
+11612  Starbucks
+11613  Starbucks('TW', 'KHH')           Brand
+11614  Starbucks
+11615  Starbucks
+11616  Starbucks
+11617  Starbucks
+11618  Starbucks
+11619  Starbucks
+11620  Starbucks
+11621  Starbucks
+11622  Starbucks
+11623  Starbucks
+11624  Starbucks
+11625  Starbucks
+11626  Starbucks
+11627  Starbucks
+11628  Starbucks
+11629  Starbucks
+11630  Starbucks
+11631  Starbucks
+11632  Starbucks
+11633  Starbucks
+11634  Starbucks
+11635  Starbucks
+11636  Starbucks
+11637  Starbucks
+11638  Starbucks
+11639  Starbucks
+11640  Starbucks
+11641  Starbucks
+11642  Starbucks
+11643  Starbucks
+11644  Starbucks
+11645  Starbucks
+11646  Starbucks
+11647  Starbucks('TW', 'MIA')           Brand
+11648  Starbucks
+11649  Starbucks
+11650  Starbucks('TW', 'NAN')           Brand
+11651  Starbucks
+11652  Starbucks
+11653  Starbucks
+11654  Starbucks
+11655  Starbucks('TW', 'PEN')           Brand
+11656  Starbucks
+11657  Starbucks
+11658  Starbucks
+11659  Starbucks('TW', 'PIF')           Brand
+11660  Starbucks
+11661  Starbucks
+11662  Starbucks
+11663  Starbucks('TW', 'TAO')           Brand
+11664  Starbucks
+11665  Starbucks
+11666  Starbucks
+11667  Starbucks
+11668  Starbucks
+11669  Starbucks
+11670  Starbucks
+11671  Starbucks
+11672  Starbucks
+11673  Starbucks
+11674  Starbucks
+11675  Starbucks
+11676  Starbucks
+11677  Starbucks
+11678  Starbucks
+11679  Starbucks
+11680  Starbucks
+11681  Starbucks
+11682  Starbucks
+11683  Starbucks
+11684  Starbucks
+11685  Starbucks
+11686  Starbucks
+11687  Starbucks
+11688  Starbucks
+11689  Starbucks
+11690  Starbucks
+11691  Starbucks
+11692  Starbucks
+11693  Starbucks
+11694  Starbucks
+11695  Starbucks
+11696  Starbucks
+11697  Starbucks
+11698  Starbucks('TW', 'TNN')           Brand
+11699  Starbucks
+11700  Starbucks
+11701  Starbucks
+11702  Starbucks
+11703  Starbucks
+11704  Starbucks
+11705  Starbucks
+11706  Starbucks
+11707  Starbucks
+11708  Starbucks
+11709  Starbucks
+11710  Starbucks
+11711  Starbucks
+11712  Starbucks
+11713  Starbucks
+11714  Starbucks
+11715  Starbucks
+11716  Starbucks
+11717  Starbucks
+11718  Starbucks
+11719  Starbucks
+11720  Starbucks
+11721  Starbucks
+11722  Starbucks
+11723  Starbucks
+11724  Starbucks
+11725  Starbucks
+11726  Starbucks('TW', 'TNQ')           Brand
+11727  Starbucks
+11728  Starbucks('TW', 'TPE')           Brand
+11729  Starbucks
+11730  Starbucks
+11731  Starbucks
+11732  Starbucks
+11733  Starbucks
+...          ...
+11850  Starbucks
+11851  Starbucks
+11852  Starbucks
+11853  Starbucks
+11854  Starbucks
+
+[126 rows x 1 columns]('TW', 'TPQ')           Brand
+11855  Starbucks
+11856  Starbucks
+11857  Starbucks
+11858  Starbucks
+11859  Starbucks
+11860  Starbucks
+11861  Starbucks
+11862  Starbucks
+11863  Starbucks
+11864  Starbucks
+11865  Starbucks
+11866  Starbucks
+11867  Starbucks
+11868  Starbucks
+11869  Starbucks
+11870  Starbucks
+11871  Starbucks
+11872  Starbucks
+11873  Starbucks
+11874  Starbucks
+11875  Starbucks
+11876  Starbucks
+11877  Starbucks
+11878  Starbucks
+11879  Starbucks
+11880  Starbucks
+11881  Starbucks
+11882  Starbucks
+11883  Starbucks
+11884  Starbucks
+11885  Starbucks
+11886  Starbucks
+11887  Starbucks
+11888  Starbucks
+11889  Starbucks
+11890  Starbucks
+11891  Starbucks
+11892  Starbucks
+11893  Starbucks
+11894  Starbucks
+11895  Starbucks
+11896  Starbucks
+11897  Starbucks
+11898  Starbucks
+11899  Starbucks
+11900  Starbucks
+11901  Starbucks
+11902  Starbucks
+11903  Starbucks
+11904  Starbucks
+11905  Starbucks
+11906  Starbucks
+11907  Starbucks
+11908  Starbucks
+11909  Starbucks
+11910  Starbucks
+11911  Starbucks
+11912  Starbucks
+11913  Starbucks
+11914  Starbucks('TW', 'TTT')           Brand
+11915  Starbucks('TW', 'TXG')           Brand
+11916  Starbucks
+11917  Starbucks
+11918  Starbucks
+11919  Starbucks
+11920  Starbucks
+11921  Starbucks
+11922  Starbucks
+11923  Starbucks
+11924  Starbucks
+11925  Starbucks
+11926  Starbucks
+11927  Starbucks
+11928  Starbucks
+11929  Starbucks
+11930  Starbucks
+11931  Starbucks
+11932  Starbucks
+11933  Starbucks
+11934  Starbucks
+11935  Starbucks
+11936  Starbucks
+11937  Starbucks
+11938  Starbucks
+11939  Starbucks
+11940  Starbucks
+11941  Starbucks
+11942  Starbucks
+11943  Starbucks
+11944  Starbucks
+11945  Starbucks
+11946  Starbucks
+11947  Starbucks
+11948  Starbucks
+11949  Starbucks
+11950  Starbucks
+11951  Starbucks
+11952  Starbucks
+11953  Starbucks
+11954  Starbucks
+11955  Starbucks
+11956  Starbucks
+11957  Starbucks
+11958  Starbucks('TW', 'TXQ')           Brand
+11959  Starbucks('TW', 'YUN')           Brand
+11960  Starbucks
+11961  Starbucks
+11962  Starbucks
+11963  Starbucks('US', 'AK')           Brand
+11964  Starbucks
+11965  Starbucks
+11966  Starbucks
+11967  Starbucks
+11968  Starbucks
+11969  Starbucks
+11970  Starbucks
+11971  Starbucks
+11972  Starbucks
+11973  Starbucks
+11974  Starbucks
+11975  Starbucks
+11976  Starbucks
+11977  Starbucks
+11978  Starbucks
+11979  Starbucks
+11980  Starbucks
+11981    Teavana
+11982  Starbucks
+11983  Starbucks
+11984  Starbucks
+11985  Starbucks
+11986  Starbucks
+11987  Starbucks
+11988  Starbucks
+11989  Starbucks
+11990  Starbucks
+11991  Starbucks
+11992  Starbucks
+11993  Starbucks
+11994  Starbucks
+11995  Starbucks
+11996  Starbucks
+11997  Starbucks
+11998  Starbucks
+11999  Starbucks
+12000  Starbucks
+12001  Starbucks
+12002  Starbucks
+12003  Starbucks
+12004  Starbucks
+12005  Starbucks
+12006  Starbucks
+12007  Starbucks
+12008  Starbucks
+12009  Starbucks
+12010  Starbucks
+12011  Starbucks
+12012  Starbucks('US', 'AL')           Brand
+12013  Starbucks
+12014  Starbucks
+12015  Starbucks
+12016  Starbucks
+12017  Starbucks
+...          ...
+12093  Starbucks
+12094  Starbucks
+12095  Starbucks
+12096  Starbucks
+12097  Starbucks
+
+[85 rows x 1 columns]('US', 'AR')           Brand
+12098  Starbucks
+12099  Starbucks
+12100  Starbucks
+12101  Starbucks
+12102  Starbucks
+12103  Starbucks
+12104  Starbucks
+12105  Starbucks
+12106  Starbucks
+12107  Starbucks
+12108  Starbucks
+12109  Starbucks
+12110  Starbucks
+12111  Starbucks
+12112  Starbucks
+12113  Starbucks
+12114  Starbucks
+12115  Starbucks
+12116  Starbucks
+12117  Starbucks
+12118  Starbucks
+12119  Starbucks
+12120  Starbucks
+12121  Starbucks
+12122  Starbucks
+12123  Starbucks
+12124  Starbucks
+12125    Teavana
+12126  Starbucks
+12127  Starbucks
+12128  Starbucks
+12129  Starbucks
+12130  Starbucks
+12131  Starbucks
+12132  Starbucks
+12133  Starbucks
+12134  Starbucks
+12135  Starbucks
+12136  Starbucks
+12137  Starbucks
+12138  Starbucks
+12139  Starbucks
+12140  Starbucks
+12141  Starbucks
+12142  Starbucks
+12143  Starbucks
+12144  Starbucks
+12145  Starbucks
+12146  Starbucks
+12147  Starbucks
+12148  Starbucks
+12149  Starbucks
+12150  Starbucks
+12151  Starbucks
+12152  Starbucks('US', 'AZ')           Brand
+12153  Starbucks
+12154  Starbucks
+12155  Starbucks
+12156  Starbucks
+12157  Starbucks
+...          ...
+12636  Starbucks
+12637  Starbucks
+12638  Starbucks
+12639  Starbucks
+12640  Starbucks
+
+[488 rows x 1 columns]('US', 'CA')           Brand
+12641  Starbucks
+12642  Starbucks
+12643  Starbucks
+12644  Starbucks
+12645  Starbucks
+...          ...
+15457  Starbucks
+15458  Starbucks
+15459  Starbucks
+15460  Starbucks
+15461  Starbucks
+
+[2821 rows x 1 columns]('US', 'CO')           Brand
+15462  Starbucks
+15463  Starbucks
+15464  Starbucks
+15465  Starbucks
+15466  Starbucks
+...          ...
+15938  Starbucks
+15939  Starbucks
+15940  Starbucks
+15941  Starbucks
+15942  Starbucks
+
+[481 rows x 1 columns]('US', 'CT')           Brand
+15943  Starbucks
+15944  Starbucks
+15945  Starbucks
+15946  Starbucks
+15947  Starbucks
+...          ...
+16061  Starbucks
+16062  Starbucks
+16063  Starbucks
+16064  Starbucks
+16065  Starbucks
+
+[123 rows x 1 columns]('US', 'DC')           Brand
+16066  Starbucks
+16067  Starbucks
+16068  Starbucks
+16069  Starbucks
+16070  Starbucks
+...          ...
+16152  Starbucks
+16153  Starbucks
+16154  Starbucks
+16155  Starbucks
+16156  Starbucks
+
+[91 rows x 1 columns]('US', 'DE')           Brand
+16157  Starbucks
+16158  Starbucks
+16159  Starbucks
+16160  Starbucks
+16161  Starbucks
+16162  Starbucks
+16163  Starbucks
+16164  Starbucks
+16165  Starbucks
+16166  Starbucks
+16167    Teavana
+16168  Starbucks
+16169  Starbucks
+16170  Starbucks
+16171  Starbucks
+16172  Starbucks
+16173  Starbucks
+16174  Starbucks
+16175  Starbucks
+16176  Starbucks
+16177  Starbucks
+16178  Starbucks
+16179  Starbucks
+16180  Starbucks
+16181  Starbucks('US', 'FL')           Brand
+16182  Starbucks
+16183    Teavana
+16184  Starbucks
+16185  Starbucks
+16186  Starbucks
+...          ...
+16871  Starbucks
+16872  Starbucks
+16873  Starbucks
+16874  Starbucks
+16875  Starbucks
+
+[694 rows x 1 columns]('US', 'GA')           Brand
+16876  Starbucks
+16877  Starbucks
+16878  Starbucks
+16879  Starbucks
+16880  Starbucks
+...          ...
+17197  Starbucks
+17198  Starbucks
+17199  Starbucks
+17200  Starbucks
+17201  Starbucks
+
+[326 rows x 1 columns]('US', 'HI')           Brand
+17202  Starbucks
+17203  Starbucks
+17204  Starbucks
+17205  Starbucks
+17206  Starbucks
+...          ...
+17296  Starbucks
+17297  Starbucks
+17298  Starbucks
+17299  Starbucks
+17300  Starbucks
+
+[99 rows x 1 columns]('US', 'IA')           Brand
+17301  Starbucks
+17302  Starbucks
+17303  Starbucks
+17304  Starbucks
+17305  Starbucks
+...          ...
+17385  Starbucks
+17386  Starbucks
+17387    Teavana
+17388  Starbucks
+17389  Starbucks
+
+[89 rows x 1 columns]('US', 'ID')           Brand
+17390  Starbucks
+17391  Starbucks
+17392  Starbucks
+17393    Teavana
+17394  Starbucks
+...          ...
+17452  Starbucks
+17453  Starbucks
+17454  Starbucks
+17455  Starbucks
+17456  Starbucks
+
+[67 rows x 1 columns]('US', 'IL')           Brand
+17457  Starbucks
+17458  Starbucks
+17459  Starbucks
+17460  Starbucks
+17461  Starbucks
+...          ...
+18027  Starbucks
+18028  Starbucks
+18029  Starbucks
+18030  Starbucks
+18031  Starbucks
+
+[575 rows x 1 columns]('US', 'IN')           Brand
+18032  Starbucks
+18033  Starbucks
+18034  Starbucks
+18035  Starbucks
+18036  Starbucks
+...          ...
+18248  Starbucks
+18249  Starbucks
+18250  Starbucks
+18251  Starbucks
+18252  Starbucks
+
+[221 rows x 1 columns]('US', 'KS')           Brand
+18253  Starbucks
+18254  Starbucks
+18255  Starbucks
+18256  Starbucks
+18257  Starbucks
+...          ...
+18342  Starbucks
+18343  Starbucks
+18344  Starbucks
+18345  Starbucks
+18346  Starbucks
+
+[94 rows x 1 columns]('US', 'KY')           Brand
+18347  Starbucks
+18348  Starbucks
+18349  Starbucks
+18350  Starbucks
+18351  Starbucks
+...          ...
+18458  Starbucks
+18459  Starbucks
+18460  Starbucks
+18461  Starbucks
+18462  Starbucks
+
+[116 rows x 1 columns]('US', 'LA')           Brand
+18463  Starbucks
+18464  Starbucks
+18465  Starbucks
+18466  Starbucks
+18467  Starbucks
+...          ...
+18542  Starbucks
+18543  Starbucks
+18544  Starbucks
+18545  Starbucks
+18546  Starbucks
+
+[84 rows x 1 columns]('US', 'MA')           Brand
+18547  Starbucks
+18548  Starbucks
+18549  Starbucks
+18550  Starbucks
+18551  Starbucks
+...          ...
+18815  Starbucks
+18816  Starbucks
+18817  Starbucks
+18818  Starbucks
+18819  Starbucks
+
+[273 rows x 1 columns]('US', 'MD')           Brand
+18820  Starbucks
+18821  Starbucks
+18822  Starbucks
+18823  Starbucks
+18824  Starbucks
+...          ...
+19072  Starbucks
+19073    Teavana
+19074  Starbucks
+19075  Starbucks
+19076  Starbucks
+
+[257 rows x 1 columns]('US', 'ME')           Brand
+19077  Starbucks
+19078  Starbucks
+19079  Starbucks
+19080  Starbucks
+19081  Starbucks
+19082  Starbucks
+19083  Starbucks
+19084  Starbucks
+19085  Starbucks
+19086  Starbucks
+19087  Starbucks
+19088  Starbucks
+19089  Starbucks
+19090  Starbucks
+19091  Starbucks
+19092  Starbucks
+19093  Starbucks
+19094  Starbucks
+19095  Starbucks
+19096  Starbucks
+19097  Starbucks
+19098  Starbucks
+19099  Starbucks
+19100  Starbucks
+19101    Teavana
+19102  Starbucks
+19103  Starbucks
+19104  Starbucks
+19105  Starbucks
+19106  Starbucks('US', 'MI')           Brand
+19107  Starbucks
+19108  Starbucks
+19109  Starbucks
+19110  Starbucks
+19111  Starbucks
+...          ...
+19385  Starbucks
+19386  Starbucks
+19387  Starbucks
+19388  Starbucks
+19389  Starbucks
+
+[283 rows x 1 columns]('US', 'MN')           Brand
+19390  Starbucks
+19391  Starbucks
+19392  Starbucks
+19393  Starbucks
+19394  Starbucks
+...          ...
+19569  Starbucks
+19570  Starbucks
+19571  Starbucks
+19572  Starbucks
+19573  Starbucks
+
+[184 rows x 1 columns]('US', 'MO')           Brand
+19574  Starbucks
+19575  Starbucks
+19576  Starbucks
+19577  Starbucks
+19578  Starbucks
+...          ...
+19757  Starbucks
+19758  Starbucks
+19759  Starbucks
+19760  Starbucks
+19761  Starbucks
+
+[188 rows x 1 columns]('US', 'MS')           Brand
+19762  Starbucks
+19763  Starbucks
+19764  Starbucks
+19765  Starbucks
+19766  Starbucks
+19767  Starbucks
+19768  Starbucks
+19769  Starbucks
+19770  Starbucks
+19771  Starbucks
+19772  Starbucks
+19773  Starbucks
+19774  Starbucks
+19775  Starbucks
+19776  Starbucks
+19777  Starbucks
+19778  Starbucks
+19779  Starbucks
+19780  Starbucks
+19781  Starbucks
+19782  Starbucks
+19783  Starbucks
+19784  Starbucks
+19785  Starbucks
+19786  Starbucks
+19787  Starbucks
+19788  Starbucks
+19789  Starbucks
+19790  Starbucks
+19791  Starbucks
+19792  Starbucks
+19793  Starbucks('US', 'MT')           Brand
+19794  Starbucks
+19795  Starbucks
+19796  Starbucks
+19797  Starbucks
+19798  Starbucks
+19799  Starbucks
+19800  Starbucks
+19801  Starbucks
+19802  Starbucks
+19803  Starbucks
+19804  Starbucks
+19805  Starbucks
+19806  Starbucks
+19807  Starbucks
+19808  Starbucks
+19809  Starbucks
+19810  Starbucks
+19811  Starbucks
+19812  Starbucks
+19813  Starbucks
+19814  Starbucks
+19815  Starbucks
+19816  Starbucks
+19817  Starbucks
+19818  Starbucks
+19819  Starbucks
+19820  Starbucks
+19821  Starbucks
+19822  Starbucks
+19823  Starbucks
+19824  Starbucks
+19825  Starbucks
+19826  Starbucks
+19827  Starbucks
+19828  Starbucks
+19829  Starbucks('US', 'NC')           Brand
+19830  Starbucks
+19831  Starbucks
+19832  Starbucks
+19833  Starbucks
+19834  Starbucks
+...          ...
+20163  Starbucks
+20164  Starbucks
+20165  Starbucks
+20166  Starbucks
+20167  Starbucks
+
+[338 rows x 1 columns]('US', 'ND')           Brand
+20168  Starbucks
+20169  Starbucks
+20170  Starbucks
+20171  Starbucks
+20172  Starbucks
+20173  Starbucks
+20174  Starbucks
+20175  Starbucks
+20176  Starbucks
+20177  Starbucks
+20178  Starbucks
+20179  Starbucks
+20180  Starbucks('US', 'NE')           Brand
+20181  Starbucks
+20182  Starbucks
+20183  Starbucks
+20184  Starbucks
+20185  Starbucks
+20186  Starbucks
+20187  Starbucks
+20188  Starbucks
+20189  Starbucks
+20190  Starbucks
+20191  Starbucks
+20192  Starbucks
+20193  Starbucks
+20194  Starbucks
+20195  Starbucks
+20196  Starbucks
+20197  Starbucks
+20198    Teavana
+20199  Starbucks
+20200  Starbucks
+20201  Starbucks
+20202  Starbucks
+20203  Starbucks
+20204  Starbucks
+20205  Starbucks
+20206  Starbucks
+20207  Starbucks
+20208  Starbucks
+20209  Starbucks
+20210  Starbucks
+20211  Starbucks
+20212  Starbucks
+20213  Starbucks
+20214    Teavana
+20215  Starbucks
+20216  Starbucks
+20217  Starbucks
+20218  Starbucks
+20219  Starbucks
+20220  Starbucks
+20221  Starbucks
+20222  Starbucks
+20223  Starbucks
+20224  Starbucks
+20225  Starbucks
+20226  Starbucks
+20227  Starbucks
+20228  Starbucks
+20229  Starbucks
+20230  Starbucks
+20231  Starbucks
+20232  Starbucks
+20233  Starbucks
+20234  Starbucks
+20235  Starbucks
+20236  Starbucks
+20237  Starbucks
+20238  Starbucks('US', 'NH')           Brand
+20239  Starbucks
+20240  Starbucks
+20241  Starbucks
+20242  Starbucks
+20243  Starbucks
+20244  Starbucks
+20245  Starbucks
+20246  Starbucks
+20247  Starbucks
+20248  Starbucks
+20249    Teavana
+20250  Starbucks
+20251  Starbucks
+20252  Starbucks
+20253  Starbucks
+20254  Starbucks
+20255  Starbucks
+20256  Starbucks
+20257  Starbucks
+20258    Teavana
+20259  Starbucks
+20260  Starbucks
+20261  Starbucks
+20262    Teavana
+20263  Starbucks
+20264  Starbucks
+20265  Starbucks
+20266  Starbucks
+20267  Starbucks('US', 'NJ')           Brand
+20268  Starbucks
+20269  Starbucks
+20270  Starbucks
+20271  Starbucks
+20272  Starbucks
+...          ...
+20524  Starbucks
+20525  Starbucks
+20526  Starbucks
+20527  Starbucks
+20528  Starbucks
+
+[261 rows x 1 columns]('US', 'NM')           Brand
+20529  Starbucks
+20530  Starbucks
+20531  Starbucks
+20532  Starbucks
+20533  Starbucks
+...          ...
+20600  Starbucks
+20601  Starbucks
+20602  Starbucks
+20603  Starbucks
+20604  Starbucks
+
+[76 rows x 1 columns]('US', 'NV')           Brand
+20605  Starbucks
+20606  Starbucks
+20607  Starbucks
+20608  Starbucks
+20609  Starbucks
+...          ...
+20853  Starbucks
+20854  Starbucks
+20855  Starbucks
+20856  Starbucks
+20857  Starbucks
+
+[253 rows x 1 columns]('US', 'NY')           Brand
+20858  Starbucks
+20859  Starbucks
+20860  Starbucks
+20861  Starbucks
+20862  Starbucks
+...          ...
+21498    Teavana
+21499  Starbucks
+21500  Starbucks
+21501  Starbucks
+21502  Starbucks
+
+[645 rows x 1 columns]('US', 'OH')           Brand
+21503  Starbucks
+21504  Starbucks
+21505  Starbucks
+21506  Starbucks
+21507    Teavana
+...          ...
+21876  Starbucks
+21877  Starbucks
+21878  Starbucks
+21879  Starbucks
+21880  Starbucks
+
+[378 rows x 1 columns]('US', 'OK')           Brand
+21881  Starbucks
+21882  Starbucks
+21883  Starbucks
+21884  Starbucks
+21885  Starbucks
+...          ...
+21955  Starbucks
+21956  Starbucks
+21957  Starbucks
+21958  Starbucks
+21959  Starbucks
+
+[79 rows x 1 columns]('US', 'OR')           Brand
+21960  Starbucks
+21961  Starbucks
+21962  Starbucks
+21963  Starbucks
+21964  Starbucks
+...          ...
+22314  Starbucks
+22315  Starbucks
+22316  Starbucks
+22317  Starbucks
+22318  Starbucks
+
+[359 rows x 1 columns]('US', 'PA')           Brand
+22319  Starbucks
+22320  Starbucks
+22321  Starbucks
+22322  Starbucks
+22323  Starbucks
+...          ...
+22671  Starbucks
+22672  Starbucks
+22673  Starbucks
+22674  Starbucks
+22675  Starbucks
+
+[357 rows x 1 columns]('US', 'RI')           Brand
+22676  Starbucks
+22677  Starbucks
+22678  Starbucks
+22679  Starbucks
+22680  Starbucks
+22681  Starbucks
+22682  Starbucks
+22683  Starbucks
+22684  Starbucks
+22685    Teavana
+22686  Starbucks
+22687  Starbucks
+22688  Starbucks
+22689  Starbucks
+22690  Starbucks
+22691  Starbucks
+22692  Starbucks
+22693  Starbucks
+22694  Starbucks
+22695  Starbucks
+22696  Starbucks
+22697  Starbucks
+22698  Starbucks
+22699  Starbucks
+22700  Starbucks
+22701  Starbucks
+22702  Starbucks('US', 'SC')           Brand
+22703  Starbucks
+22704  Starbucks
+22705  Starbucks
+22706  Starbucks
+22707  Starbucks
+...          ...
+22829  Starbucks
+22830  Starbucks
+22831  Starbucks
+22832  Starbucks
+22833  Starbucks
+
+[131 rows x 1 columns]('US', 'SD')           Brand
+22834  Starbucks
+22835  Starbucks
+22836  Starbucks
+22837  Starbucks
+22838  Starbucks
+22839  Starbucks
+22840  Starbucks
+22841  Starbucks
+22842  Starbucks
+22843  Starbucks
+22844  Starbucks
+22845    Teavana
+22846  Starbucks
+22847  Starbucks
+22848  Starbucks
+22849  Starbucks
+22850  Starbucks
+22851  Starbucks
+22852  Starbucks
+22853  Starbucks
+22854  Starbucks
+22855  Starbucks
+22856  Starbucks
+22857  Starbucks
+22858  Starbucks('US', 'TN')           Brand
+22859  Starbucks
+22860  Starbucks
+22861  Starbucks
+22862  Starbucks
+22863  Starbucks
+...          ...
+23034  Starbucks
+23035  Starbucks
+23036  Starbucks
+23037  Starbucks
+23038  Starbucks
+
+[180 rows x 1 columns]('US', 'TX')           Brand
+23039  Starbucks
+23040  Starbucks
+23041  Starbucks
+23042  Starbucks
+23043  Starbucks
+...          ...
+24076  Starbucks
+24077  Starbucks
+24078  Starbucks
+24079  Starbucks
+24080  Starbucks
+
+[1042 rows x 1 columns]('US', 'UT')           Brand
+24081  Starbucks
+24082  Starbucks
+24083  Starbucks
+24084  Starbucks
+24085  Starbucks
+...          ...
+24177  Starbucks
+24178  Starbucks
+24179  Starbucks
+24180  Starbucks
+24181  Starbucks
+
+[101 rows x 1 columns]('US', 'VA')           Brand
+24182  Starbucks
+24183  Starbucks
+24184  Starbucks
+24185  Starbucks
+24186  Starbucks
+...          ...
+24609  Starbucks
+24610  Starbucks
+24611  Starbucks
+24612  Starbucks
+24613  Starbucks
+
+[432 rows x 1 columns]('US', 'VT')           Brand
+24614  Starbucks
+24615  Starbucks
+24616    Teavana
+24617  Starbucks
+24618  Starbucks
+24619  Starbucks
+24620  Starbucks
+24621  Starbucks('US', 'WA')           Brand
+24622  Starbucks
+24623  Starbucks
+24624  Starbucks
+24625  Starbucks
+24626  Starbucks
+...          ...
+25374  Starbucks
+25375  Starbucks
+25376  Starbucks
+25377  Starbucks
+25378  Starbucks
+
+[757 rows x 1 columns]('US', 'WI')           Brand
+25379  Starbucks
+25380  Starbucks
+25381  Starbucks
+25382    Teavana
+25383  Starbucks
+...          ...
+25519  Starbucks
+25520  Starbucks
+25521  Starbucks
+25522  Starbucks
+25523  Starbucks
+
+[145 rows x 1 columns]('US', 'WV')           Brand
+25524  Starbucks
+25525  Starbucks
+25526  Starbucks
+25527  Starbucks
+25528  Starbucks
+25529  Starbucks
+25530  Starbucks
+25531    Teavana
+25532  Starbucks
+25533  Starbucks
+25534  Starbucks
+25535  Starbucks
+25536  Starbucks
+25537  Starbucks
+25538  Starbucks
+25539  Starbucks
+25540  Starbucks
+25541  Starbucks
+25542  Starbucks
+25543  Starbucks
+25544  Starbucks
+25545  Starbucks
+25546  Starbucks
+25547  Starbucks
+25548  Starbucks('US', 'WY')           Brand
+25549  Starbucks
+25550  Starbucks
+25551  Starbucks
+25552  Starbucks
+25553  Starbucks
+25554  Starbucks
+25555  Starbucks
+25556  Starbucks
+25557  Starbucks
+25558  Starbucks
+25559  Starbucks
+25560  Starbucks
+25561  Starbucks
+25562  Starbucks
+25563  Starbucks
+25564  Starbucks
+25565  Starbucks
+25566  Starbucks
+25567  Starbucks
+25568  Starbucks
+25569  Starbucks
+25570  Starbucks
+25571  Starbucks('VN', 'HN')           Brand
+25572  Starbucks
+25573  Starbucks
+25574  Starbucks
+25575  Starbucks
+25576  Starbucks
+25577  Starbucks('VN', 'SG')           Brand
+25578  Starbucks
+25579  Starbucks
+25580  Starbucks
+25581  Starbucks
+25582  Starbucks
+25583  Starbucks
+25584  Starbucks
+25585  Starbucks
+25586  Starbucks
+25587  Starbucks
+25588  Starbucks
+25589  Starbucks
+25590  Starbucks
+25591  Starbucks
+25592  Starbucks
+25593  Starbucks
+25594  Starbucks
+25595  Starbucks
+25596  Starbucks('ZA', 'GT')           Brand
+25597  Starbucks
+25598  Starbucks
+25599  Starbucks
