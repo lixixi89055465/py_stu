@@ -8,7 +8,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("./911.csv")
+df = pd.read_csv("./911.csv",sep=',')
 print(df.head(10))
 print(df.info())
 print(df['title'].head())
