@@ -9,6 +9,8 @@ from selenium import webdriver
 import lxml
 from bs4 import BeautifulSoup
 import pyquery
+import pymysql
+import pymongo
 driver=webdriver.PhantomJS()
 driver.get('http://www.baidu.com')
 soup=BeautifulSoup('<html></html>','lxml')
