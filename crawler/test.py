@@ -5,3 +5,8 @@
 @file: test.py
 @desc: 
 """
+from selenium import webdriver
+
+driver=webdriver.Chrome()
+driver.get('http://www.baidu.com')
+driver.page_source
