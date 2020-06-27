@@ -1,13 +1,14 @@
 # encoding: utf-8
 """
 @author: nanjixiong
-@time: 2020/6/27 16:55
-@file: CookieDemo1.py
+@time: 2020/6/27 17:02
+@file: CookieDemo02.py
 @desc: 
 """
 import http.cookiejar, urllib.request
 
-cookie = http.cookiejar.CookieJar()
+filename = 'cookie.txt'
+cookie = http.cookiejar.MozillaCookieJar(filename)
 handler = urllib.request.HTTPCookieProcessor(cookie)
 opener = urllib.request.build_opener(handler)
 response = opener.open('http://www.baidu.com')
