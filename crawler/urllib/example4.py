@@ -5,3 +5,7 @@
 @file: example4.py
 @desc: 
 """
+import urllib.request
+response=urllib.request.urlopen("http://localhost/get",timeout=1)
+print(response.read())
+
