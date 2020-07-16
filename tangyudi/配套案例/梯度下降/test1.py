@@ -152,4 +152,4 @@ def runExpe(data, theta, batchSize, stopType, thresh, alpha):
 
 n = 100
 # runExpe(orig_data, theta, n, STOP_ITER, thresh=50000, alpha=0.00001)
-runExpe(orig_data, theta, n, STOP_COST, thresh=50000, alpha=0.00001)
+runExpe(orig_data, theta, n, STOP_COST, thresh=0.000001, alpha=0.001)
