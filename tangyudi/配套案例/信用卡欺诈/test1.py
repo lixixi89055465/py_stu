@@ -1,1 +1,4 @@
-print([1, 2, 3].reshape(-1, 2))
+for i in range(5, 5):
+    print('a')
+for i in range(5):
+    print('a')
