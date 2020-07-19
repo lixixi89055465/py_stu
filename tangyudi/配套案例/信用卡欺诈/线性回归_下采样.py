@@ -2,9 +2,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
 # %%
 data = pd.read_csv('creditcard.csv')
+
+#%%
+data['Amount'].values.reshape(-1,1)
+#%%
 
 from sklearn.preprocessing import StandardScaler
 
