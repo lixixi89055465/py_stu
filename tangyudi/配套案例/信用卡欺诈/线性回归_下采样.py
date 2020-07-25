@@ -86,8 +86,3 @@ def printing_Kfold_scores(x_train_data, y_train_data):
     print('*' * 100)
     return best_c
 
-
-# %%
-best_c = printing_Kfold_scores(X_train_undersample, y_train_undersample)
-
-# %%
