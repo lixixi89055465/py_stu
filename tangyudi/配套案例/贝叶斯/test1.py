@@ -16,4 +16,8 @@ n = len(word)
 
 # print(list(word[0:i]+c+word[i+1:] for i in range(n) for c in alphabet))
 
-print(list(word[0:i] + c + word[i:] for i in range(n + 1) for c in alphabet))
+# print(list(word[0:i] + c + word[i:] for i in range(n + 1) for c in alphabet))
+
+print(set([word[0:i] + c + word[i:] for i in range(n + 1) for c in alphabet]))
+
+print("aaaa")
