@@ -9,7 +9,7 @@
 
 from collections import defaultdict
 
-s = [('yellow', 1), ('blue', 2), ('yello', 3), ('blue', 4), ('red', 1),('yello',333)]
+s = [('yellow', 1), ('blue', 2), ('yello', 3), ('blue', 4), ('red', 1), ('yello', 333)]
 print(type(s[0]))
 print(type(s))
 d = defaultdict(list)
@@ -20,3 +20,4 @@ for k, v in s:
 s = sorted(d.items())
 print(s)
 print(d)
+
