@@ -3,7 +3,7 @@
 from matplotlib import pyplot as plt
 from matplotlib import font_manager
 
-my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
+# my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
 
 a = ["猩球崛起3：终极之战", "敦刻尔克", "蜘蛛侠：英雄归来", "战狼2"]
 b_16 = [15746, 312, 4497, 319]
@@ -24,7 +24,9 @@ plt.bar(x_15, b_15, width=bar_width)
 plt.bar(x_16, b_16, width=bar_width)
 
 # 设置图例
-plt.legend(prop=my_font)
+# plt.legend(prop=my_font)
+plt.legend()
 # 设置x轴的刻度
-plt.xticks(x_15,a,fontproperties=my_font)
+# plt.xticks(x_15,a,fontproperties=my_font)
+plt.xticks(x_15,a)
 plt.show()

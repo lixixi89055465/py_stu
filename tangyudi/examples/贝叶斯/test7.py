@@ -106,14 +106,20 @@ for key in grouped_1.index:
 grouped_1['all_count'] = all_count
 grouped_1['tfi'] = tfi
 grouped_1['idf'] = idf
-
-
 print(grouped_1.head(10))
 
-# grouped_1['ni']=ni
-# print(len(grouped_1))
-# print(grouped_1[:20])
-#
-# print(all_grouped[:10])
-#
-#
+from matplotlib import pyplot as plt
+
+
+
+
+y_3 = grouped_1.tfi.values.tolist()
+x_3 = grouped_1.idf.values.tolist()
+# 设置图形大小
+plt.figure(figsize=(20, 8), dpi=80)
+# 使用scatter 方法绘制散点图，和之前绘制折线图的唯一区别
+plt.scatter(x_3, y_3, label="3月份")
+# plt.scatter(x_10, y_10, label="10月份")
+
+# 展示
+plt.show()

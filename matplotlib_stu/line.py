@@ -2,7 +2,7 @@
 from matplotlib import pyplot as plt
 from matplotlib import font_manager
 
-my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
+# my_font = font_manager.FontProperties(fname="/System/Library/Fonts/PingFang.ttc")
 
 a = ["战狼2", "速度与激情8", "功夫瑜伽", "西游伏妖篇", "变形金刚5：\n最后的骑士", "摔跤吧！爸爸", "加勒比海盗5：\n死无对证", "金刚：骷髅岛", "极限特工：\n终极回归",
      "生化危机6：\n终章",
@@ -16,6 +16,7 @@ plt.figure(figsize=(20, 10), dpi=80)
 # plt.bar(range(len(a)), b, width=0.3)
 plt.barh(range(len(a)), b, height=0.3)
 
-plt.yticks(range(len(a)), a, fontproperties=my_font)
+# plt.yticks(range(len(a)), a, fontproperties=my_font)
+plt.yticks(range(len(a)), a)
 
 plt.show()
