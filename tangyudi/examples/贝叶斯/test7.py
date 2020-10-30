@@ -145,6 +145,9 @@ ax2 = fig.add_subplot(2, 1, 2)
 ax1.scatter(x_3, y_tfi, label="tfi")
 ax1.scatter(x_3, y_idf, label="idf")
 ax2.scatter(x_3, y_tfi_c_idf, label="tfi_c_idf")
+# plt.xscale('symlog')
+plt.xscale('log')
+
 plt.grid(True)
 
 # 展示
