@@ -10,10 +10,10 @@ df_news = pd.read_csv('./data/val.txt', index_col=False, sep='\t',  # 获取大�
 # 获取停用词的内容。
 stopwords = pd.read_csv("stopwords.txt", index_col=False, sep="\t", quoting=3, names=['stopword'], encoding='utf-8')
 stopwords.head(20)
-N = 100  # 设置要参与计算的文档的数目
+N = 200  # 设置要参与计算的文档的数目
 content.dropna()  # 删除无用的空数据
 df_news = df_news.dropna()[:N]
-contont_base = content.data[0]  # 实用jieba 分词器进行分词
+contont_base = content.data[0]  # 使用jieba 分词器进行分词
 content_s = jieba.lcut(contont_base)
 all_content = df_news.content.values.tolist()
 contents_clean = []
@@ -80,7 +80,7 @@ for key in grouped_1.index:
     idoc_count = grouped_1.loc[key, 'doc_count']
     tfi_t = 1 + np.log2(icount)
     tfi.append(tfi_t)
-    idf_t = N * 1.0 / idoc_count
+    idf_t = np.log2(N * 1.0 / idoc_count)
     idf.append(idf_t)
     tfi_c_idf.append(tfi_t * idf_t)
     all_count.append(all_grouped.loc[key, 'count'])
@@ -89,19 +89,36 @@ grouped_1['tfi'] = tfi
 grouped_1['idf'] = idf
 grouped_1['tfi_c_idf'] = tfi_c_idf
 
-grouped_1.sort_values(by='doc_count', ascending=True)
+grouped_1 = grouped_1.sort_values(by='all_count', ascending=False)
 y_tfi = grouped_1.tfi.values.tolist()
 y_idf = grouped_1.idf.values.tolist()
 y_tfi_c_idf = grouped_1.tfi_c_idf.values.tolist()
+# x_3 = [i for i in range(len(grouped_1))]
+# x_3 = grouped_1.doc_count.tolist()
 x_3 = grouped_1.all_count.tolist()
 fig = plt.figure(figsize=(20, 8), dpi=80)  # 设置图形大小
 
 ax1 = fig.add_subplot(2, 1, 1)
+
 ax2 = fig.add_subplot(2, 1, 2)
+ax1.set_xscale('log')
+ax2.set_xscale('log')
+# ax1.invert_xaxis()
+# ax2.invert_xaxis()
 
-ax1.scatter(x_3, y_tfi, label="tfi")  # 使用scatter 方法绘制散点图
-ax1.scatter(x_3, y_idf, label="idf")
-ax2.scatter(x_3, y_tfi_c_idf, label="tfi_c_idf")
+ax1.scatter(x_3, y_tfi, label="tf", marker='o')  # 使用scatter 方法绘制散点图
+
+ax1.scatter(x_3, y_idf, label="idf", marker='x')
+
+ax2.scatter(x_3, y_tfi_c_idf, label="tfi_c_idf",marker='_')
+# plt.xlabel("时间")
+# plt.ylabel("地点")
+
+plt.title("tf:O   idf:X   tf*idf: _ ")
+# plt.gca().invert_xaxis()
 plt.grid(True)
-
+# plt.xscale('symlog')
+# python semilogx()
+# plt.semilogx()
 plt.show()  # 展示
+print(x_3[:10])
