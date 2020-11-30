@@ -10,7 +10,7 @@ df_news = pd.read_csv('./data/val.txt', index_col=False, sep='\t',  #
 stopwords = pd.read_csv("stopwords.txt", index_col=False, sep="\t", quoting=3, names=['stopword'], encoding='utf-8')
 stopwords.head(20)
 stopwords = stopwords.stopword.values.tolist()
-N = 100
+N = 2000
 content.dropna()
 df_news = df_news.dropna()[:N]
 print(df_news.shape)
