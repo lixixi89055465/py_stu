@@ -8,3 +8,4 @@ cifar-10-batches-py
 wiki*
 zh.jian.wiki.seg-1.3g.txt
 *_big.csv
+__pycache__*
