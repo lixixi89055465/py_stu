@@ -90,3 +90,76 @@
 [I 11:22:14.081 NotebookApp] Starting buffering for a87ca1e4-9780-414b-9abc-2d1e479324cf:d5ad37902bb14e6db3c9a2e072a18603
 [I 11:22:16.977 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
 [I 11:22:18.007 NotebookApp] Starting buffering for 6bd1a288-f550-435e-8158-f7fb38f43d6e:14c24a331117458996fc49aed93526c2
+[I 11:25:11.662 NotebookApp] Creating new directory in /muli/base
+[I 11:25:31.130 NotebookApp] Creating new notebook in /muli/base/chapter_deep-learning-computation
+[I 11:25:32.457 NotebookApp] Kernel started: b7f9257a-580a-4c2a-832f-79022c841bcd, name: python3
+[I 11:26:36.088 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:26:58.944 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:28:14.445 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:31:32.460 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:33:32.450 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:35:32.490 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:36:54.346 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:37:32.450 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:38:59.255 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:39:32.436 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:40:35.936 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:41:32.600 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:43:23.033 NotebookApp] Starting buffering for 6bd1a288-f550-435e-8158-f7fb38f43d6e:1f737a40946e41578e94e83adb1034f7
+[I 11:44:46.872 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:45:07.640 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:45:22.486 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:47:19.170 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:48:44.198 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:49:18.767 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:51:32.428 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:52:16.192 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:53:32.417 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:53:52.561 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 11:53:57.096 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 12:06:01.199 NotebookApp] Starting buffering for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:06:11.741 NotebookApp] Restoring connection for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:16:33.558 NotebookApp] Starting buffering for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:16:46.857 NotebookApp] Restoring connection for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:27:06.577 NotebookApp] Starting buffering for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:27:19.877 NotebookApp] Restoring connection for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 12:37:52.205 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 13:39:22.337 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 13:43:30.294 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 13:43:57.630 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 13:45:27.997 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 14:25:32.247 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 14:27:32.189 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 14:28:07.471 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/use-gpu.ipynb
+[I 14:28:11.646 NotebookApp] Starting buffering for b7f9257a-580a-4c2a-832f-79022c841bcd:6c38f61aa1024947bb3b5f7a96ea8878
+[I 14:28:17.224 NotebookApp] Creating new notebook in /muli/base/chapter_deep-learning-computation
+[I 14:28:18.703 NotebookApp] Kernel started: 44fe245d-6335-4179-9ff2-eb05d0a29040, name: python3
+[I 14:28:31.450 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:28:49.553 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:40:18.710 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:42:05.461 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:48:19.322 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:54:18.671 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 14:55:01.134 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:08:18.645 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:09:18.251 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:09:54.717 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:10:08.427 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:10:12.578 NotebookApp] Starting buffering for 44fe245d-6335-4179-9ff2-eb05d0a29040:124cee8cba884549888b6f4ea0ef3117
+[I 15:10:19.160 NotebookApp] Starting buffering for 44fe245d-6335-4179-9ff2-eb05d0a29040:ba8a3054514f4bc78dac2f82bad67228
+[I 15:10:19.581 NotebookApp] Kernel restarted: 44fe245d-6335-4179-9ff2-eb05d0a29040
+[I 15:10:19.600 NotebookApp] Restoring connection for 44fe245d-6335-4179-9ff2-eb05d0a29040:ba8a3054514f4bc78dac2f82bad67228
+[I 15:10:19.600 NotebookApp] Replaying 3 buffered messages
+[I 15:12:13.728 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:12:20.317 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:14:13.724 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:16:13.717 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:17:19.230 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:18:13.720 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:18:14.916 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:19:58.051 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:20:04.686 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:25:36.713 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:26:13.720 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:27:11.131 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
+[I 15:27:33.636 NotebookApp] Saving file at /muli/base/chapter_deep-learning-computation/ccn-scratch.ipynb
