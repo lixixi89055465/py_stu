@@ -1,0 +1,92 @@
+[W 10:09:39.603 NotebookApp] WARNING: The notebook server is listening on all IP addresses and not using encryption. This is not recommended.
+[I 10:09:39.605 NotebookApp] Serving notebooks from local directory: /home/dske/Documents/lx/py_stu
+[I 10:09:39.605 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 10:09:39.605 NotebookApp] http://dske:8888/?token=cfcecc39ba8a15d8dea2219b6069e3407c10cde85a4de5f2
+[I 10:09:39.605 NotebookApp]  or http://127.0.0.1:8888/?token=cfcecc39ba8a15d8dea2219b6069e3407c10cde85a4de5f2
+[I 10:09:39.605 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 10:09:39.608 NotebookApp] No web browser found: could not locate runnable browser.
+[C 10:09:39.608 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/dske/.local/share/jupyter/runtime/nbserver-18820-open.html
+    Or copy and paste one of these URLs:
+        http://dske:8888/?token=cfcecc39ba8a15d8dea2219b6069e3407c10cde85a4de5f2
+     or http://127.0.0.1:8888/?token=cfcecc39ba8a15d8dea2219b6069e3407c10cde85a4de5f2
+[W 10:09:58.051 NotebookApp] 404 DELETE /api/sessions/34f3fcb1-c823-48a0-9e69-ec5abebe7e67 (121.248.202.40): Session not found: session_id='34f3fcb1-c823-48a0-9e69-ec5abebe7e67'
+[W 10:09:58.052 NotebookApp] Session not found: session_id='34f3fcb1-c823-48a0-9e69-ec5abebe7e67'
+[W 10:09:58.052 NotebookApp] 404 DELETE /api/sessions/34f3fcb1-c823-48a0-9e69-ec5abebe7e67 (121.248.202.40) 5.13ms referer=http://10.101.20.157:8888/notebooks/muli/base/chapter02/reg_scratch.ipynb
+[I 10:09:58.102 NotebookApp] Kernel started: 86fa66c0-d5a6-4dd1-aac4-283590aaa60d, name: python3
+[I 10:10:03.234 NotebookApp] Saving file at /muli/base/chapter02/reg_scratch.ipynb
+[I 10:10:03.367 NotebookApp] Starting buffering for 86fa66c0-d5a6-4dd1-aac4-283590aaa60d:06832ac37c964c16881c8fdcd623a6c5
+[I 10:10:08.481 NotebookApp] Starting buffering for 86fa66c0-d5a6-4dd1-aac4-283590aaa60d:8eb8a0926cbc4f6482086a4c74e152ce
+[I 10:10:08.802 NotebookApp] Kernel restarted: 86fa66c0-d5a6-4dd1-aac4-283590aaa60d
+[I 10:10:08.821 NotebookApp] Restoring connection for 86fa66c0-d5a6-4dd1-aac4-283590aaa60d:8eb8a0926cbc4f6482086a4c74e152ce
+[I 10:10:08.821 NotebookApp] Replaying 3 buffered messages
+[W 10:10:30.844 NotebookApp] Notebook muli/base/chapter02/mlp-scratch.ipynb is not trusted
+[I 10:10:31.335 NotebookApp] Kernel started: a89a669e-45ab-4560-942b-08e122de057d, name: python3
+[I 10:10:34.427 NotebookApp] Starting buffering for a89a669e-45ab-4560-942b-08e122de057d:3fab9b3d871f45f182a4cde01b078744
+[I 10:10:34.748 NotebookApp] Kernel restarted: a89a669e-45ab-4560-942b-08e122de057d
+[I 10:10:34.771 NotebookApp] Restoring connection for a89a669e-45ab-4560-942b-08e122de057d:3fab9b3d871f45f182a4cde01b078744
+[I 10:10:34.771 NotebookApp] Replaying 3 buffered messages
+[I 10:11:09.311 NotebookApp] Starting buffering for a89a669e-45ab-4560-942b-08e122de057d:3fab9b3d871f45f182a4cde01b078744
+[I 10:11:10.030 NotebookApp] Kernel restarted: a89a669e-45ab-4560-942b-08e122de057d
+[I 10:11:10.048 NotebookApp] Restoring connection for a89a669e-45ab-4560-942b-08e122de057d:3fab9b3d871f45f182a4cde01b078744
+[I 10:11:10.048 NotebookApp] Replaying 3 buffered messages
+[W 10:11:29.623 NotebookApp] Notebook muli/base/chapter02/mlp-gluon.ipynb is not trusted
+[I 10:11:29.975 NotebookApp] Kernel started: 051c7b24-86ec-499e-b1be-ef7269973994, name: python3
+[I 10:11:33.574 NotebookApp] Starting buffering for 051c7b24-86ec-499e-b1be-ef7269973994:1514be41fe024e59abb76d78768687d1
+[I 10:11:33.896 NotebookApp] Kernel restarted: 051c7b24-86ec-499e-b1be-ef7269973994
+[I 10:11:33.914 NotebookApp] Restoring connection for 051c7b24-86ec-499e-b1be-ef7269973994:1514be41fe024e59abb76d78768687d1
+[I 10:11:33.914 NotebookApp] Replaying 3 buffered messages
+[I 10:11:55.221 NotebookApp] Starting buffering for 051c7b24-86ec-499e-b1be-ef7269973994:1514be41fe024e59abb76d78768687d1
+[I 10:11:55.741 NotebookApp] Kernel restarted: 051c7b24-86ec-499e-b1be-ef7269973994
+[I 10:11:55.771 NotebookApp] Restoring connection for 051c7b24-86ec-499e-b1be-ef7269973994:1514be41fe024e59abb76d78768687d1
+[I 10:11:55.771 NotebookApp] Replaying 3 buffered messages
+[I 10:12:04.840 NotebookApp] Saving file at /muli/base/chapter02/reg_scratch.ipynb
+[I 10:12:16.064 NotebookApp] Saving file at /muli/base/chapter02/mlp-gluon.ipynb
+[I 10:12:17.015 NotebookApp] Starting buffering for 051c7b24-86ec-499e-b1be-ef7269973994:1514be41fe024e59abb76d78768687d1
+[I 10:12:19.554 NotebookApp] Saving file at /muli/base/chapter02/mlp-scratch.ipynb
+[I 10:12:20.183 NotebookApp] Starting buffering for a89a669e-45ab-4560-942b-08e122de057d:3fab9b3d871f45f182a4cde01b078744
+[I 10:12:21.228 NotebookApp] Saving file at /muli/base/chapter02/reg_scratch.ipynb
+[I 10:12:21.511 NotebookApp] Saving file at /muli/base/chapter02/reg_scratch.ipynb
+[I 10:12:22.132 NotebookApp] Starting buffering for 86fa66c0-d5a6-4dd1-aac4-283590aaa60d:8eb8a0926cbc4f6482086a4c74e152ce
+[I 10:13:35.137 NotebookApp] 302 GET / (121.248.202.40) 1.25ms
+[I 10:14:10.719 NotebookApp] Creating new notebook in /muli/base/chapter02
+[I 10:14:11.975 NotebookApp] Kernel started: 6bd1a288-f550-435e-8158-f7fb38f43d6e, name: python3
+[I 10:14:44.859 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:16:12.005 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:16:24.195 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:18:12.002 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:18:24.820 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:20:11.972 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:20:42.311 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:22:11.994 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:24:11.960 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:26:11.973 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:27:07.420 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:28:11.972 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:30:11.989 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:30:56.927 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:32:11.973 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:32:39.217 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:33:15.340 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:33:18.098 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:33:19.202 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:41:35.547 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:47:10.048 NotebookApp] Starting buffering for 86fa66c0-d5a6-4dd1-aac4-283590aaa60d:bd151426964a4fda80fc3ffebcfcf808
+[I 10:48:11.944 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:49:24.080 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:49:30.279 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:51:13.156 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 10:52:52.980 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[W 11:04:01.994 NotebookApp] Notebook muli/d2l-zh/chapter_deep-learning-basics/kaggle-house-price.ipynb is not trusted
+[I 11:04:03.376 NotebookApp] Kernel started: a87ca1e4-9780-414b-9abc-2d1e479324cf, name: python3
+[I 11:04:03.395 NotebookApp] 302 GET /notebooks/muli/d2l-zh/img/kaggle.png (121.248.202.40) 0.87ms
+[I 11:04:03.397 NotebookApp] 302 GET /notebooks/muli/d2l-zh/img/house_pricing.png (121.248.202.40) 0.94ms
+[I 11:04:03.399 NotebookApp] 302 GET /notebooks/muli/d2l-zh/img/kaggle_submit2.png (121.248.202.40) 0.90ms
+[I 11:04:03.400 NotebookApp] 302 GET /notebooks/muli/d2l-zh/img/qr_kaggle-house-price.svg (121.248.202.40) 0.89ms
+[I 11:06:03.419 NotebookApp] Saving file at /muli/d2l-zh/chapter_deep-learning-basics/kaggle-house-price.ipynb
+[W 11:06:03.421 NotebookApp] Notebook muli/d2l-zh/chapter_deep-learning-basics/kaggle-house-price.ipynb is not trusted
+[I 11:22:14.081 NotebookApp] Starting buffering for a87ca1e4-9780-414b-9abc-2d1e479324cf:d5ad37902bb14e6db3c9a2e072a18603
+[I 11:22:16.977 NotebookApp] Saving file at /muli/base/chapter02/reg-gluon.ipynb
+[I 11:22:18.007 NotebookApp] Starting buffering for 6bd1a288-f550-435e-8158-f7fb38f43d6e:14c24a331117458996fc49aed93526c2
