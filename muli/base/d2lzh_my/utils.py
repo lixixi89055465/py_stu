@@ -524,7 +524,10 @@ def show_trace_2d(f, res):
     plt.xlabel('x1')
     plt.ylabel('x2')
 
-
+def SGD(params,lr):
+    for param in params:
+        param[:]=param -lr *param.grad 
+        
 def squared_loss(y_hat, y):
     """Squared loss."""
     return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
