@@ -2,8 +2,13 @@ name: gluon
 dependencies:
 - python=3.6
 - pip:
+<<<<<<< HEAD
   - mxnet-cu101==1.5.0
   - d2lzh==1.0.0
+=======
+  - mxnet==1.5.0
+  - d2lzh_my==1.0.0
+>>>>>>> 95bb8b63f4e00bb6027ec39874941682830db2fc
   - jupyter==1.0.0
   - matplotlib==2.2.2
   - pandas==0.23.4

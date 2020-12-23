@@ -145,6 +145,12 @@ def download_voc_pascal(data_dir='../data'):
     with tarfile.open(fname, 'r') as f:
         f.extractall(data_dir)
     return voc_dir
+def SGD(params,lr):
+    for param in params:
+        param[:]=param -lr *param.grad
+
+def accuracy(output,label):
+    return nd.mean(output.argmax(axis=1)==label)
 
 
 def evaluate_accuracy(data_iter, net, ctx=[mx.cpu()]):

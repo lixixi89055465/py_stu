@@ -29,7 +29,6 @@ VOC_COLORMAP = [[0, 0, 0], [128, 0, 0], [0, 128, 0], [128, 128, 0],
                 [0, 64, 0], [128, 64, 0], [0, 192, 0], [128, 192, 0],
                 [0, 64, 128]]
 
-
 def bbox_to_rect(bbox, color):
     """Convert bounding box to matplotlib format."""
     return plt.Rectangle(xy=(bbox[0], bbox[1]), width=bbox[2]-bbox[0],
@@ -146,6 +145,9 @@ def download_voc_pascal(data_dir='../data'):
         f.extractall(data_dir)
     return voc_dir
 
+def SGD(params,lr):
+    for param in params:
+        param[:]=param -lr *param.grad
 
 def accuracy(output,label):
     return nd.mean(output.argmax(axis=1)==label)
