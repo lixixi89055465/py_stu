@@ -15,9 +15,6 @@ def accuracy(output,label):
     return nd.mean(output.argmax(axis=1)==label)
 
 
-
-
-
 def dropout(X, drop_probalility):
     keep_probability = 1 - drop_probalility
     assert 0 <= keep_probability <= 1
