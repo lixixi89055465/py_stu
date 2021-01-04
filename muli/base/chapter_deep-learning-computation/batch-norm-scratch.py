@@ -15,10 +15,10 @@ def pure_batch_norm(X, gamma, beta, eps=1e-5):
     return gamma.reshape(mean.shape) * X_hat + beta.reshape(mean.shape)
 
 A = nd.arange(6).reshape((3, 2))
-A
+print(A)
 pure_batch_norm(A, gamma=nd.array([1, 11]), beta=nd.array([0, 0]))
 B = nd.arange(18).reshape((1, 2, 3, 3))
-B
+print(B)
 pure_batch_norm(B, gamma=nd.array([1, 11]), beta=nd.array([0, 0]))
 def batch_norm(X, gamma, beta, is_training, moving_mean, moving_variance, eps=1e-5, moving_momentum=0.9):
     assert len(X.shape) in (2, 4)
@@ -53,7 +53,7 @@ sys.path.append('..')
 import utils
 
 ctx = utils.try_gpu()
-ctx
+print(ctx)
 weight_scale = 0.01
 c1 = 20
 W1 = nd.random.normal(shape=(c1, 1, 5, 5), scale=weight_scale, ctx=ctx)
