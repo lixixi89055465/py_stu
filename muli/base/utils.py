@@ -69,7 +69,7 @@ def load_data_fashion_mnist(batch_size, resize=None,transform=None, root="~/.mxn
 def try_gpu():
     """If GPU is available, return mx.gpu(0); else return mx.cpu()"""
     try:
-        ctx = mx.gpu()
+        ctx = mx.gpu(0)
         _ = nd.array([0], ctx=ctx)
     except:
         ctx = mx.cpu()
