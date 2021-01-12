@@ -51,8 +51,9 @@ import sys
 
 sys.path.append('..')
 import utils
-
-ctx = utils.try_gpu()
+import mxnet as mx 
+#ctx = utils.try_gpu()
+ctx = mx.gpu()
 print(ctx)
 weight_scale = 0.01
 c1 = 20
