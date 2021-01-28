@@ -35,7 +35,7 @@ class DataLoader(object):
 
         for i in range(n//self.batch_size):
             if self.transform is not None:
-                yield self.transform(X[i*self.batch_size:(i+1)*self.batch_size], 
+                yield self.transform(X[i*self.batch_size:(i+1)*self.batch_size],
                                      y[i*self.batch_size:(i+1)*self.batch_size])
             else:
                 yield (X[i*self.batch_size:(i+1)*self.batch_size],
@@ -189,6 +189,8 @@ def resnet18(num_classes):
             Residual(128),
             Residual(256, same_shape=False),
             Residual(256),
+            Residual(512, same_shape=False),
+            Residual(512),
             nn.GlobalAvgPool2D(),
             nn.Dense(num_classes)
         )
@@ -233,12 +235,12 @@ def data_iter_consecutive(corpus_indices, batch_size, num_steps, ctx=None):
     corpus_indices = nd.array(corpus_indices, ctx=ctx)
     data_len = len(corpus_indices)
     batch_len = data_len // batch_size
-    
+
     indices = corpus_indices[0: batch_size * batch_len].reshape((
         batch_size, batch_len))
     # Subtract 1 because label indices are corresponding input indices + 1. 
     epoch_size = (batch_len - 1) // num_steps
-    
+
     for i in range(epoch_size):
         i = i * num_steps
         data = indices[:, i: i + num_steps]
@@ -280,7 +282,7 @@ def predict_rnn(rnn, prefix, num_chars, params, hidden_dim, ctx, idx_to_char,
     return ''.join([idx_to_char[i] for i in output])
 
 
-def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim, 
+def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim,
                           learning_rate, clipping_norm, batch_size,
                           pred_period, pred_len, seqs, get_params, get_inputs,
                           ctx, corpus_indices, idx_to_char, char_to_idx,
@@ -291,10 +293,10 @@ def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim,
     else:
         data_iter = data_iter_consecutive
     params = get_params()
-    
+
     softmax_cross_entropy = gluon.loss.SoftmaxCrossEntropyLoss()
 
-    for e in range(1, epochs + 1): 
+    for e in range(1, epochs + 1):
         # If consecutive sampling is used, in the same epoch, the hidden state
         # is initialized only at the beginning of the epoch.
         if not is_random_iter:
@@ -302,7 +304,7 @@ def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim,
             if is_lstm:
                 state_c = nd.zeros(shape=(batch_size, hidden_dim), ctx=ctx)
         train_loss, num_examples = 0, 0
-        for data, label in data_iter(corpus_indices, batch_size, num_steps, 
+        for data, label in data_iter(corpus_indices, batch_size, num_steps,
                                      ctx):
             # If random sampling is used, the hidden state has to be
             # initialized for each mini-batch.
@@ -314,7 +316,7 @@ def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim,
                 # outputs shape：(batch_size, vocab_size)
                 if is_lstm:
                     outputs, state_h, state_c = rnn(get_inputs(data), state_h,
-                                                    state_c, *params) 
+                                                    state_c, *params)
                 else:
                     outputs, state_h = rnn(get_inputs(data), state_h, *params)
                 # Let t_ib_j be the j-th element of the mini-batch at time i.
@@ -335,7 +337,7 @@ def train_and_predict_rnn(rnn, is_random_iter, epochs, num_steps, hidden_dim,
             num_examples += loss.size
 
         if e % pred_period == 0:
-            print("Epoch %d. Training perplexity %f" % (e, 
+            print("Epoch %d. Training perplexity %f" % (e,
                                                exp(train_loss/num_examples)))
             for seq in seqs:
                 print(' - ', predict_rnn(rnn, seq, pred_len, params,
