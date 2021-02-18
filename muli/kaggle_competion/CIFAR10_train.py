@@ -18,6 +18,7 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 from netlib import *
 
+
 # ctx = mx.gpu(3)
 ctx = mx.gpu(0)
 
