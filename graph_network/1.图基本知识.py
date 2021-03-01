@@ -17,3 +17,5 @@ print(nx.degree(G))
 print(list(nx.connected_components(G)))
 # 图直径
 print(nx.diameter(G))
+# 度中心性
+print(nx.degree_centrality(G))
