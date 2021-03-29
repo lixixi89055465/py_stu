@@ -9,6 +9,7 @@ expect "*Username*"
 send "1850094299@qq.com\r"
 expect "*Password*"
 send "89055465ab\r" 
+exp_continue
 
 
 
