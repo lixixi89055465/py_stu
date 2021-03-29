@@ -6,7 +6,8 @@ from torchvision.datasets import MNIST
 from torchvision.utils import make_grid
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-torch.manual_seed(0) # Set for testing purposes, please do not change!
+
+torch.manual_seed(0)  # Set for testing purposes, please do not change!
 
 
 def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28)):
@@ -20,6 +21,7 @@ def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28)):
     plt.imshow(image_grid.permute(1, 2, 0).squeeze())
     plt.show()
 
+
 # UNQ_C1 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)
 # GRADED FUNCTION: Generator
 class Generator(nn.Module):
@@ -31,6 +33,7 @@ class Generator(nn.Module):
               (MNIST is black-and-white, so 1 channel is your default)
         hidden_dim: the inner dimension, a scalar
     '''
+
     def __init__(self, z_dim=10, im_chan=1, hidden_dim=64):
         super(Generator, self).__init__()
         self.z_dim = z_dim
@@ -70,7 +73,7 @@ class Generator(nn.Module):
                 nn.ReLU(inplace=True)
                 #### END CODE HERE ####
             )
-        else: # Final Layer
+        else:  # Final Layer
             return nn.Sequential(
                 #### START CODE HERE ####
                 nn.ConvTranspose2d(input_channels, output_channels, kernel_size, stride),
@@ -97,6 +100,7 @@ class Generator(nn.Module):
         x = self.unsqueeze_noise(noise)
         return self.gen(x)
 
+
 def get_noise(n_samples, z_dim, device='cpu'):
     '''
     Function for creating noise vectors: Given the dimensions (n_samples, z_dim)
@@ -108,6 +112,7 @@ def get_noise(n_samples, z_dim, device='cpu'):
     '''
     return torch.randn(n_samples, z_dim, device=device)
 
+
 # UNQ_C2 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)
 '''
 Test your make_gen_block() function
@@ -117,7 +122,7 @@ num_test = 100
 
 print("aaaaaaaaaa")
 # Test the hidden block
-print(num_test,gen.z_dim)
+print(num_test, gen.z_dim)
 test_hidden_noise = get_noise(num_test, gen.z_dim)
 print("test_hidden_noise.shape:")
 print(test_hidden_noise.shape)
@@ -127,16 +132,32 @@ print(test_hidden_block)
 test_uns_noise = gen.unsqueeze_noise(test_hidden_noise)
 # print(test_uns_noise.shape)
 hidden_output = test_hidden_block(test_uns_noise)
-# print(hidden_output.shape)
+print(hidden_output.shape)
 # Check that it works with other strides
 test_hidden_block_stride = gen.make_gen_block(20, 20, kernel_size=4, stride=2)
 
 test_final_noise = get_noise(num_test, gen.z_dim) * 20
 test_final_block = gen.make_gen_block(10, 20, final_layer=True)
 test_final_uns_noise = gen.unsqueeze_noise(test_final_noise)
+print("test_final_uns_noise.shape:")
+print(test_final_uns_noise.shape)
 final_output = test_final_block(test_final_uns_noise)
+print("final_output.shape:")
+print(final_output.shape)
 
 # Test the whole thing:
 test_gen_noise = get_noise(num_test, gen.z_dim)
+print("test_gen_noise.shape:")
+print(test_gen_noise.shape)
+print("len(test_gen_noise):")
+print(len(test_gen_noise))
 test_uns_gen_noise = gen.unsqueeze_noise(test_gen_noise)
+print("test_uns_gen_noise.shape:")
+print(test_uns_gen_noise.shape)
+
 gen_output = gen(test_uns_gen_noise)
+
+print("-------------------\n")
+print("-------------------\n")
+print("-------------------\n")
+print("-------------------\n")
