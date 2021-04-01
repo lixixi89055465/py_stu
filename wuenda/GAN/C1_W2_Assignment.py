@@ -120,44 +120,203 @@ Test your make_gen_block() function
 gen = Generator()
 num_test = 100
 
-print("aaaaaaaaaa")
+# print("aaaaaaaaaa")
 # Test the hidden block
-print(num_test, gen.z_dim)
+# print(num_test, gen.z_dim)
 test_hidden_noise = get_noise(num_test, gen.z_dim)
-print("test_hidden_noise.shape:")
-print(test_hidden_noise.shape)
+# print("test_hidden_noise.shape:")
+# print(test_hidden_noise.shape)
 test_hidden_block = gen.make_gen_block(10, 20, kernel_size=4, stride=1)
-print("test_hidden_block")
-print(test_hidden_block)
+# print("test_hidden_block")
+# print(test_hidden_block)
 test_uns_noise = gen.unsqueeze_noise(test_hidden_noise)
 # print(test_uns_noise.shape)
 hidden_output = test_hidden_block(test_uns_noise)
-print(hidden_output.shape)
+# print(hidden_output.shape)
 # Check that it works with other strides
 test_hidden_block_stride = gen.make_gen_block(20, 20, kernel_size=4, stride=2)
 
 test_final_noise = get_noise(num_test, gen.z_dim) * 20
 test_final_block = gen.make_gen_block(10, 20, final_layer=True)
+# print("test_final_block:")
+# print(test_final_block)
 test_final_uns_noise = gen.unsqueeze_noise(test_final_noise)
-print("test_final_uns_noise.shape:")
-print(test_final_uns_noise.shape)
+# print("test_final_uns_noise.shape:")
+# print(test_final_uns_noise.shape)
 final_output = test_final_block(test_final_uns_noise)
-print("final_output.shape:")
-print(final_output.shape)
+# print("test_final_block:")
+# print(test_final_block)
+# print("test_final_uns_noise.shape:")
+# print(test_final_uns_noise.shape)
+# print("final_output.shape:")
+# print(final_output.shape)
 
 # Test the whole thing:
 test_gen_noise = get_noise(num_test, gen.z_dim)
-print("test_gen_noise.shape:")
-print(test_gen_noise.shape)
-print("len(test_gen_noise):")
-print(len(test_gen_noise))
+# print("test_gen_noise.shape:")
+# print(test_gen_noise.shape)
+# print("len(test_gen_noise):")
+# print(len(test_gen_noise))
 test_uns_gen_noise = gen.unsqueeze_noise(test_gen_noise)
-print("test_uns_gen_noise.shape:")
-print(test_uns_gen_noise.shape)
+# print("test_uns_gen_noise.shape:")
+# print(test_uns_gen_noise.shape)
 
 gen_output = gen(test_uns_gen_noise)
+# UNIT TESTS
+tuple(hidden_output.shape) == (num_test, 20, 4, 4)
 
-print("-------------------\n")
-print("-------------------\n")
-print("-------------------\n")
-print("-------------------\n")
+
+class Discriminator(nn.Module):
+    def __init__(self, im_chan=1, hidden_dim=16):
+        super(Discriminator, self).__init__()
+        self.disc = nn.Sequential(
+            self.make_disc_block(im_chan, hidden_dim),
+            self.make_disc_block(hidden_dim, hidden_dim * 2),
+            self.make_disc_block(hidden_dim * 2, 1, final_layer=True)
+        )
+
+    def make_disc_block(self, input_channels, output_channels, kernel_size=4, stride=2, final_layer=False):
+        if not final_layer:
+            return nn.Sequential(
+                nn.Conv2d(input_channels, output_channels, kernel_size, stride),
+                nn.BatchNorm2d(output_channels),
+                nn.LeakyReLU(0.2, inplace=True)
+            )
+        else:
+            return nn.Sequential(
+                nn.Conv2d(input_channels, output_channels, kernel_size, stride)
+            )
+
+    def forward(self, image):
+        disc_pred = self.disc(image)
+        return disc_pred.view(len(disc_pred), -1)
+
+
+num_test = 100
+gen = Generator()
+disc = Discriminator()
+# print("gen:")
+# print(gen)
+# print("disc:")
+# print(disc)
+test_images = gen(get_noise(num_test, gen.z_dim))
+# print("test_images.shape:")
+# print(test_images.shape)
+
+test_hidden_block = disc.make_disc_block(1, 5, kernel_size=6, stride=3)
+# print("test_hidden_block:")
+# print(test_hidden_block)
+hidden_output = test_hidden_block(test_images)
+# print(hidden_output.shape)
+# Test the hidden block
+
+
+# Test the final block
+test_final_block = disc.make_disc_block(1, 10, kernel_size=2, stride=5, final_layer=True)
+final_output = test_final_block(test_images)
+
+# Test the whole thing:
+disc_output = disc(test_images)
+
+criterion = nn.BCEWithLogitsLoss()
+z_dim = 64
+display_step = 500
+batch_size = 128
+# A learning rate of 0.0002 works well on DCGAN
+lr = 0.0002
+
+# These parameters control the optimizer's momentum, which you can read more about here:
+# https://distill.pub/2017/momentum/ but you don’t need to worry about it for this course!
+beta_1 = 0.5
+beta_2 = 0.999
+device = 'cuda'
+
+# You can tranform the image values to be between -1 and 1 (the range of the tanh activation)
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,)),
+])
+
+dataloader = DataLoader(
+    MNIST('.', download=True, transform=transform),
+    batch_size=batch_size,
+    shuffle=True)
+
+gen = Generator(z_dim).to(device)
+print("gen:")
+print(gen)
+print(type(gen.parameters()))
+print(gen.parameters())
+gen_opt = torch.optim.Adam(gen.parameters(), lr=lr, betas=(beta_1, beta_2))
+print(gen_opt)
+disc = Discriminator().to(device)
+print(disc)
+disc_opt = torch.optim.Adam(disc.parameters(), lr=lr, betas=(beta_1, beta_2))
+print(disc_opt)
+
+
+# You initialize the weights to the normal distribution
+# with mean 0 and standard deviation 0.02
+def weights_init(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
+        torch.nn.init.normal_(m.weight, 0.0, 0.02)
+    if isinstance(m, nn.BatchNorm2d):
+        torch.nn.init.normal_(m.weight, 0.0, 0.02)
+        torch.nn.init.constant_(m.bias, 0)
+
+
+gen = gen.apply(weights_init)
+# print(gen)
+disc = disc.apply(weights_init)
+# print(disc)
+print('*' * 20)
+
+
+n_epochs = 50
+cur_step = 0
+mean_generator_loss = 0
+mean_discriminator_loss = 0
+for epoch in range(n_epochs):
+    # Dataloader returns the batches
+    for real, _ in tqdm(dataloader):
+        cur_batch_size = len(real)
+        real = real.to(device)
+
+        ## Update discriminator ##
+        disc_opt.zero_grad()
+        fake_noise = get_noise(cur_batch_size, z_dim, device=device)
+        fake = gen(fake_noise)
+        disc_fake_pred = disc(fake.detach())
+        disc_fake_loss = criterion(disc_fake_pred, torch.zeros_like(disc_fake_pred))
+        disc_real_pred = disc(real)
+        disc_real_loss = criterion(disc_real_pred, torch.ones_like(disc_real_pred))
+        disc_loss = (disc_fake_loss + disc_real_loss) / 2
+
+        # Keep track of the average discriminator loss
+        mean_discriminator_loss += disc_loss.item() / display_step
+        # Update gradients
+        disc_loss.backward(retain_graph=True)
+        # Update optimizer
+        disc_opt.step()
+
+        ## Update generator ##
+        gen_opt.zero_grad()
+        fake_noise_2 = get_noise(cur_batch_size, z_dim, device=device)
+        fake_2 = gen(fake_noise_2)
+        disc_fake_pred = disc(fake_2)
+        gen_loss = criterion(disc_fake_pred, torch.ones_like(disc_fake_pred))
+        gen_loss.backward()
+        gen_opt.step()
+
+        # Keep track of the average generator loss
+        mean_generator_loss += gen_loss.item() / display_step
+
+        ## Visualization code ##
+        if cur_step % display_step == 0 and cur_step > 0:
+            print(f"Step {cur_step}: Generator loss: {mean_generator_loss}, discriminator loss: {mean_discriminator_loss}")
+            show_tensor_images(fake)
+            show_tensor_images(real)
+            mean_generator_loss = 0
+            mean_discriminator_loss = 0
+        cur_step += 1
+
