@@ -7,7 +7,7 @@ from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics, 
 
 gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.2)
 
-# config = tf.compat.v1.ConfigProto(gpu_options=gpu_options)
+config = tf.compat.v1.ConfigProto(gpu_options=gpu_options)
 cpu_num = 16
 config = tf.compat.v1.ConfigProto(device_count={"CPU": cpu_num},
                                   gpu_options=gpu_options,
@@ -42,16 +42,18 @@ test_db = tf.data.Dataset.from_tensor_slices((x_val, y_val))
 test_db = test_db.map(preprocess).batch(batchsz)
 
 network = Sequential([
-    layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(.1)),
-    layers.Dense(256, activation='relu', kernel_regularizer=regularizers.l2(0.1)),
-    layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.1)),
-    layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(0.1)),
+    layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+    layers.Dropout(0.5),
+    layers.Dense(256, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+    layers.Dropout(0.5),
+    layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+    layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
     layers.Dense(10)
 ])
 
 network.build(input_shape=(None, 32 * 32 * 3))
 print(network.summary())
-optimizer = optimizers.Adam(lr=0.001)
+optimizer = optimizers.Adam(lr=0.0003)
 
 acc_meter = metrics.Accuracy()
 loss_meter = metrics.Mean()
@@ -60,7 +62,7 @@ for epoch in range(50):
     for step, (x, y) in enumerate(train_db):
         with tf.GradientTape() as tape:
             x = tf.reshape(x, (-1, 32 * 32 * 3))
-            out = network(x)
+            out = network(x,training=True)
             # y_onehot = tf.one_hot(y, depth=10)
             loss = tf.reduce_mean(tf.losses.categorical_crossentropy(y, out, from_logits=True))
             loss_meter.update_state(loss)
@@ -75,7 +77,7 @@ for epoch in range(50):
             acc_meter.reset_states()
             for step, (x, y) in enumerate(test_db):
                 x = tf.reshape(x, [-1, (32 * 32 * 3)])
-                out = network(x)
+                out = network(x,training=False)
                 # break
                 pred = tf.argmax(out, axis=1)
                 y_onehot = tf.argmax(y, axis=1)
