@@ -18,6 +18,8 @@ session = tf.compat.v1.Session(config=config)
 
 
 def preprocess(x, y):
+    # [0，1]
+    # [-1，1]
     x = 2 * tf.cast(x, dtype=tf.float32) / 255. - 1
     y = tf.cast(y, dtype=tf.int32)
     return x, y
@@ -27,11 +29,24 @@ def preprocess(x, y):
 y = tf.squeeze(y, axis=1)
 y_test = tf.squeeze(y_test, axis=1)
 print(x.shape, y.shape, x_test.shape, y_test.shape)
+## tensorflow2.0 数据增强
+print("数据增强:")
+train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255,
+                                                                rotation_range=10,
+                                                                width_shift_range=0.1,
+                                                                height_shift_range=0.1,
+                                                                shear_range=0.1,
+                                                                zoom_range=0.1,
+                                                                horizontal_flip=False,
+                                                                fill_mode='nearest')
+test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255)  # 不增强验证数据
 
-train_db = tf.data.Dataset.from_tensor_slices((x, y))
-train_db = train_db.shuffle(10000).map(preprocess).batch(128)
-test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
-test_db = test_db.map(preprocess).batch(128)
+# train_db = tf.data.Dataset.from_tensor_slices((x, y))
+# train_db = train_db.shuffle(10000).map(preprocess).batch(128)
+train_db = train_datagen.flow(x, y, batch_size=512)
+# test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
+# test_db = test_db.map(preprocess).batch(128)
+test_db = train_datagen.flow(x_test,y_test,batch_size=512)
 
 
 def main():

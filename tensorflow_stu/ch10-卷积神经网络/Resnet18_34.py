@@ -4,13 +4,13 @@ from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics, 
 
 
 class BasicBlock(layers.Layer):
-    def __init__(self, filter_num, stride=1):
+    def __init__(self, filter_num, stride=1,weight_decay=5e-4):
         super(BasicBlock, self).__init__()
-        self.conv1 = layers.Conv2D(filter_num, (3, 3), strides=stride, padding='same')
+        self.conv1 = layers.Conv2D(filter_num, (3, 3), strides=stride, padding='same',kernel_regularizer=regularizers.l2(weight_decay))
         self.bn1 = layers.BatchNormalization()
         self.relu = layers.Activation('relu')
 
-        self.conv2 = layers.Conv2D(filter_num, (3, 3), strides=1, padding='same')
+        self.conv2 = layers.Conv2D(filter_num, (3, 3), strides=1, padding='same',kernel_regularizer=regularizers.l2(weight_decay))
         self.bn2 = layers.BatchNormalization()
 
         if stride != 1:
