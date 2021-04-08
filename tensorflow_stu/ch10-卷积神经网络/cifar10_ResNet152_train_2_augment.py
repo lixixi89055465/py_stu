@@ -8,7 +8,7 @@ from tensorflow.keras.applications.resnet50 import ResNet50
 # from tensorflow.keras.applications.resNet152 import resNet152
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.3)
+gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
 
 cpu_num = 16
 config = tf.compat.v1.ConfigProto(device_count={"CPU": cpu_num},
@@ -33,15 +33,15 @@ def preprocess(x, y):
 y = tf.squeeze(y, axis=1)
 y_test = tf.squeeze(y_test, axis=1)
 # 只留一个测试效果
-# image_gen_train = ImageDataGenerator(  # 数据增强
-# rescale=1.0/255,  # 归至0～1
-# rotation_range=180,  # 随机0度旋转
-# width_shift_range=0.6,  # 宽度偏移
-# height_shift_range=0.6,  # 高度偏移
-# horizontal_flip=True,  # 水平翻转
-# zoom_range=0.8  # 将图像随机缩放到100％
-# )
-# image_gen_train.fit(x)
+image_gen_train = ImageDataGenerator(  # 数据增强
+    # rescale=1.0/255,  # 归至0～1
+    rotation_range=180,  # 随机0度旋转
+    # width_shift_range=0.6,  # 宽度偏移
+    # height_shift_range=0.6,  # 高度偏移
+    # horizontal_flip=True,  # 水平翻转
+    # zoom_range=0.8  # 将图像随机缩放到100％
+)
+image_gen_train.fit(x)
 
 print(x.shape, y.shape, x_test.shape, y_test.shape)
 
@@ -79,7 +79,7 @@ def main():
                   metrics=['accuracy'])
     model.build(input_shape=(None, 32, 32, 3))
     model.summary()
-    history = model.fit(x, y,
+    history = model.fit(image_gen_train.flow(x, y, batch_size=64),
                         batch_size=128, epochs=epochs,
                         validation_data=(x_test, y_test),
                         validation_freq=1, verbose=1, shuffle=True)
