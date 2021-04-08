@@ -9,7 +9,7 @@ from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics, 
 from Resnet18_34 import Resnet
 from Resnet18_34 import resnet34
 
-gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.7)
+gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
 
 cpu_num = 16
 config = tf.compat.v1.ConfigProto(device_count={"CPU": cpu_num},
