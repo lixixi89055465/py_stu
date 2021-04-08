@@ -104,6 +104,7 @@ if __name__ == '__main__':
     #    '/home/user/PycharmProjects/ImageClassification/VGG-16-19/VGG-16-TF2/cifar-10-batches-py')
     # 不需要转换为one-hot,labels已经是one-hot
     (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar10.load_data()
+    # (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar100.load_data()
     train_labels = tf.keras.utils.to_categorical(train_labels, 10)
     test_labels = tf.keras.utils.to_categorical(test_labels, 10)
 
@@ -130,7 +131,7 @@ if __name__ == '__main__':
     # 设定存储位置，每个模型不一样的路径
     tensorboard = TensorBoard(log_dir='vgg16_from_tensorflow20/{}'.format(model_name))
 
-    data_augmentation = False  # 改为False，Ture还有bug
+    data_augmentation = False # 改为False，Ture还有bug
     if not data_augmentation:
         print('Not using data augmentation')
         # 不进行数据扩充

@@ -6,7 +6,7 @@ from Resnet18_34 import resnet18
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics, regularizers
 
-gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
+gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.7)
 
 cpu_num = 16
 config = tf.compat.v1.ConfigProto(device_count={"CPU": cpu_num},
@@ -44,9 +44,11 @@ test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255)
 # train_db = tf.data.Dataset.from_tensor_slices((x, y))
 # train_db = train_db.shuffle(10000).map(preprocess).batch(128)
 train_db = train_datagen.flow(x, y, batch_size=512)
+
 # test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
 # test_db = test_db.map(preprocess).batch(128)
-test_db = test_datagen.flow(x_test,y_test,batch_size=512)
+# test_db = train_datagen.flow(x_test, y_test, batch_size=512)
+test_db = train_datagen.flow(x_test, y_test, batch_size=512)
 
 
 def main():
@@ -72,8 +74,12 @@ def main():
             grads = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(grads, model.trainable_variables))
             if step % 100 == 0:
-                print(epoch, step, 'loss:', float(loss))
-        print("test acc is ", float(correct_sum) / float(correct_length))
+                print(epoch, step, 'loss is:', float(loss))
+            if step % 1000 == 0:
+                print(epoch, step, "test acc is:", float(correct_sum) / float(correct_length))
+                correct_sum = 0
+                correct_length = 0
+
         total_num = 0
         total_correct = 0.0
         for x, y in test_db:
@@ -90,7 +96,7 @@ def main():
             total_correct += int(correct)
 
         acc = total_correct / total_num
-        print(epoch, 'acc:', acc)
+        print(epoch, 'val acc is:', acc)
 
 
 main()
