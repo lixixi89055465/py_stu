@@ -12,6 +12,8 @@ from Resnet18_34 import resnet34
 gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
 
 cpu_num = 16
+epochs = 200
+
 config = tf.compat.v1.ConfigProto(device_count={"CPU": cpu_num},
                                   gpu_options=gpu_options,
                                   inter_op_parallelism_threads=cpu_num,
@@ -37,14 +39,12 @@ model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=1e-4),
               metrics=['sparse_categorical_accuracy'])
 model.build(input_shape=(None, 32, 32, 3))
 model.summary()
-history = model.fit(x_train, y_train, batch_size=64, epochs=200,
+history = model.fit(x_train, y_train, batch_size=64, epochs=epochs,
                     validation_data=(x_test, y_test),
                     validation_freq=1, verbose=1, shuffle=True)
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
-epochs = 200
 
 
 def plot_learning_curves(history, label, epochs, min_value, max_value):

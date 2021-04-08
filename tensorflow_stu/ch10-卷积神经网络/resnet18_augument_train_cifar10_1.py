@@ -83,7 +83,6 @@ def VGG16():
 
 
 image_gen_train.fit(x_train)
-epochs = 5
 
 import matplotlib.pyplot as plt
 import pandas as pd
