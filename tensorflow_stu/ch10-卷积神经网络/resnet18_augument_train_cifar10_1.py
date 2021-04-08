@@ -83,20 +83,20 @@ def VGG16():
 
 
 image_gen_train.fit(x_train)
-epochs = 10
+epochs = 5
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # model=resnet18()
 model = VGG16()
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=1e-3),
               loss='sparse_categorical_crossentropy',
-              metrics=['sparse_categorical_accuracy'])
+              metrics=['accuracy'])
 history = model.fit(image_gen_train.flow(x_train, y_train, batch_size=64), epochs=epochs,
                     validation_data=(x_test, y_test),
                     validation_freq=1, verbose=1, shuffle=True)
-
-import matplotlib.pyplot as plt
-import pandas as pd
 
 
 def plot_learning_curves(history, label, epochs, min_value, max_value):
@@ -106,9 +106,9 @@ def plot_learning_curves(history, label, epochs, min_value, max_value):
     pd.DataFrame(data).plot(figsize=(8, 5))
     plt.grid(True)
     plt.axis([0, epochs, min_value, max_value])
-    plt.savefig('resnet18_augument_train_cifar10_1.jpg')
+    plt.savefig(os.path.basename(__file__) + '_' + label + '.jpg')
     plt.show()
 
 
 plot_learning_curves(history, 'accuracy', epochs, 0, 1)
-plot_learning_curves(history, 'loss', epochs, 0, 2)
+plot_learning_curves(history, 'loss', epochs, 0, 10)

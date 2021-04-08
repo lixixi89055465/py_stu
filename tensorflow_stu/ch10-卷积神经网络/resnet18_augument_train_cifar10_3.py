@@ -54,9 +54,9 @@ def plot_learning_curves(history, label, epochs, min_value, max_value):
     pd.DataFrame(data).plot(figsize=(8, 5))
     plt.grid(True)
     plt.axis([0, epochs, min_value, max_value])
-    plt.savefig('resnet18_augument_train_cifar10_3.jpg')
+    plt.savefig(os.path.basename(__file__) + '_' + label + '.jpg')
     plt.show()
 
 
 plot_learning_curves(history, 'accuracy', epochs, 0, 1)
-plot_learning_curves(history, 'loss', epochs, 0, 2)
+plot_learning_curves(history, 'loss', epochs, 0, 10)

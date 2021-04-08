@@ -41,6 +41,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
+
 def plot_learning_curves(history, label, epochs, min_value, max_value):
     data = {}
     data[label] = history.history[label]
@@ -48,8 +49,11 @@ def plot_learning_curves(history, label, epochs, min_value, max_value):
     pd.DataFrame(data).plot(figsize=(8, 5))
     plt.grid(True)
     plt.axis([0, epochs, min_value, max_value])
-    plt.savefig('cifar10_train_4.jpg')
+    plt.savefig(os.path.basename(__file__) + '_' + label + '.jpg')
     plt.show()
+
+
+
 
 
 def main():
@@ -60,7 +64,7 @@ def main():
     )
     model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=1e-4),
                   loss='sparse_categorical_crossentropy',
-                  metrics=['sparse_categorical_accuracy'])
+                  metrics=['accuracy'])
     model.build(input_shape=(None, 32, 32, 3))
     model.summary()
     history = model.fit(x, y, batch_size=128, epochs=200,
@@ -71,7 +75,7 @@ def main():
 
 
     plot_learning_curves(history, 'accuracy', epochs, 0, 1)
-    plot_learning_curves(history, 'loss', epochs, 0, 2)
+    plot_learning_curves(history, 'loss', epochs, 0, 10)
 
 
 main()
