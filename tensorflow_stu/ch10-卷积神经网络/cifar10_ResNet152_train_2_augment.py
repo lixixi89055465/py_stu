@@ -80,7 +80,7 @@ def main():
     model.build(input_shape=(None, 32, 32, 3))
     model.summary()
     history = model.fit(image_gen_train.flow(x, y, batch_size=64),
-                        batch_size=128, epochs=epochs,
+                        epochs=epochs,
                         validation_data=(x_test, y_test),
                         validation_freq=1, verbose=1, shuffle=True)
 
