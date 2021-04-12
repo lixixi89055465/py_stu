@@ -35,14 +35,14 @@ x_test = tf.convert_to_tensor(x_test)
 y_train = tf.squeeze(y_train, axis=1)
 y_test = tf.squeeze(y_test, axis=1)
 
-image_gen_train = tf.keras.preprocessing.image.ImageDataGenerator(  # 数据增强
-    rescale=1,  # 归至0～1
-    rotation_range=0,  # 随机0度旋转
-    width_shift_range=0,  # 宽度偏移
-    height_shift_range=0,  # 高度偏移
-    horizontal_flip=True,  # 水平翻转
-    zoom_range=1  # 将图像随机缩放到100％
-)
+# image_gen_train = tf.keras.preprocessing.image.ImageDataGenerator(  # 数据增强
+#     rescale=1,  # 归至0～1
+#     rotation_range=60,  # 随机0度旋转
+#     width_shift_range=0.1,  # 宽度偏移
+#     height_shift_range=0.1,  # 高度偏移
+#     horizontal_flip=True,  # 水平翻转
+#     zoom_range=0.7  # 将图像随机缩放到100％
+# )
 weight_decay = 5e-4
 epochs = 600
 epoch_num = 300
@@ -78,7 +78,7 @@ def VGG16():
     model.add(Dense(4096, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(4096, activation='relu'))
-    model.add(Dense(10, activation='softmax'))
+    model.add(Dense(10))
 
     return model
 
@@ -91,7 +91,17 @@ def scheduler(epoch):
     return learning_rate * 0.01
 
 
-image_gen_train.fit(x_train)
+def focal_loss(pred, label, class_num=10, gamma=2):
+    pred=tf.cast(pred,dtype=tf.int32)
+    label = tf.squeeze(tf.cast(tf.one_hot(tf.cast(label, tf.int32), class_num), pred.dtype))
+    # pred = tf.clip_by_value(pred, 1e-8, 1.0)
+    w1 = tf.math.pow((1.0 - pred), gamma)
+    L = - tf.math.reduce_sum(w1 * label * tf.math.log(pred))
+    return L
+
+
+# image_gen_train.fit(x_train)
+# image_gen_train.fit(x_train)
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -102,9 +112,9 @@ change_lr = LearningRateScheduler(scheduler)
 model = VGG16()
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate),
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-history = model.fit(image_gen_train.flow(x_train, y_train, batch_size=128), epochs=epochs,
+              loss=focal_loss,
+              metrics=['SparseCategoricalAccuracy'])
+history = model.fit(x_train, y_train, epochs=epochs,
                     validation_data=(x_test, y_test),
                     callbacks=[change_lr],
                     validation_freq=1, verbose=1, shuffle=True)
