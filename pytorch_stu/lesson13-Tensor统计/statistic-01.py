@@ -9,7 +9,7 @@ print(a.sum())
 print(a.argmax(), a.argmin())
 
 a = torch.randn(4, 10)
-print(a[0])
+print(a)
 
 print(a.argmax())
-print(a.argmax(dim=1))
+print(a.argmax(dim=0))
