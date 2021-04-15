@@ -58,6 +58,7 @@ gc.collect()
 import torch
 import torch.nn as nn
 
+
 def weight_init(m):
     if isinstance(m, nn.Linear):
         nn.init.xavier_normal_(m.weight)
@@ -65,10 +66,12 @@ def weight_init(m):
     # 也可以判断是否为conv2d，使用相应的初始化方式
     elif isinstance(m, nn.Conv2d):
         nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-     # 是否为批归一化层
+    # 是否为批归一化层
     elif isinstance(m, nn.BatchNorm2d):
         nn.init.constant_(m.weight, 1)
         nn.init.constant_(m.bias, 0)
+
+
 class Classifier(torch.nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
@@ -77,7 +80,7 @@ class Classifier(torch.nn.Module):
         self.layer2_5 = torch.nn.Linear(1024, 512)
         self.layer3 = torch.nn.Linear(512, 128)
         self.out = torch.nn.Linear(128, 39)
-        self.act_fn = torch.nn.Sigmoid()
+        self.act_fn = torch.nn.LeakyReLU(inplace=True)
 
     def forward(self, x):
         x = self.layer1(x)
@@ -117,7 +120,7 @@ same_seeds(0)
 device = get_device()
 print(device)
 print(f'DEVICE:{device}')
-num_epoch = 40
+num_epoch = 20
 learning_rate = 0.0001
 # the path were checkpoint saved
 model_path = './model.ckpt'
@@ -125,13 +128,13 @@ model = Classifier().to(device)
 
 model.apply(weight_init)
 
-criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.0001)
+optimizer1 = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.0001)
+optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=0.0001)
 from torch.autograd import Variable
 from torch import nn
 import torch.nn.functional as F
 
-criterion = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss().to(device)
 
 
 def scheduler(epoch):
@@ -152,7 +155,11 @@ def loss1(inputs, targets, alpha=0.75, gamma=2, size_average=True):
 
 best_acc = 0.
 for epoch in range(num_epoch):
-    # optimizer.__setattr__("learning_rate", scheduler(epoch))
+    if epoch < num_epoch/2:
+        optimizer = optimizer1
+    else:
+        optimizer = optimizer2
+
     train_acc = 0.
     train_loss = 0.
     val_acc = 0.
