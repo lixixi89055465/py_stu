@@ -155,7 +155,7 @@ def loss1(inputs, targets, alpha=0.75, gamma=2, size_average=True):
 
 best_acc = 0.
 for epoch in range(num_epoch):
-    if epoch < num_epoch/2:
+    if epoch < num_epoch / 2:
         optimizer = optimizer1
     else:
         optimizer = optimizer2
@@ -200,36 +200,8 @@ for epoch in range(num_epoch):
                 epoch + 1, num_epoch, train_acc / len(train_set), train_loss / len(train_loader),
                 val_acc / len(val_set), val_loss / len(val_loader)
             ))
-            if len(val_set) > 0:
-                val_acc = 0.
-                val_loss = 0.
-                model.eval()  # set the model to evaluation mode
-                with torch.no_grad():
-                    for i, data in enumerate(val_loader):
-                        inputs, labels = data
-                        inputs, labels = inputs.to(device), labels.to(device)
-                        outputs = model(inputs)
-                        batch_loss = criterion(outputs, labels)
-                        _, val_pred = torch.max(outputs, 1)
-
-                        val_acc += (
-                                val_pred.cpu() == labels.cpu()).sum().item()  # get the index of the class with the highest probability
-                        val_loss += batch_loss.item()
-
-                    print('[{:03d}/{:03d}] Train Acc: {:3.6f} Loss: {:3.6f} | Val Acc: {:3.6f} loss: {:3.6f}'.format(
-                        epoch + 1, num_epoch, train_acc / len(train_set), train_loss / len(train_loader),
-                        val_acc / len(val_set), val_loss / len(val_loader)
-                    ))
-
-                    # if the model improves, save a checkpoint at this epoch
-                    if val_acc > best_acc:
-                        best_acc = val_acc
-                        torch.save(model.state_dict(), model_path)
-                        print('saving model with acc {:.3f}'.format(best_acc / len(val_set)))
-    else:
-        print('[{:03d}/{:03d}] Train Acc: {:3.6f} Loss: {:3.6f}'.format(
-            epoch + 1, num_epoch, train_acc / len(train_set), train_loss / len(train_loader)
-        ))
+torch.save(model.state_dict(), model_path)
+print('saving model with acc {:.3f}'.format(best_acc / len(val_set)))
 if len(val_set) == 0:
     torch.save(model.state_dict(), model_path)
     print('saving model at last epoch ')
