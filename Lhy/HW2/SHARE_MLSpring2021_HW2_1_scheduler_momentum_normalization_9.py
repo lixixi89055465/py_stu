@@ -76,8 +76,8 @@ class Classifier(torch.nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
         self.layer1 = torch.nn.Linear(429, 1024)
+        self.nm = torch.nn.BatchNorm1d(1024)
         self.layer2 = torch.nn.Linear(1024, 1024)
-        self.layer2_3 = torch.nn.Linear(1024, 1024)
 
         self.layer2_5 = torch.nn.Linear(1024, 512)
         self.layer3 = torch.nn.Linear(512, 128)
@@ -86,13 +86,12 @@ class Classifier(torch.nn.Module):
 
     def forward(self, x):
         x = self.layer1(x)
+        x = self.nm(x)
         x = self.act_fn(x)
 
         x = self.layer2(x)
         x = self.act_fn(x)
 
-        x = self.layer2_3(x)
-        x = self.act_fn(x)
 
         x = self.layer2_5(x)
         x = self.act_fn(x)
@@ -126,7 +125,7 @@ device = get_device()
 print(device)
 print(f'DEVICE:{device}')
 num_epoch = 20
-learning_rate = 0.0001
+learning_rate = 0.00001
 # the path were checkpoint saved
 model_path = './model.ckpt'
 model = Classifier().to(device)
@@ -134,7 +133,7 @@ model = Classifier().to(device)
 model.apply(weight_init)
 
 optimizer1 = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.0001)
-optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.99, weight_decay=0.0001)
+optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=0.0001)
 # optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=0.0001)
 
 scheduler1 = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer1, 'min', verbose=True)
@@ -180,8 +179,7 @@ for epoch in range(num_epoch):
     for i, data in enumerate(train_loader):
         inputs, labels = data
         inputs, labels = inputs.to(device), labels.to(device)
-        # optimizer.zero_grad()
-        optimizer2.zero_grad()
+        optimizer1.zero_grad()
         outputs = model(inputs)
         # batch_loss = criterion(outputs, labels)
         batch_loss = loss1(outputs, labels)
@@ -193,8 +191,7 @@ for epoch in range(num_epoch):
         # classify_loss.backward()
 
         batch_loss.backward()
-        # scheduler_real.step(metrics='0.1')
-        optimizer2.step()
+        optimizer1.step()
         train_acc += (train_pred.cpu() == labels.cpu()).sum().item()
         train_loss += batch_loss.item()
     if len(val_set) > 0:
@@ -268,7 +265,7 @@ with torch.no_grad():
         for y in test_pred.cpu().numpy():
             predict.append(y)
 
-with open('SHARE_MLSpring2021_HW2_1_8.py.csv', 'w') as f:
+with open('SHARE_MLSpring2021_HW2_1_9.py.csv', 'w') as f:
     f.write('Id,Class\n')
     for i, y in enumerate(predict):
         f.write('{},{}\n'.format(i, y))

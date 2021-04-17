@@ -1,2 +1,2 @@
-python SHARE_MLSpring2021_HW2_2_focal_norm.py > SHARE_MLSpring2021_HW2_2_focal_norm.py.log
+python SHARE_MLSpring2021_HW2_1_focal_norm_xavier_normal_leakyRelu_scheduler7.py > SHARE_MLSpring2021_HW2_1_focal_norm_xavier_normal_leakyRelu_scheduler7.py.log
 
