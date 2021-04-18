@@ -76,29 +76,38 @@ class Classifier(torch.nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
         self.layer1 = torch.nn.Linear(429, 1024)
+        self.norm1 = torch.nn.BatchNorm1d(1024)
         self.layer2 = torch.nn.Linear(1024, 1024)
+        self.norm2 = torch.nn.BatchNorm1d(1024)
         self.layer2_3 = torch.nn.Linear(1024, 1024)
-
+        self.norm2_3 = torch.nn.BatchNorm1d(1024)
         self.layer2_5 = torch.nn.Linear(1024, 512)
+        self.norm2_5 = torch.nn.BatchNorm1d(512)
         self.layer3 = torch.nn.Linear(512, 128)
+        self.norm3 = torch.nn.BatchNorm1d(128)
         self.out = torch.nn.Linear(128, 39)
         self.act_fn = torch.nn.LeakyReLU(inplace=True)
 
     def forward(self, x):
         x = self.layer1(x)
         x = self.act_fn(x)
+        x = self.norm1(x)
 
         x = self.layer2(x)
         x = self.act_fn(x)
+        x = self.norm2(x)
 
         x = self.layer2_3(x)
         x = self.act_fn(x)
+        x = self.norm2_3(x)
 
         x = self.layer2_5(x)
         x = self.act_fn(x)
+        x = self.norm2_5(x)
 
         x = self.layer3(x)
         x = self.act_fn(x)
+        x = self.norm3(x)
 
         x = self.out(x)
         # x = self.act_fn(x)
@@ -134,8 +143,8 @@ model = Classifier().to(device)
 model.apply(weight_init)
 
 optimizer1 = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.0001)
-optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.99, weight_decay=0.0001)
-# optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=0.0001)
+optimizer2 = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=0.00001)
+optimizer = optimizer1
 
 scheduler1 = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer1, 'min', verbose=True)
 scheduler2 = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer2, 'min', verbose=True)
@@ -167,9 +176,11 @@ def loss1(inputs, targets, alpha=0.75, gamma=2, size_average=True):
 best_acc = 0.
 for epoch in range(num_epoch):
     if epoch < num_epoch / 2:
-        scheduler_real = scheduler1
+        # scheduler_real = scheduler1
+        optimizer = optimizer1
     else:
-        scheduler_real = scheduler2
+        optimizer = optimizer2
+        # scheduler_real = scheduler2
 
     train_acc = 0.
     train_loss = 0.
