@@ -25,7 +25,7 @@ print(a @ b)
 a = torch.rand(4, 784)
 x = torch.rand(4, 784)
 w = torch.rand(512, 784)
-print((x @ w.T).shape)
+# print((x @ w.T).shape)
 
 a = torch.rand(4, 3, 28, 64)
 b = torch.rand(4, 3, 64, 32)
@@ -61,3 +61,12 @@ print(grad.median())
 print(grad.clamp(10))
 # 限定值的范围
 print(grad.clamp(5, 10))
+
+print('max:')
+grad=torch.rand(3,4)
+print(grad)
+print(grad.max(dim=1))
+prob=torch.argmax(grad,dim=1)
+print(grad.max(dim=1)[0]>0.7)
+index=grad.max(dim=1)[0]>0.7
+print(prob[index])

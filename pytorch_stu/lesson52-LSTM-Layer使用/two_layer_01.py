@@ -15,4 +15,3 @@ for xt in x:
     h2, c2 = cell2(h1, [h2, c2])
 
 print(h2.shape,c2.shape)
-
