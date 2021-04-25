@@ -47,16 +47,17 @@ train_set = DatasetFolder("../data/food-11/training/labeled", loader=lambda x: I
                           transform=train_tfm)
 valid_set = DatasetFolder("../data/food-11/validation", loader=lambda x: Image.open(x), extensions="jpg",
                           transform=test_tfm)
+# unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x), extensions="jpg", transform=test_tfm)
 unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x), extensions="jpg",
-                              transform=test_tfm)
+                              transform=train_tfm)
 test_set = DatasetFolder("../data/food-11/testing", loader=lambda x: Image.open(x), extensions="jpg",
                          transform=test_tfm)
 
 # Construct data loaders.
-train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=1, pin_memory=True)
-valid_loader = DataLoader(valid_set, batch_size=batch_size, shuffle=True, num_workers=1, pin_memory=True)
+train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+valid_loader = DataLoader(valid_set, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False)
-unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=True, num_workers=1, pin_memory=True)
+unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
 
 
 class Classifier(nn.Module):
@@ -85,9 +86,13 @@ class Classifier(nn.Module):
         )
         self.fc_layers = nn.Sequential(
             nn.Linear(256 * 8 * 8, 256),
+            nn.BatchNorm1d(256),
             nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(256, 256),
+            nn.BatchNorm1d(256),
             nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(256, 11)
         )
 
@@ -106,15 +111,15 @@ class Classifier(nn.Module):
         return x
 
 
-def get_pseudo_labels(dataset, model, threshold=0.65):
+def get_pseudo_labels(dataset, model, threshold=0.650):
     # This functions generates pseudo-labels of a dataset using given model.
     # It returns an instance of DatasetFolder containing images whose prediction confidences exceed a given threshold.
     # You are NOT allowed to use any models trained on external data for pseudo-labeling.
     device = "cuda" if torch.cuda.is_available() else "cpu"
     unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x),
                                   extensions="jpg",
-                                  transform=test_tfm)
-    unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+                                  transform=train_tfm)
+    unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
     # Make sure the model is in eval mode.
     model.eval()
@@ -143,8 +148,12 @@ def get_pseudo_labels(dataset, model, threshold=0.65):
             # print(probs.max(dim=1))
             # print(probs.max(dim=1)[0] > threshold)
             # print(probs[probs.max(dim=1)[0] > threshold])
-            probs_b = [probs.max(dim=1)[0] > threshold]
+            # probs_b = [probs.max(dim=1)[0] > threshold]
+            probs_max = probs.max(dim=1)
+            probs_max_0 = probs_max[0]
+            probs_b = [probs_max_0 > threshold]
             probs = probs[probs_b]
+            # probs = probs[probs_b]
             # print(len(targets))
             # print(len(probs_b))
 
@@ -188,7 +197,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0003, weight_decay=1e-5)
 
 # The number of training epochs.
-n_epochs = 80
+n_epochs = 400
 
 # Whether to do semi-supervised learning.
 # do_semi = False
