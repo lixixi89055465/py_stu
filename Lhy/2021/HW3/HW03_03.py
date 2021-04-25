@@ -116,10 +116,7 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
     # It returns an instance of DatasetFolder containing images whose prediction confidences exceed a given threshold.
     # You are NOT allowed to use any models trained on external data for pseudo-labeling.
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x),
-                                  extensions="jpg",
-                                  transform=train_tfm)
-    unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
+    unlabel_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
     # Make sure the model is in eval mode.
     model.eval()
@@ -132,6 +129,8 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
     # for batch in tqdm(dataloader):
     for batch in tqdm(unlabel_loader):
         img, _ = batch
+        if img.shape[0] <= 1:
+            continue
         # Forward the data
         # Using torch.no_grad() accelerates the forward process.
         with torch.no_grad():
@@ -171,16 +170,15 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
     print(len(targets))
     print(len(labels))
 
-    unlabeled_set.targets = labels
+    dataset.targets = labels
     samples = []
     li = 0
     for i, e in enumerate(targets):
         if e:
-            samples.append((unlabeled_set.samples[i][0], labels[li]))
+            samples.append((dataset.samples[i][0], labels[li]))
             li += 1
-    unlabeled_set.samples = samples
-    return unlabeled_set
-
+    dataset.samples = samples
+    return dataset
 
 # "cuda" only when GPUs are available.
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -207,16 +205,9 @@ for epoch in range(n_epochs):
     # In each epoch, relabel the unlabeled dataset for semi-supervised learning.
     # Then you can combine the labeled dataset and pseudo-labeled dataset for the training.
     if do_semi:
-        print("unlabeled_set.samples.len:")
-        print(len(unlabeled_set.samples))
-        print("unlabeled_set.targets.len:")
-        print(len(unlabeled_set.targets))
         # Obtain pseudo-labels for unlabeled data using trained model.
+        unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x), extensions="jpg", transform=train_tfm)
         pseudo_set = get_pseudo_labels(unlabeled_set, model)
-        print("pseudo_set.samples.len:")
-        print(len(pseudo_set.samples))
-        print("pseudo_set.targets.len:")
-        print(len(pseudo_set.targets))
         # Construct a new dataset and a data loader for training.
         # This is used in semi-supervised learning only.
         concat_dataset = ConcatDataset([train_set, pseudo_set])
@@ -234,8 +225,7 @@ for epoch in range(n_epochs):
     for batch in tqdm(train_loader):
         # A batch consists of image data and corresponding labels.
         imgs, labels = batch
-
-        if imgs.shape[0] <= 1:
+        if imgs.shape[0]<=1:
             continue
         # Forward the data. (Make sure data and model are on the same device.)
         logits = model(imgs.to(device))
@@ -321,8 +311,6 @@ for batch in tqdm(test_loader):
     # This is because the wrapper (DatasetFolder) returns images and labels for each batch,
     # so we have to create fake labels to make it work normally.
     imgs, labels = batch
-    if imgs.shape[0] <= 1:
-        continue
     # We don't need gradient in testing, and we don't even have labels to compute loss.
     # Using torch.no_grad() accelerates the forward process.
     with torch.no_grad():

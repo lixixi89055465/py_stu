@@ -1,0 +1,87 @@
+  0%|          | 0/54 [00:00<?, ?it/s]unlabeled_set.samples.len:
+6786
+unlabeled_set.targets.len:
+6786
+  2%|▏         | 1/54 [00:01<01:15,  1.42s/it]  9%|▉         | 5/54 [00:02<00:18,  2.61it/s] 13%|█▎        | 7/54 [00:02<00:14,  3.23it/s] 17%|█▋        | 9/54 [00:03<00:12,  3.68it/s] 20%|██        | 11/54 [00:04<00:15,  2.83it/s] 28%|██▊       | 15/54 [00:04<00:11,  3.49it/s] 35%|███▌      | 19/54 [00:05<00:08,  4.08it/s] 43%|████▎     | 23/54 [00:06<00:07,  4.34it/s] 50%|█████     | 27/54 [00:07<00:05,  4.64it/s] 57%|█████▋    | 31/54 [00:08<00:04,  4.62it/s] 65%|██████▍   | 35/54 [00:08<00:03,  4.76it/s] 72%|███████▏  | 39/54 [00:09<00:03,  4.67it/s] 80%|███████▉  | 43/54 [00:10<00:02,  4.76it/s] 87%|████████▋ | 47/54 [00:11<00:01,  4.76it/s] 93%|█████████▎| 50/54 [00:11<00:00,  5.70it/s] 94%|█████████▍| 51/54 [00:12<00:00,  4.70it/s]100%|██████████| 54/54 [00:12<00:00,  4.39it/s]
+  0%|          | 0/25 [00:00<?, ?it/s]<class 'list'>
+<class 'list'>
+6786
+0
+pseudo_set.samples.len:
+0
+pseudo_set.targets.len:
+0
+  4%|▍         | 1/25 [00:01<00:29,  1.25s/it] 12%|█▏        | 3/25 [00:02<00:14,  1.56it/s] 20%|██        | 5/25 [00:02<00:10,  1.88it/s] 28%|██▊       | 7/25 [00:03<00:08,  2.12it/s] 36%|███▌      | 9/25 [00:04<00:07,  2.10it/s] 40%|████      | 10/25 [00:04<00:05,  2.52it/s] 44%|████▍     | 11/25 [00:05<00:07,  1.78it/s] 52%|█████▏    | 13/25 [00:06<00:06,  1.96it/s] 60%|██████    | 15/25 [00:07<00:05,  1.99it/s] 68%|██████▊   | 17/25 [00:08<00:03,  2.09it/s] 76%|███████▌  | 19/25 [00:09<00:02,  2.14it/s] 84%|████████▍ | 21/25 [00:10<00:01,  2.07it/s] 92%|█████████▏| 23/25 [00:11<00:00,  2.18it/s]Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+100%|██████████| 25/25 [00:11<00:00,  2.17it/s]
+  0%|          | 0/6 [00:00<?, ?it/s][ Train | 001/400 ] loss = 2.29494, acc = 0.18812
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f321b9ac8>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f321b9ac8>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
+Exception ignored in: <bound method _MultiProcessingDataLoaderIter.__del__ of <torch.utils.data.dataloader._MultiProcessingDataLoaderIter object at 0x7f3f323825c0>>
+Traceback (most recent call last):
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1324, in __del__
+    self._shutdown_workers()
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1316, in _shutdown_workers
+    if w.is_alive():
+  File "/home/dske/anaconda3/envs/gluon/lib/python3.6/multiprocessing/process.py", line 134, in is_alive
+    assert self._parent_pid == os.getpid(), 'can only test a child process'
+AssertionError: can only test a child process
