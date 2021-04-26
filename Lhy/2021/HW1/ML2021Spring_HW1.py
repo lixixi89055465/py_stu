@@ -115,7 +115,7 @@ def prep_dataLoader(path, mode, batch_size, n_jobs=0, target_only=False):
     return dataloader
 
 
-class NeuralNet(torch.nn.Moduel):
+class NeuralNet(torch.nn.Module):
     def __init__(self, input_dim):
         super(NeuralNet, self).__init__()
         self.net = torch.nn.Sequential(
