@@ -431,6 +431,7 @@ def main(
 ):
   """Main function."""
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  # device = torch.device("cpu")
   print(f"[Info]: Use {device} now!")
 
   train_loader, valid_loader, speaker_num = get_dataloader(data_dir, batch_size, n_workers)
@@ -562,6 +563,7 @@ def main(
 ):
   """Main function."""
   device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+  # device = torch.device("cpu")
   print(f"[Info]: Use {device} now!")
 
   mapping_path = Path(data_dir) / "mapping.json"
@@ -573,7 +575,8 @@ def main(
     batch_size=1,
     shuffle=False,
     drop_last=False,
-    num_workers=8,
+    # num_workers=8,
+    num_workers=0,
     collate_fn=inference_collate_batch,
   )
   print(f"[Info]: Finish loading data!",flush = True)

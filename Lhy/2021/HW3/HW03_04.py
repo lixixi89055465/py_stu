@@ -1,4 +1,5 @@
 # Import necessary packages.
+import time
 import numpy as np
 import torch
 import torch.nn as nn
@@ -115,7 +116,6 @@ def calc_ent(x):
     """
         calculate shanno ent of x
     """
-
     x_value_list = set([x[i] for i in range(x.shape[0])])
     ent = 0.0
     for x_value in x_value_list:
@@ -126,12 +126,13 @@ def calc_ent(x):
     return ent
 
 
-def get_pseudo_labels(dataset, model, threshold=0.750):
+def get_pseudo_labels(dataset, model, threshold=0.650):
     # This functions generates pseudo-labels of a dataset using given model.
     # It returns an instance of DatasetFolder containing images whose prediction confidences exceed a given threshold.
     # You are NOT allowed to use any models trained on external data for pseudo-labeling.
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    unlabel_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
+    # device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = torch.device("cpu")
+    unlabel_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 
     # Make sure the model is in eval mode.
     model.eval()
@@ -144,8 +145,6 @@ def get_pseudo_labels(dataset, model, threshold=0.750):
     # for batch in tqdm(dataloader):
     for batch in tqdm(unlabel_loader):
         img, _ = batch
-        if img.shape[0] <= 1:
-            continue
         # Forward the data
         # Using torch.no_grad() accelerates the forward process.
         with torch.no_grad():
@@ -197,7 +196,8 @@ def get_pseudo_labels(dataset, model, threshold=0.750):
 
 
 # "cuda" only when GPUs are available.
-device = "cuda" if torch.cuda.is_available() else "cpu"
+# device = "cuda" if torch.cuda.is_available() else "cpu"
+device = torch.device("cpu")
 
 # Initialize a model, and put it on the device specified.
 model = Classifier().to(device)
@@ -228,8 +228,10 @@ for epoch in range(n_epochs):
         pseudo_set = get_pseudo_labels(unlabeled_set, model)
         # Construct a new dataset and a data loader for training.
         # This is used in semi-supervised learning only.
-        concat_dataset = ConcatDataset([train_set, pseudo_set])
-        train_loader = DataLoader(concat_dataset, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+        # concat_dataset = ConcatDataset([train_set, pseudo_set])
+        concat_dataset = ConcatDataset([pseudo_set, train_set])
+        train_loader = DataLoader(concat_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True,
+                                  drop_last=True)
 
     # ---------- Training ----------
     # Make sure the model is in train mode before training.
@@ -243,8 +245,6 @@ for epoch in range(n_epochs):
     for batch in tqdm(train_loader):
         # A batch consists of image data and corresponding labels.
         imgs, labels = batch
-        if imgs.shape[0] <= 1:
-            continue
         # Forward the data. (Make sure data and model are on the same device.)
         logits = model(imgs.to(device))
 
@@ -276,7 +276,8 @@ for epoch in range(n_epochs):
     train_acc = sum(train_accs) / len(train_accs)
 
     # Print the information.
-    print(f"[ Train | {epoch + 1:03d}/{n_epochs:03d} ] loss = {train_loss:.5f}, acc = {train_acc:.5f}")
+    now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime())
+    print(f"{now}[ Train | {epoch + 1:03d}/{n_epochs:03d} ] loss = {train_loss:.5f}, acc = {train_acc:.5f}")
 
     # ---------- Validation ----------
     # Make sure the model is in eval mode so that some modules like dropout are disabled and work normally.
@@ -290,8 +291,6 @@ for epoch in range(n_epochs):
     for batch in tqdm(valid_loader):
         # A batch consists of image data and corresponding labels.
         imgs, labels = batch
-        if imgs.shape[0] <= 1:
-            continue
         # We don't need gradient in validation.
         # Using torch.no_grad() accelerates the forward process.
         with torch.no_grad():
@@ -316,7 +315,8 @@ for epoch in range(n_epochs):
         do_semi = False
 
     # Print the information.
-    print(f"[ Valid | {epoch + 1:03d}/{n_epochs:03d} ] loss = {valid_loss:.5f}, acc = {valid_acc:.5f}")
+    now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime())
+    print(f"{now}[Valid | {epoch + 1:03d}/{n_epochs:03d} ] loss = {valid_loss:.5f}, acc = {valid_acc:.5f}")
 
 # Make sure the model is in eval mode.
 # Some modules like Dropout or BatchNorm affect if the model is in training mode.
