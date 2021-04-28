@@ -31,40 +31,19 @@ train_iterator, test_iterator = data.BucketIterator.splits(
 class RNN(nn.Module):
 
     def __init__(self, vocab_size, embedding_dim, hidden_dim):
-        """
-        """
         super(RNN, self).__init__()
-
-        # [0-10001] => [100]
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
-        # [100] => [256]
-        self.rnn = nn.LSTM(embedding_dim, hidden_dim, num_layers=2,
-                           bidirectional=True, dropout=0.5)
-        # [256*2] => [1]
-        self.fc = nn.Linear(hidden_dim * 2, 1)
-        self.dropout = nn.Dropout(0.5)
+        self.embedding = torch.nn.Embedding(vocab_size, embedding_dim)
+        self.rnn = torch.nn.LSTM(embedding_dim, hidden_dim, bidirectional=True, num_layers=2, dropout=0.5)
+        self.fc = torch.nn.Linear(hidden_dim * 2, 1)
+        self.dropout = torch.nn.Dropout(0.5)
 
     def forward(self, x):
-        """
-        x: [seq_len, b] vs [b, 3, 28, 28]
-        """
-        # [seq, b, 1] => [seq, b, 100]
         embedding = self.dropout(self.embedding(x))
-
-        # output: [seq, b, hid_dim*2]
-        # hidden/h: [num_layers*2, b, hid_dim]
-        # cell/c: [num_layers*2, b, hid_di]
         output, (hidden, cell) = self.rnn(embedding)
-
-        # [num_layers*2, b, hid_dim] => 2 of [b, hid_dim] => [b, hid_dim*2]
         hidden = torch.cat([hidden[-2], hidden[-1]], dim=1)
-
-        # [b, hid_dim*2] => [b, 1]
-        hidden = self.dropout(hidden)
-        out = self.fc(hidden)
-
+        hidden=self.dropout(hidden)
+        out=self.fc(hidden)
         return out
-
 
 rnn = RNN(len(TEXT.vocab), 100, 256)
 print(rnn)
@@ -79,29 +58,33 @@ rnn.to(device)
 print(rnn)
 
 import numpy as np
-def binary_acc(preds,y):
+
+
+def binary_acc(preds, y):
     """
     get accuracy
     """
-    preds=torch.round(torch.sigmoid(preds))
-    correct=torch.eq(preds,y).float()
-    acc=correct.sum()/len(correct)
+    preds = torch.round(torch.sigmoid(preds))
+    correct = torch.eq(preds, y).float()
+    acc = correct.sum() / len(correct)
     return acc
 
-def train(rnn,iterator,optimizer,criteon):
-    avg_acc=[]
+
+def train(rnn, iterator, optimizer, criteon):
+    avg_acc = []
     rnn.train()
-    for i,batch in enumerate(iterator):
-        pred=rnn(batch.text).squeeze(1)
-        loss=criteon(pred,batch.label)
-        acc=binary_acc(pred,batch.label).item()
+    for i, batch in enumerate(iterator):
+        pred = rnn(batch.text).squeeze(1)
+        loss = criteon(pred, batch.label)
+        acc = binary_acc(pred, batch.label).item()
         avg_acc.append(acc)
         optimizer.zero_grad()
+        loss.backward()
         optimizer.step()
-        if i%10==0:
-            print(i,acc)
-    avg_acc=np.array(avg_acc).mean()
-    print('avg acc:',avg_acc)
+        if i % 10 == 0:
+            print(i, acc)
+    avg_acc = np.array(avg_acc).mean()
+    print('avg acc:', avg_acc)
 
 
 def eval(rnn, iterator, criteon):
@@ -128,5 +111,3 @@ def eval(rnn, iterator, criteon):
 for epoch in range(10):
     eval(rnn, test_iterator, criteon)
     train(rnn, train_iterator, optimizer, criteon)
-
-
