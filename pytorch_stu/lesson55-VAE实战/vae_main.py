@@ -31,9 +31,9 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     print(model)
 
-    viz = visdom.Visdom()
+    # viz = visdom.Visdom()
 
-    for epoch in range(1000):
+    for epoch in range(100):
 
 
         for batchidx, (x, _) in enumerate(mnist_train):
@@ -59,8 +59,8 @@ def main():
         x = x.to(device)
         with torch.no_grad():
             x_hat, kld = model(x)
-        viz.images(x, nrow=8, win='x', opts=dict(title='x'))
-        viz.images(x_hat, nrow=8, win='x_hat', opts=dict(title='x_hat'))
+        # viz.images(x, nrow=8, win='x', opts=dict(title='x'))
+        # viz.images(x_hat, nrow=8, win='x_hat', opts=dict(title='x_hat'))
 
 
 
