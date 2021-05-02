@@ -130,11 +130,11 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
     # This functions generates pseudo-labels of a dataset using given model.
     # It returns an instance of DatasetFolder containing images whose prediction confidences exceed a given threshold.
     # You are NOT allowed to use any models trained on external data for pseudo-labeling.
-    # device = "cuda" if torch.cuda.is_available() else "cpu"
-    device = torch.device("cpu")
-    unlabel_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-
-    # Make sure the model is in eval mode.
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # device = torch.device("cpu")
+    unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x),
+                                  extensions="jpg", transform=train_tfm)
+    unlabel_loader = DataLoader(unlabeled_set, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
     model.eval()
     # Define softmax function.
     # softmax = nn.Softmax(dim=-1)
@@ -179,16 +179,16 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
 
     # # Turn off the eval mode.
     # model.train()
-    print(type(targets))
-    print(type(labels))
-    print(len(targets))
-    print(len(labels))
-
-    dataset.targets = labels
     samples = []
     li = 0
+    print(len(dataset.samples))
+    print(len(dataset.targets))
+    print(len(labels))
+    print(len(samples))
+    print(len(targets))
     for i, e in enumerate(targets):
         if e:
+            print("li:", li, "\ti:", i)
             samples.append((dataset.samples[i][0], labels[li]))
             li += 1
     dataset.samples = samples
@@ -196,8 +196,8 @@ def get_pseudo_labels(dataset, model, threshold=0.650):
 
 
 # "cuda" only when GPUs are available.
-# device = "cuda" if torch.cuda.is_available() else "cpu"
-device = torch.device("cpu")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+# device = torch.device("cpu")
 
 # Initialize a model, and put it on the device specified.
 model = Classifier().to(device)
@@ -210,7 +210,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0003, weight_decay=1e-5)
 
 # The number of training epochs.
-n_epochs = 400
+n_epochs = 20
 
 # Whether to do semi-supervised learning.
 do_semi = False
@@ -221,10 +221,10 @@ for epoch in range(n_epochs):
     # ---------- TODO ----------
     # In each epoch, relabel the unlabeled dataset for semi-supervised learning.
     # Then you can combine the labeled dataset and pseudo-labeled dataset for the training.
+    if epoch == 10:
+        do_semi = True
     if do_semi:
         # Obtain pseudo-labels for unlabeled data using trained model.
-        unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x),
-                                      extensions="jpg", transform=train_tfm)
         pseudo_set = get_pseudo_labels(unlabeled_set, model)
         # Construct a new dataset and a data loader for training.
         # This is used in semi-supervised learning only.
@@ -309,11 +309,6 @@ for epoch in range(n_epochs):
     # The average loss and accuracy for entire validation set is the average of the recorded values.
     valid_loss = sum(valid_loss) / len(valid_loss)
     valid_acc = sum(valid_accs) / len(valid_accs)
-    if valid_acc > 0.5:
-        do_semi = True
-    else:
-        do_semi = False
-
     # Print the information.
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime())
     print(f"{now}[Valid | {epoch + 1:03d}/{n_epochs:03d} ] loss = {valid_loss:.5f}, acc = {valid_acc:.5f}")

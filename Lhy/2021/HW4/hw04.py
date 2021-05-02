@@ -440,7 +440,7 @@ def main(
 
   model = Classifier(n_spks=speaker_num).to(device)
   criterion = nn.CrossEntropyLoss()
-  optimizer = AdamW(model.parameters(), lr=1e-3)
+  optimizer = Adam(model.parameters(), lr=1e-3)
   scheduler = get_cosine_schedule_with_warmup(optimizer, warmup_steps, total_steps)
   print(f"[Info]: Finish creating model!",flush = True)
 
