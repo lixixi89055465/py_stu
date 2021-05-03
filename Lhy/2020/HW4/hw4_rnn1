@@ -1,0 +1,48 @@
+ssh://dske@10.101.20.157:22/home/dske/anaconda3/envs/gluon/bin/python3.6 -u /home/dske/lx/workspace/py_stu/Lhy/2020/HW4/hw4_rnn1.py
+loading training data ...
+loading testing data ...
+saving model ...
+loading data ...
+Get embedding ...
+loading word to vec model ...
+get words #24694
+total words: 24696
+sentence count #200000
+start training, parameter total:6415351, trainable:241351
+
+[ Epoch1: 1407/1407 ] loss:0.390 acc:21.875
+Train | Loss:0.49499 Acc: 75.404
+Valid | Loss:0.45346 Acc: 78.379
+saving model with acc 78.379
+-----------------------------------------------
+[ Epoch2: 1407/1407 ] loss:0.332 acc:21.094
+Train | Loss:0.44323 Acc: 79.152
+Valid | Loss:0.43804 Acc: 79.205
+saving model with acc 79.205
+-----------------------------------------------
+
+Train | Loss:0.42811 Acc: 80.048
+Valid | Loss:0.43405 Acc: 79.409
+saving model with acc 79.409
+-----------------------------------------------
+
+Train | Loss:0.41572 Acc: 80.877
+Valid | Loss:0.43026 Acc: 79.483
+saving model with acc 79.483
+-----------------------------------------------
+[ Epoch5: 1407/1407 ] loss:0.446 acc:17.969
+Train | Loss:0.40358 Acc: 81.451
+Valid | Loss:0.43126 Acc: 79.518
+saving model with acc 79.518
+-----------------------------------------------
+loading testing data ...
+Get embedding ...
+loading word to vec model ...
+get words #24694
+total words: 24696
+sentence count #200000
+load model ...
+save csv ...
+Finish Predicting
+
+Process finished with exit code 0

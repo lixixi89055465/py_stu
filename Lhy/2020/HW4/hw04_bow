@@ -1,0 +1,83 @@
+ssh://dske@10.101.20.157:22/home/dske/anaconda3/envs/gluon/bin/python3.6 -u /home/dske/lx/workspace/py_stu/Lhy/2020/HW4/hw4_bow.py
+loading data ...
+
+start training, parameter total:680705, trainable:680705
+
+[ Epoch1: 1485/1485 ] loss:0.399 acc:32.031
+Train | Loss:0.51273 Acc: 75.781
+Valid | Loss:0.50521 Acc: 75.208
+saving model with acc 75.208
+-----------------------------------------------
+[ Epoch2: 1485/1485 ] loss:0.441 acc:28.125
+Train | Loss:0.50114 Acc: 76.608
+Valid | Loss:0.50067 Acc: 75.692
+saving model with acc 75.692
+-----------------------------------------------
+[ Epoch3: 1485/1485 ] loss:0.528 acc:26.562
+Train | Loss:0.49942 Acc: 76.733
+Valid | Loss:0.49946 Acc: 75.485
+-----------------------------------------------
+[ Epoch4: 1485/1485 ] loss:0.486 acc:29.688
+Train | Loss:0.49798 Acc: 76.841
+Valid | Loss:0.49965 Acc: 75.554
+-----------------------------------------------
+[ Epoch5: 1485/1485 ] loss:0.583 acc:29.688
+Train | Loss:0.49749 Acc: 76.908
+Valid | Loss:0.49786 Acc: 75.752
+saving model with acc 75.752
+-----------------------------------------------
+[ Epoch6: 1485/1485 ] loss:0.434 acc:29.688
+Train | Loss:0.49663 Acc: 76.868
+Valid | Loss:0.50284 Acc: 75.930
+saving model with acc 75.930
+-----------------------------------------------
+[ Epoch7: 1485/1485 ] loss:0.487 acc:26.562
+Train | Loss:0.49641 Acc: 76.898
+Valid | Loss:0.49756 Acc: 75.999
+saving model with acc 75.999
+-----------------------------------------------
+[ Epoch8: 1485/1485 ] loss:0.565 acc:26.562
+Train | Loss:0.49581 Acc: 76.909
+Valid | Loss:0.49880 Acc: 75.633
+-----------------------------------------------
+[ Epoch9: 1485/1485 ] loss:0.576 acc:28.125
+Train | Loss:0.49555 Acc: 76.960
+Valid | Loss:0.49884 Acc: 75.791
+-----------------------------------------------
+[ Epoch10: 1485/1485 ] loss:0.441 acc:30.469
+Train | Loss:0.49519 Acc: 76.990
+Valid | Loss:0.49753 Acc: 76.127
+saving model with acc 76.127
+-----------------------------------------------
+[ Epoch11: 1485/1485 ] loss:0.459 acc:28.125
+Train | Loss:0.49516 Acc: 76.993
+Valid | Loss:0.49735 Acc: 76.068
+-----------------------------------------------
+[ Epoch12: 1485/1485 ] loss:0.559 acc:29.688
+Train | Loss:0.49479 Acc: 77.011
+Valid | Loss:0.49863 Acc: 76.137
+saving model with acc 76.137
+-----------------------------------------------
+[ Epoch13: 1485/1485 ] loss:0.629 acc:27.344
+Train | Loss:0.49447 Acc: 77.018
+Valid | Loss:0.49974 Acc: 75.722
+-----------------------------------------------
+[ Epoch14: 1485/1485 ] loss:0.629 acc:26.562
+Train | Loss:0.49448 Acc: 77.054
+Valid | Loss:0.49837 Acc: 76.048
+-----------------------------------------------
+
+Train | Loss:0.49430 Acc: 77.073
+Valid | Loss:0.49742 Acc: 75.920
+-----------------------------------------------
+loading testing data ...
+
+load model ...
+save csv ...
+Finish Predicting
+Traceback (most recent call last):
+  File "/home/dske/lx/workspace/py_stu/Lhy/2020/HW4/hw4_bow.py", line 310, in <module>
+    from google.colab import files
+ModuleNotFoundError: No module named 'google.colab'
+
+Process finished with exit code 1
