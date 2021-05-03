@@ -2,7 +2,7 @@
 """
 @author: nanjixiong
 @time: 2020/6/26 21:49
-@file: test1.py
+@file: TextCNN.py
 @desc: 
 """
 from selenium import webdriver
