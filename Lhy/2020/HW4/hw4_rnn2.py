@@ -113,17 +113,17 @@ from gensim.models import word2vec
 
 def train_word2vec(x):
     # 訓練 word to vector 的 word embedding
-    model = word2vec.Word2Vec(x, size=250, window=5, min_count=5, workers=12, iter=10, sg=1)
+    model = word2vec.Word2Vec(x, size=250, window=5, min_count=5, workers=24, iter=10, sg=1)
     return model
 
 
 if __name__ == "__main__":
     print("loading training data ...")
-    train_x, y = load_training_data('../data/training_label.txt')
-    train_x_no_label = load_training_data('../data/training_nolabel.txt')
+    train_x, y = load_training_data('../data/training_label.txt.copy')
+    train_x_no_label = load_training_data('../data/training_nolabel.txt.copy')
 
     print("loading testing data ...")
-    test_x = load_testing_data('../data/testing_data.txt')
+    test_x = load_testing_data('../data/testing_data.txt.copy')
 
     # model = train_word2vec(train_x + train_x_no_label + test_x)
     model = train_word2vec(train_x + test_x)
@@ -241,7 +241,7 @@ class TwitterDataset(data.Dataset):
     __len__ will return the number of data
     """
 
-    def __init__(self, X, y):
+    def __init__(self, X, y=None):
         self.data = X
         self.label = y
 
@@ -297,8 +297,10 @@ from torch import nn
 import torch.optim as optim
 import torch.nn.functional as F
 
+threshold = 0.8
 
-def training(batch_size, n_epoch, lr, model_dir, train, valid, model, device):
+
+def training(batch_size, n_epoch, lr, model_dir, train, valid, unlabel, model, device):
     print('model:', model)
     total = sum(p.numel() for p in model.parameters())
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -323,6 +325,7 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, model, device):
             loss.backward()  # 算 loss 的 gradient
             optimizer.step()  # 更新訓練模型的參數
             correct = evaluation(outputs, labels)  # 計算此時模型的 training accuracy
+
             total_acc += (correct / batch_size)
             total_loss += loss.item()
             print('[ Epoch{}: {}/{} ] loss:{:.3f} acc:{:.3f} '.format(
@@ -351,7 +354,35 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, model, device):
                 # torch.save(model, "{}/val_acc_{:.3f}.model".format(model_dir,total_acc/v_batch*100))
                 torch.save(model, "{}/ckpt.model".format(model_dir))
                 print('saving model with acc {:.3f}'.format(total_acc / v_batch * 100))
+
+            print('unlable add -----------------------------------------------')
+        canLabel_input = []
+        canIndex_input = []
+        with torch.no_grad():
+            for i, inputs in enumerate(unlabel):
+                inputs = inputs.to(device, dtype=torch.long)
+                labels = labels.to(device, dtype=torch.float)
+                outputs = model(inputs)
+                outputs = outputs.squeeze()
+                zOut = (i * batch_size + (outputs > threshold).nonzero()).cpu().tolist()
+                canIndex_input += zOut
+                canLabel_input += [1] * len(zOut)
+                zOut = (i * batch_size + (outputs < (1 - threshold)).nonzero()).cpu().tolist()
+                canIndex_input += zOut
+                canLabel_input += [0] * len(zOut)
+            # train.dataset.
+            canLabel_input.append(1)
+            canIndex_input.append(9)
+            train.sampler.data_source.data = torch.cat(
+                [unlabel.sampler.data_source.data[torch.tensor(canIndex_input, dtype=torch.long)],
+                 train.sampler.data_source.data], dim=0)
+            train.sampler.data_source.label = torch.cat([train.sampler.data_source.label, torch.tensor(canLabel_input)],
+                                                        dim=0)
+            unlabel.sampler.data_source.data = unlabel.sampler.data_source.data[
+                [i for i in range(len(unlabel.sampler.data_source.data)) if i not in canIndex_input]]
+
         print('-----------------------------------------------')
+
         model.train()  # 將 model 的模式設為 train，這樣 optimizer 就可以更新 model 的參數（因為剛剛轉成 eval 模式）
 
 
@@ -395,9 +426,9 @@ from sklearn.model_selection import train_test_split
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 處理好各個 data 的路徑
-train_with_label = os.path.join(path_prefix, '../data/training_label.txt')
-train_no_label = os.path.join(path_prefix, '../data/training_nolabel.txt')
-testing_data = os.path.join(path_prefix, '../data/testing_data.txt')
+train_with_label = os.path.join(path_prefix, '../data/training_label.txt.copy')
+train_no_label = os.path.join(path_prefix, '../data/training_nolabel.txt.copy')
+testing_data = os.path.join(path_prefix, '../data/testing_data.txt.copy')
 
 w2v_path = os.path.join(path_prefix, 'w2v_all.model')  # 處理 word to vec model 的路徑
 
@@ -420,16 +451,24 @@ embedding = preprocess.make_embedding(load=True)
 train_x = preprocess.sentence_word2idx()
 y = preprocess.labels_to_tensor(y)
 
+# unbaled 做预处理
+preprocess = Preprocess(train_x_no_label, sen_len, w2v_path=w2v_path)
+embedding = preprocess.make_embedding(load=True)
+train_x_no_label = preprocess.sentence_word2idx()
+
 # 製作一個 model 的對象
 model = LSTM_Net(embedding, embedding_dim=250, hidden_dim=150, num_layers=1, dropout=0.5, fix_embedding=fix_embedding)
 model = model.to(device)  # device為 "cuda"，model 使用 GPU 來訓練（餵進去的 inputs 也需要是 cuda tensor）
 
 # 把 data 分為 training data 跟 validation data（將一部份 training data 拿去當作 validation data）
-X_train, X_val, y_train, y_val = train_x[:180000], train_x[180000:], y[:180000], y[180000:]
+X_train, X_val, y_train, y_val = train_x[:300], train_x[300:], y[:300], y[300:]
 
 # 把 data 做成 dataset 供 dataloader 取用
 train_dataset = TwitterDataset(X=X_train, y=y_train)
 val_dataset = TwitterDataset(X=X_val, y=y_val)
+unlabeld_dataset = TwitterDataset(X=train_x_no_label)
+
+# unbaled 做成 dataset  供dataloader 取用  # lixiang
 
 # 把 data 轉成 batch of tensors
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
@@ -442,8 +481,13 @@ val_loader = torch.utils.data.DataLoader(dataset=val_dataset,
                                          shuffle=False,
                                          num_workers=8)
 
+unlabel_loader = torch.utils.data.DataLoader(dataset=unlabeld_dataset,
+                                             batch_size=batch_size,
+                                             shuffle=False,
+                                             num_workers=8)
+
 # 開始訓練
-training(batch_size, epoch, lr, model_dir, train_loader, val_loader, model, device)
+training(batch_size, epoch, lr, model_dir, train_loader, val_loader, unlabel_loader, model, device)
 
 """### Predict and Write to csv file"""
 

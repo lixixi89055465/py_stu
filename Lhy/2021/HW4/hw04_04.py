@@ -235,6 +235,83 @@ def get_dataloader(data_dir, batch_size, n_workers):
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
+
+d_ff = 2048  # FeedForward dimension
+d_k = d_v = 64  # dimension of K(=Q), V
+n_layers = 6  # number of Encoder of Decoder Layer
+n_heads = 8  # number of heads in Multi-Head Attention
+d_model = 70
+
+
+class ScaledDotProductAttention(nn.Module):
+    def __init__(self):
+        super(ScaledDotProductAttention, self).__init__()
+
+    def forward(self, Q, K, V, attn_mask):
+        '''
+        Q: [batch_size, n_heads, len_q, d_k]
+        K: [batch_size, n_heads, len_k, d_k]
+        V: [batch_size, n_heads, len_v(=len_k), d_v]
+        attn_mask: [batch_size, n_heads, seq_len, seq_len]
+        '''
+        scores = torch.matmul(Q, K.transpose(-1, -2)) / np.sqrt(d_k)  # scores : [batch_size, n_heads, len_q, len_k]
+        scores.masked_fill_(attn_mask, -1e9)  # Fills elements of self tensor with value where mask is True.
+
+        attn = nn.Softmax(dim=-1)(scores)
+        context = torch.matmul(attn, V)  # [batch_size, n_heads, len_q, d_v]
+        return context, attn
+
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self):
+        super(MultiHeadAttention, self).__init__()
+        self.W_Q = nn.Linear(d_model, d_k * n_heads, bias=False)
+        self.W_K = nn.Linear(d_model, d_k * n_heads, bias=False)
+        self.W_V = nn.Linear(d_model, d_v * n_heads, bias=False)
+        self.fc = nn.Linear(n_heads * d_v, d_model, bias=False)
+
+    def forward(self, input_Q, input_K, input_V, attn_mask):
+        '''
+        input_Q: [batch_size, len_q, d_model]
+        input_K: [batch_size, len_k, d_model]
+        input_V: [batch_size, len_v(=len_k), d_model]
+        attn_mask: [batch_size, seq_len, seq_len]
+        '''
+        residual, batch_size = input_Q, input_Q.size(0)
+        # (B, S, D) -proj-> (B, S, D_new) -split-> (B, S, H, W) -trans-> (B, H, S, W)
+        Q = self.W_Q(input_Q).view(batch_size, -1, n_heads, d_k).transpose(1, 2)  # Q: [batch_size, n_heads, len_q, d_k]
+        K = self.W_K(input_K).view(batch_size, -1, n_heads, d_k).transpose(1, 2)  # K: [batch_size, n_heads, len_k, d_k]
+        V = self.W_V(input_V).view(batch_size, -1, n_heads, d_v).transpose(1,
+                                                                           2)  # V: [batch_size, n_heads, len_v(=len_k), d_v]
+
+        attn_mask = attn_mask.unsqueeze(1).repeat(1, n_heads, 1,
+                                                  1)  # attn_mask : [batch_size, n_heads, seq_len, seq_len]
+
+        # context: [batch_size, n_heads, len_q, d_v], attn: [batch_size, n_heads, len_q, len_k]
+        context, attn = ScaledDotProductAttention()(Q, K, V, attn_mask)
+        context = context.transpose(1, 2).reshape(batch_size, -1,
+                                                  n_heads * d_v)  # context: [batch_size, len_q, n_heads * d_v]
+        output = self.fc(context)  # [batch_size, len_q, d_model]
+        return nn.LayerNorm(d_model).cuda()(output + residual), attn
+
+
+class PoswiseFeedForwardNet(nn.Module):
+    def __init__(self):
+        super(PoswiseFeedForwardNet, self).__init__()
+        self.fc = nn.Sequential(
+            nn.Linear(d_model, d_ff, bias=False),
+            nn.ReLU(),
+            nn.Linear(d_ff, d_model, bias=False)
+        )
+
+    def forward(self, inputs):
+        '''
+        inputs: [batch_size, seq_len, d_model]
+        '''
+        residual = inputs
+        output = self.fc(inputs)
+        return nn.LayerNorm(d_model).cuda()(output + residual)  # [batch_size, seq_len, d_model]
 
 
 class Classifier(nn.Module):
@@ -245,11 +322,19 @@ class Classifier(nn.Module):
         # TODO:
         #   Change Transformer to Conformer.
         #   https://arxiv.org/abs/2005.08100
-        self.encoder_layer = nn.TransformerEncoderLayer(
-            d_model=d_model, dim_feedforward=256, nhead=1
+        # self.encoder_layer = nn.TransformerEncoderLayer(
+        #     d_model=d_model, dim_feedforward=256, nhead=1
+        # )
+        # self.encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=2)
+        self.feed_forward_layer1 = PoswiseFeedForwardNet()
+        self.MultiHeadAttention = MultiHeadAttention()
+        self.conv_1 = torch.nn.Conv1d(d_model, d_model, kernel_size=17, padding_mode="zeros")
+        self.feed_forward_layer2 = nn.Sequential(
+            torch.nn.Linear(d_model, d_ff, bias=False),
+            torch.nn.ReLU(),
+            torch.nn.Linear(d_ff, d_model, bias=False)
         )
-        self.encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=2)
-
+        self.norm1 = torch.nn.BatchNorm1d(d_model)
         # Project the the dimension of features from d_model into speaker nums.
         self.pred_layer = nn.Sequential(
             # nn.Linear(d_model, d_model),
@@ -259,36 +344,43 @@ class Classifier(nn.Module):
         )
 
     def forward(self, mels):
-        """
-        args:
-          mels: (batch size, length, 40)
-        return:
-          out: (batch size, n_spks)
-        """
-        # out: (batch size, length, d_model)
-        out = self.prenet(mels)
-        # out: (length, batch size, d_model)
-        out = out.permute(1, 0, 2)
-        # The encoder layer expect features in the shape of (length, batch size, d_model).
-        # out = self.encoder_layer(out)
-        out = self.encoder(out)
-        # out: (batch size, length, d_model)
-        out = out.transpose(0, 1)
-        # mean pooling
-        stats = out.mean(dim=1)
-
-        # out: (batch, n_spks)
-        out = self.pred_layer(stats)
+        # """
+        # args:
+        #   mels: (batch size, length, 40)
+        # return:
+        #   out: (batch size, n_spks)
+        # """
+        # # out: (batch size, length, d_model)
+        # out = self.prenet(mels)
+        # # out: (length, batch size, d_model)
+        # out = out.permute(1, 0, 2)
+        # # The encoder layer expect features in the shape of (length, batch size, d_model).
+        # # out = self.encoder_layer(out)
+        # out = self.encoder(out)
+        # # out: (batch size, length, d_model)
+        # out = out.transpose(0, 1)
+        # # mean pooling
+        # stats = out.mean(dim=1)
+        #
+        # # out: (batch, n_spks)
+        # out = self.pred_layer(stats)
+        # return out
+        input = self.prenet(mels)
+        out = self.feed_forward_layer1(input)
+        enc_outputs, attn = self.MultiHeadAttention(input, input, input, out)
+        out = self.conv_1(enc_outputs)
+        out = self.feed_forward_layer2(out)
+        out = self.norm1(out)
         return out
 
-
-"""# Learning rate schedule
+        """# Learning rate schedule
 - For transformer architecture, the design of learning rate schedule is different from that of CNN.
 - Previous works show that the warmup of learning rate is useful for training models with transformer architectures.
 - The warmup schedule
   - Set learning rate to 0 in the beginning.
   - The learning rate increases linearly from 0 to initial learning rate during warmup period.
 """
+
 
 import math
 
