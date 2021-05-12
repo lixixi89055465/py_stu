@@ -374,7 +374,7 @@ w2v_path = os.path.join(path_prefix, 'w2v_all.model') # 處理 word to vec model
 sen_len = 20
 fix_embedding = True # fix embedding during training
 batch_size = 128
-epoch = 5
+epoch = 10
 lr = 0.001
 # model_dir = os.path.join(path_prefix, 'model/') # model directory for checkpoint model
 model_dir = path_prefix # model directory for checkpoint model
@@ -434,7 +434,7 @@ outputs = testing(batch_size, test_loader, model, device)
 # 寫到 csv 檔案供上傳 Kaggle
 tmp = pd.DataFrame({"id":[str(i) for i in range(len(test_x))],"label":outputs})
 print("save csv ...")
-tmp.to_csv(os.path.join(path_prefix, 'predict.csv'), index=False)
+tmp.to_csv(os.path.join(path_prefix, 'hw4_rnn1_predict.csv'), index=False)
 print("Finish Predicting")
 
 # 以下是使用 command line 上傳到 Kaggle 的方式

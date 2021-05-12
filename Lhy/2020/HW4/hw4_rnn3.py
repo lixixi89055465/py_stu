@@ -356,7 +356,7 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, unlabel, model, d
                 torch.save(model, "{}/ckpt.model".format(model_dir))
                 print('saving model with acc {:.3f}'.format(total_acc / v_batch * 100))
 
-        if epoch>15:
+        if epoch % 20 == 19:
             print('unlable add -----------------------------------------------')
             with torch.no_grad():
                 canLabel_input = []
@@ -376,8 +376,9 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, unlabel, model, d
                 train.sampler.data_source.data = torch.cat(
                     [unlabel.sampler.data_source.data[torch.tensor(canIndex_input, dtype=torch.long)],
                      train.sampler.data_source.data], dim=0)
-                train.sampler.data_source.label = torch.cat([train.sampler.data_source.label, torch.tensor(canLabel_input)],
-                                                            dim=0)
+                train.sampler.data_source.label = torch.cat(
+                    [train.sampler.data_source.label, torch.tensor(canLabel_input)],
+                    dim=0)
 
                 srcIndex = []
                 left = 0
@@ -477,7 +478,7 @@ embedding = preprocess.make_embedding(load=True)
 train_x_no_label = preprocess.sentence_word2idx()
 
 # 製作一個 model 的對象
-model = LSTM_Net(embedding, embedding_dim=250, hidden_dim=512, num_layers=1, dropout=0.5, fix_embedding=fix_embedding)
+model = LSTM_Net(embedding, embedding_dim=250, hidden_dim=250, num_layers=2, dropout=0.5, fix_embedding=fix_embedding)
 model = model.to(device)  # device為 "cuda"，model 使用 GPU 來訓練（餵進去的 inputs 也需要是 cuda tensor）
 
 # 把 data 分為 training data 跟 validation data（將一部份 training data 拿去當作 validation data）
