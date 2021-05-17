@@ -219,10 +219,10 @@ class QA_Dataset(Dataset):
         self.tokenized_questions = tokenized_questions
         self.tokenized_paragraphs = tokenized_paragraphs
         self.max_question_len = 40
-        self.max_paragraph_len = 150
+        self.max_paragraph_len = 300
 
         ##### TODO: Change value of doc_stride #####
-        self.doc_stride = 200
+        self.doc_stride = 300
 
         # Input sequence length = [CLS] + question + [SEP] + paragraph + [SEP]
         self.max_seq_len = 1 + self.max_question_len + 1 + self.max_paragraph_len + 1
@@ -257,10 +257,16 @@ class QA_Dataset(Dataset):
                 paragraph_end] not in cutLineFlag:
                 paragraph_end += 1
             if paragraph_end - paragraph_start > self.max_paragraph_len:
-                paragraph_start = max(0, min(mid - self.max_paragraph_len // 2,
-                                             len(tokenized_paragraph) - self.max_paragraph_len))
-                paragraph_end = paragraph_start + self.max_paragraph_len
-
+                if paragraph_end - mid > self.max_paragraph_len and mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif paragraph_end - mid > self.max_paragraph_len:
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = paragraph_end - self.max_paragraph_len
+                else:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
             # paragraph_end = paragraph_start + self.max_paragraph_len
 
             # Slice question/paragraph and add special tokens (101: CLS, 102: SEP)
@@ -344,7 +350,7 @@ def evaluate(data, output):
         prob = start_prob + end_prob
 
         # Replace answer if calculated probability is larger than previous windows
-        if prob > max_prob:
+        if prob > max_prob and start_index < end_index:
             max_prob = prob
             # Convert tokens to chars (e.g. [1920, 7032] --> "大 金")
             answer = tokenizer.decode(data[0][0][k][start_index: end_index + 1])
@@ -398,12 +404,15 @@ for epoch in range(num_epoch):
         else:
             output.loss.backward()
 
+        # if (i + 1) % 2 == 0 or (i + 1 == len(train_loader)):
+        #     optimizer.step()
+        #     optimizer.zero_grad()
         optimizer.step()
         optimizer.zero_grad()
         step += 1
 
-        ##### TODO: Apply linear learning rate decay #####
         optimizer.param_groups[0]['lr'] -= optimizer.param_groups[0]['lr'] / 1000
+        ##### TODO: Apply linear learning rate decay #####
         # Print training loss and accuracy over past logging step
         if step % logging_step == 0:
             print(
@@ -446,7 +455,7 @@ with torch.no_grad():
                        attention_mask=data[2].squeeze(dim=0).to(device))
         result.append(evaluate(data, output))
 
-result_file = "result_hw7_bert_03.csv"
+result_file = "result_hw7_bert_04.csv"
 with open(result_file, 'w') as f:
     f.write("ID,Answer\n")
     for i, test_question in enumerate(test_questions):

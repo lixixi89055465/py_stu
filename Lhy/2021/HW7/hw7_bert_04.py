@@ -219,10 +219,10 @@ class QA_Dataset(Dataset):
         self.tokenized_questions = tokenized_questions
         self.tokenized_paragraphs = tokenized_paragraphs
         self.max_question_len = 40
-        self.max_paragraph_len = 150
+        self.max_paragraph_len = 330
 
         ##### TODO: Change value of doc_stride #####
-        self.doc_stride = 200
+        self.doc_stride = 330
 
         # Input sequence length = [CLS] + question + [SEP] + paragraph + [SEP]
         self.max_seq_len = 1 + self.max_question_len + 1 + self.max_paragraph_len + 1
@@ -256,12 +256,17 @@ class QA_Dataset(Dataset):
             while paragraph_end < len(tokenized_paragraph.tokens) and tokenized_paragraph.tokens[
                 paragraph_end] not in cutLineFlag:
                 paragraph_end += 1
-            if mid - paragraph_start > self.max_paragraph_len:
-                paragraph_start = max(0, min(mid - self.max_paragraph_len // 2,
-                                             len(tokenized_paragraph) - self.max_paragraph_len))
-            if paragraph_end - mid > self.max_paragraph_len:
-                paragraph_end = mid + self.max_paragraph_len
-
+            if paragraph_end - paragraph_start > self.max_paragraph_len:
+                if paragraph_end - mid > self.max_paragraph_len and mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif paragraph_end - mid > self.max_paragraph_len:
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = paragraph_end - self.max_paragraph_len
+                else:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
             # paragraph_end = paragraph_start + self.max_paragraph_len
 
             # Slice question/paragraph and add special tokens (101: CLS, 102: SEP)
@@ -359,7 +364,7 @@ def evaluate(data, output):
 # In[ ]:
 
 
-num_epoch = 10
+num_epoch = 2
 validation = True
 logging_step = 100
 learning_rate = 1e-4
@@ -447,7 +452,7 @@ with torch.no_grad():
                        attention_mask=data[2].squeeze(dim=0).to(device))
         result.append(evaluate(data, output))
 
-result_file = "result_hw7_bert_03.csv"
+result_file = "result_hw7_bert_04.csv"
 with open(result_file, 'w') as f:
     f.write("ID,Answer\n")
     for i, test_question in enumerate(test_questions):

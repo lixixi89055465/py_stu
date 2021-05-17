@@ -3,6 +3,7 @@
 workspace_dir = '../data/'
 
 import random
+import glob
 
 import torch
 import numpy as np
@@ -234,6 +235,7 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_worker
 steps = 0
 n_epoch = 5
 for e, epoch in enumerate(range(n_epoch)):
+    print('epoch:',epoch+1)
     for i, data in enumerate(dataloader):
         imgs = data
         imgs = imgs.cuda()
@@ -336,7 +338,6 @@ for e, epoch in enumerate(range(n_epoch)):
 # ### Load model 
 
 # In[ ]:
-
 
 import torch
 

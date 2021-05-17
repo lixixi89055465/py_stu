@@ -550,26 +550,26 @@ out_file = 'PREDICTION_FILE.csv'
 
 anomality = list()
 with torch.no_grad():
-for i, data in enumerate(test_dataloader): 
-    if model_type in ['cnn', 'vae', 'resnet']:
-        img = data.float().cuda()
-    elif model_type in ['fcn']:
-        img = data.float().cuda()
-        img = img.view(img.shape[0], -1)
-    else:
-        img = data[0].cuda()
-    output = model(img)
-    if model_type in ['cnn', 'resnet', 'fcn']:
-        output = output
-    elif model_type in ['res_vae']:
-        output = output[0]
-    elif model_type in ['vae']: # , 'vqvae'
-        output = output[0]
-    if model_type in ['fcn']:
-        loss = eval_loss(output, img).sum(-1)
-    else:
-        loss = eval_loss(output, img).sum([1, 2, 3])
-    anomality.append(loss)
+    for i, data in enumerate(test_dataloader):
+        if model_type in ['cnn', 'vae', 'resnet']:
+            img = data.float().cuda()
+        elif model_type in ['fcn']:
+            img = data.float().cuda()
+            img = img.view(img.shape[0], -1)
+        else:
+            img = data[0].cuda()
+        output = model(img)
+        if model_type in ['cnn', 'resnet', 'fcn']:
+            output = output
+        elif model_type in ['res_vae']:
+            output = output[0]
+        elif model_type in ['vae']: # , 'vqvae'
+            output = output[0]
+        if model_type in ['fcn']:
+            loss = eval_loss(output, img).sum(-1)
+        else:
+            loss = eval_loss(output, img).sum([1, 2, 3])
+        anomality.append(loss)
 anomality = torch.cat(anomality, axis=0)
 anomality = torch.sqrt(anomality).reshape(len(test), 1).cpu().numpy()
 
