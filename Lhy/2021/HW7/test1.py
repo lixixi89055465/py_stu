@@ -1,6 +1,8 @@
 import torch
 
-a = torch.randn(1, 1, 3)
+a=torch.randn(10)
 print(a)
-print(a.squeeze())
-print(a.squeeze(0))
+b=a.topk(10)
+print(b)
+
+

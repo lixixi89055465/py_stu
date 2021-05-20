@@ -218,22 +218,28 @@ class conv_autoencoder(nn.Module):
         super(conv_autoencoder, self).__init__()
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 12, 4, stride=2, padding=1),
+            nn.BatchNorm2d(12),
             nn.ReLU(),
             nn.Conv2d(12, 24, 4, stride=2, padding=1),
+            nn.BatchNorm2d(24),
             nn.ReLU(),
             nn.Conv2d(24, 48, 4, stride=2, padding=1),
+            nn.BatchNorm2d(48),
             nn.ReLU(),
-            nn.Conv2d(48, 96, 4, stride=2, padding=1),  # medium: remove this layer
-            nn.ReLU(),
+            # nn.Conv2d(48, 96, 4, stride=2, padding=1),  # medium: remove this layer
+            # nn.ReLU(),
         )
         self.decoder = nn.Sequential(
-            nn.ConvTranspose2d(96, 48, 4, stride=2, padding=1),  # medium: remove this layer
-            nn.ReLU(),
+            # nn.ConvTranspose2d(96, 48, 4, stride=2, padding=1),  # medium: remove this layer
+            # nn.ReLU(),
             nn.ConvTranspose2d(48, 24, 4, stride=2, padding=1),
+            nn.BatchNorm2d(24),
             nn.ReLU(),
             nn.ConvTranspose2d(24, 12, 4, stride=2, padding=1),
+            nn.BatchNorm2d(12),
             nn.ReLU(),
             nn.ConvTranspose2d(12, 3, 4, stride=2, padding=1),
+            nn.BatchNorm2d(3),
             nn.Tanh(),
         )
 
@@ -442,8 +448,8 @@ class CustomTensorDataset(TensorDataset):
 
 
 # Training hyperparameters
-num_epochs = 50
-batch_size = 10000  # medium: smaller batchsize
+num_epochs = 100
+batch_size = 16 # medium: smaller batchsize
 learning_rate = 1e-3
 
 # Build training dataloader
@@ -451,7 +457,7 @@ x = torch.from_numpy(train)
 train_dataset = CustomTensorDataset(x)
 
 train_sampler = RandomSampler(train_dataset)
-train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=batch_size)
+train_dataloader = DataLoader(train_dataset, sampler=train_sampler, batch_size=batch_size, num_workers=16)
 
 # Model
 model_type = 'cnn'  # selecting a model type from {'cnn', 'fcn', 'vae', 'resnet'}
@@ -474,6 +480,8 @@ model.train()
 qqdm_train = qqdm(range(num_epochs), desc=format_str('bold', 'Description'))
 for epoch in qqdm_train:
     tot_loss = list()
+    if epoch == num_epochs // 10 or epoch == num_epochs // 2:
+        optimizer.param_groups[0]['lr'] = optimizer.param_groups[0]['lr'] * 0.1
     for data in train_dataloader:
 
         # ===================loading=====================
@@ -525,16 +533,16 @@ eval_batch_size = 200
 data = torch.tensor(test, dtype=torch.float32)
 test_dataset = CustomTensorDataset(data)
 test_sampler = SequentialSampler(test_dataset)
-test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=eval_batch_size, num_workers=1)
+test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=eval_batch_size, num_workers=8)
 eval_loss = nn.MSELoss(reduction='none')
 
 # load trained model
-checkpoint_path = 'last_model_{}.pt'.format(model_type)
+checkpoint_path = 'best_model_{}.pt'.format(model_type)
 model = torch.load(checkpoint_path)
 model.eval()
 
 # prediction file 
-out_file = 'PREDICTION_FILE_01.csv'
+out_file = 'PREDICTION_FILE_03.csv'
 
 # In[ ]:
 

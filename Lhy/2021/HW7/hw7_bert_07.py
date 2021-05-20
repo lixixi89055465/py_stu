@@ -101,8 +101,8 @@ same_seeds(0)
 
 
 # Change "fp16_training" to True to support automatic mixed precision training (fp16)	
-# fp16_training = False
-fp16_training = True
+fp16_training = False
+# fp16_training = True
 if fp16_training:
     # get_ipython().system('pip install accelerate==0.2.0')
     from accelerate import Accelerator
@@ -123,8 +123,30 @@ if fp16_training:
 # In[5]:
 
 
-model = BertForQuestionAnswering.from_pretrained("bert-base-chinese").to(device)
-tokenizer = BertTokenizerFast.from_pretrained("bert-base-chinese")
+# model = BertForQuestionAnswering.from_pretrained("bert-base-chinese").to(device)
+# tokenizer = BertTokenizerFast.from_pretrained("bert-base-chinese")
+# model = BertForQuestionAnswering.from_pretrained("ckiplab/bert-base-chinese-ws").to(device)
+# tokenizer = BertTokenizerFast.from_pretrained("ckiplab/bert-base-chinese-ws")#0.59096
+
+# model = BertForQuestionAnswering.from_pretrained("bert-base-chinese").to(device)
+# tokenizer = BertTokenizerFast.from_pretrained("ckiplab/bert-base-chinese-pos") #0.61
+
+# model = BertForQuestionAnswering.from_pretrained("roberta-base-chinese-extractive-qa").to(device)
+# tokenizer = BertTokenizerFast.from_pretrained("roberta-base-chinese-extractive-qa")  # 0.61
+from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
+
+model = BertForQuestionAnswering.from_pretrained('uer/roberta-base-chinese-extractive-qa').to(device)
+tokenizer = BertTokenizerFast.from_pretrained('uer/roberta-base-chinese-extractive-qa')
+
+
+# from transformers import (
+#     BertTokenizerFast,
+#     AutoModel,
+# )
+
+# from transformers import AutoTokenizer, AutoModelForTokenClassification
+# tokenizer = AutoTokenizer.from_pretrained("ckiplab/bert-base-chinese-ws")
+# model = BertTokenizerFast.from_pretrained("ckiplab/bert-base-chinese-ws")
 
 
 # You can safely ignore the warning message (it pops up because new prediction heads for QA are initialized randomly)
@@ -181,13 +203,13 @@ train_paragraphs_tokenized = tokenizer(train_paragraphs, add_special_tokens=Fals
 dev_paragraphs_tokenized = tokenizer(dev_paragraphs, add_special_tokens=False)
 test_paragraphs_tokenized = tokenizer(test_paragraphs, add_special_tokens=False)
 
-
 # You can safely ignore the warning message as tokenized sequences will be futher processed in datset __getitem__ before passing to model
 
 
 # ## Dataset and Dataloader
 
 # In[8]:
+cutLineFlag = ["？", "！", "。", "…", ";", ".", "；", "?", "!"]
 
 
 class QA_Dataset(Dataset):
@@ -197,10 +219,10 @@ class QA_Dataset(Dataset):
         self.tokenized_questions = tokenized_questions
         self.tokenized_paragraphs = tokenized_paragraphs
         self.max_question_len = 40
-        self.max_paragraph_len = 150
+        self.max_paragraph_len = 330
 
         ##### TODO: Change value of doc_stride #####
-        self.doc_stride = 200
+        self.doc_stride = 330
 
         # Input sequence length = [CLS] + question + [SEP] + paragraph + [SEP]
         self.max_seq_len = 1 + self.max_question_len + 1 + self.max_paragraph_len + 1
@@ -223,9 +245,29 @@ class QA_Dataset(Dataset):
 
             # A single window is obtained by slicing the portion of paragraph containing the answer
             mid = (answer_start_token + answer_end_token) // 2
-            paragraph_start = max(0, min(mid - self.max_paragraph_len // 2,
-                                         len(tokenized_paragraph) - self.max_paragraph_len))
-            paragraph_end = paragraph_start + self.max_paragraph_len
+            # paragraph_start = max(0, min(mid - self.max_paragraph_len // 2, len(tokenized_paragraph) - self.max_paragraph_len))
+
+            paragraph_start = answer_start_token
+            while paragraph_start > 0 and tokenized_paragraph.tokens[paragraph_start] not in cutLineFlag:
+                paragraph_start -= 1
+            paragraph_start += 1
+
+            paragraph_end = answer_end_token
+            while paragraph_end < len(tokenized_paragraph.tokens) and tokenized_paragraph.tokens[
+                paragraph_end] not in cutLineFlag:
+                paragraph_end += 1
+            if paragraph_end - paragraph_start > self.max_paragraph_len:
+                if paragraph_end - mid > self.max_paragraph_len and mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif paragraph_end - mid > self.max_paragraph_len:
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+                elif mid - paragraph_start > self.max_paragraph_len:
+                    paragraph_start = paragraph_end - self.max_paragraph_len
+                else:
+                    paragraph_start = mid - self.max_paragraph_len // 2
+                    paragraph_end = paragraph_start + self.max_paragraph_len
+            # paragraph_end = paragraph_start + self.max_paragraph_len
 
             # Slice question/paragraph and add special tokens (101: CLS, 102: SEP)
             input_ids_question = [101] + tokenized_question.ids[:self.max_question_len] + [102]
@@ -306,9 +348,6 @@ def evaluate(data, output):
 
         # Probability of answer is calculated as sum of start_prob and end_prob
         prob = start_prob + end_prob
-        if start_index>end_index:
-            print(start_index,end_index)
-
 
         # Replace answer if calculated probability is larger than previous windows
         if prob > max_prob:
@@ -325,7 +364,7 @@ def evaluate(data, output):
 # In[ ]:
 
 
-num_epoch = 5
+num_epoch = 2
 validation = True
 logging_step = 100
 learning_rate = 1e-4
@@ -348,6 +387,7 @@ for epoch in range(num_epoch):
 
         # Model inputs: input_ids, token_type_ids, attention_mask, start_positions, end_positions (Note: only "input_ids" is mandatory)
         # Model outputs: start_logits, end_logits, loss (return when start_positions/end_positions are provided)  
+        # output = model(input_ids=data[0], token_type_ids=data[1], attention_mask=data[2], start_positions=data[3], end_positions=data[4])
         output = model(input_ids=data[0], token_type_ids=data[1], attention_mask=data[2], start_positions=data[3],
                        end_positions=data[4])
 
@@ -412,7 +452,7 @@ with torch.no_grad():
                        attention_mask=data[2].squeeze(dim=0).to(device))
         result.append(evaluate(data, output))
 
-result_file = "result_hw7_bert_01.csv"
+result_file = "result_hw7_bert_07.csv"
 with open(result_file, 'w') as f:
     f.write("ID,Answer\n")
     for i, test_question in enumerate(test_questions):

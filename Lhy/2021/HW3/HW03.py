@@ -171,8 +171,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.0003, weight_decay=1e-5)
 n_epochs = 80
 
 # Whether to do semi-supervised learning.
-# do_semi = False
-do_semi = True
+do_semi = False
+# do_semi = True
 
 for epoch in range(n_epochs):
     # ---------- TODO ----------
