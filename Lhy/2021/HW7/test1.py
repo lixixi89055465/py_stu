@@ -1,8 +1,5 @@
 import torch
 
-a=torch.randn(10)
+img = torch.rand(10, 4, 4)* 255
+a=torch.rand(img)
 print(a)
-b=a.topk(10)
-print(b)
-
-

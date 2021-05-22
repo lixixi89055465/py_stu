@@ -213,18 +213,19 @@ class fcn_autoencoder(nn.Module):
 
 
 # maybe it can be smaller
+# momentum=0.01
 class conv_autoencoder(nn.Module):
     def __init__(self):
         super(conv_autoencoder, self).__init__()
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 12, 4, stride=2, padding=1),
-            nn.BatchNorm2d(12),
+            nn.BatchNorm2d(12, momentum=0.01),
             nn.ReLU(),
             nn.Conv2d(12, 24, 4, stride=2, padding=1),
-            nn.BatchNorm2d(24),
+            nn.BatchNorm2d(24, momentum=0.01),
             nn.ReLU(),
             nn.Conv2d(24, 48, 4, stride=2, padding=1),
-            nn.BatchNorm2d(48),
+            nn.BatchNorm2d(48, momentum=0.01),
             nn.ReLU(),
             # nn.Conv2d(48, 96, 4, stride=2, padding=1),  # medium: remove this layer
             # nn.ReLU(),
@@ -233,13 +234,13 @@ class conv_autoencoder(nn.Module):
             # nn.ConvTranspose2d(96, 48, 4, stride=2, padding=1),  # medium: remove this layer
             # nn.ReLU(),
             nn.ConvTranspose2d(48, 24, 4, stride=2, padding=1),
-            nn.BatchNorm2d(24),
+            nn.BatchNorm2d(24, momentum=0.01),
             nn.ReLU(),
             nn.ConvTranspose2d(24, 12, 4, stride=2, padding=1),
-            nn.BatchNorm2d(12),
+            nn.BatchNorm2d(12, momentum=0.01),
             nn.ReLU(),
             nn.ConvTranspose2d(12, 3, 4, stride=2, padding=1),
-            nn.BatchNorm2d(3),
+            nn.BatchNorm2d(3, momentum=0.01),
             nn.Tanh(),
         )
 
@@ -449,10 +450,10 @@ class CustomTensorDataset(TensorDataset):
 
 # Training hyperparameters
 num_epochs = 100
-batch_size = 32# medium: smaller batchsize
-#16:0.750 0.0045
-#32:0.759 0.0035
-#64:  0.0033() ,0,0027
+batch_size = 64  # medium: smaller batchsize
+# 16:0.750 0.0045
+# 32:0.759 0.0035
+# 64:  0.0033() ,0,0027
 learning_rate = 1e-3
 
 # Build training dataloader
