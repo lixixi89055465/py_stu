@@ -111,8 +111,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Training hyperparameters
 num_epochs = 10
-# batch_size = 1000  # medium: smaller batchsize
-batch_size = 100  # medium: smaller batchsize
+batch_size = 1000  # medium: smaller batchsize
 learning_rate = 1e-3
 # Build training dataloader
 x = torch.from_numpy(train)
@@ -240,7 +239,7 @@ n_epochs = 10
 criterion = nn.CrossEntropyLoss()
 train_dataloader1 = DataLoader(train_dataset1, batch_size=batch_size, num_workers=16, shuffle=True, drop_last=True)
 print(cnn_model)
-ru=nn.ReLU()
+
 for epoch in range(n_epochs):
     # These are used to record information in training.
     train_loss = []
@@ -255,9 +254,6 @@ for epoch in range(n_epochs):
         imgLen = int(batch_size * rn)
         imgs = imgs[:imgLen]
         rnT = torch.randn(batch_size - imgLen, 96, 4, 4).to(device)
-
-        rnT=ru(rnT)
-
         rightImgs = cnn_model.decoder(rnT).to(device)
         imgs = torch.cat((imgs, rightImgs), dim=0)
         labels[imgLen:] = 0
@@ -284,7 +280,7 @@ for epoch in range(n_epochs):
         # Update the parameters with computed gradients.
         optimizer.step()
         scheduler.step()
-        a=logits.argmax(dim=-1 )
+
         # Compute the accuracy for current batch.
         acc = (logits.argmax(dim=-1) == labels.to(device)).float().mean()
 
@@ -295,17 +291,8 @@ for epoch in range(n_epochs):
     # The average loss and accuracy of the training set is the average of the recorded values.
     train_loss = sum(train_loss) / len(train_loss)
     train_acc = sum(train_accs) / len(train_accs)
+
     # Print the information.
     print(f"[ Train | {epoch + 1:03d}/{n_epochs:03d} ] loss = {train_loss:.5f}, acc = {train_acc:.5f}")
-
-    model.eval()
-    rnT = torch.randn(batch_size, 96, 4, 4).to(device)
-    imgs= cnn_model.decoder(rnT).to(device)
-    labels[:] = 0
-    logits = model(imgs.to(device))
-    a=torch.sum(labels==logits)
-    print('valid is ',a/batch_size)
-    model.train()
-
 torch.save(model,"anomaly_classifier.pt")
 print("success")

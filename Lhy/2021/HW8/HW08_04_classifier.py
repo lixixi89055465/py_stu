@@ -170,6 +170,7 @@ def same_seeds(seed):
 
 same_seeds(19530615)
 
+
 def loss_vae(recon_x, x, mu, logvar, criterion):
     """
     recon_x: generating images
@@ -185,6 +186,7 @@ def loss_vae(recon_x, x, mu, logvar, criterion):
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+
 class CustomTensorDataset(TensorDataset):
     """TensorDataset with support of transforms.
     """
@@ -197,7 +199,7 @@ class CustomTensorDataset(TensorDataset):
         self.transform = transforms.Compose([
             transforms.Lambda(lambda x: x.to(torch.float32)),
             transforms.Lambda(lambda x: 2. * x / 255. - 1.),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+            # transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
         ])
 
     def __getitem__(self, index):
@@ -291,29 +293,27 @@ class Classifier(nn.Module):
         return x
 
 
-
 best_loss = np.inf
 
 eval_batch_size = 200
 anomaly_classifier_path = "anomaly_classifier.pt"
 anomaly_classifier_model = torch.load(anomaly_classifier_path).to(device)
 anomaly_classifier_model.eval()
-out_file = 'PREDICTION_FILE_04.csv'
+out_file = 'PREDICTION_FILE_06.csv'
 data = torch.tensor(test, dtype=torch.float32)
 test_dataset = CustomTensorDataset(data)
 test_sampler = SequentialSampler(test_dataset)
 test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=eval_batch_size, num_workers=8)
 
-anomality = list()
+anomality =[]
 with torch.no_grad():
     for i, data in enumerate(test_dataloader):
         img = data.float().cuda()
         output = anomaly_classifier_model(img)
         # loss = eval_loss(output, img).sum([1, 2, 3])
-        loss = torch.argmax(output,dim=-1)
-        anomality.append(loss)
-anomality = torch.cat(anomality, axis=0)
-anomality = torch.sqrt(anomality).reshape(len(test), 1).cpu().numpy()
+        loss = torch.argmax(output, dim=-1)
+        # anomality.append(max(-output[0]+output[1],0))
+        anomality = np.append((-output[:, 0] + output[:, 1]).cpu().numpy(),anomality)
 
-# df = pd.DataFrame(anomality, columns=['Predicted'])
-# df.to_csv(out_file, index_label='Id')
+df = pd.DataFrame(anomality, columns=['Predicted'])
+df.to_csv(out_file, index_label='Id')
