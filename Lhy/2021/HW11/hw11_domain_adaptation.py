@@ -1,28 +1,28 @@
 import matplotlib.pyplot as plt
 
+#
+# def no_axis_show(img, title='', cmap=None):
+#     # imshow, and set the interpolation mode to be "nearest"。
+#     fig = plt.imshow(img, interpolation='nearest', cmap=cmap)
+#     # do not show the axes in the images.
+#     fig.axes.get_xaxis().set_visible(False)
+#     fig.axes.get_yaxis().set_visible(False)
+#     plt.title(title)
 
-def no_axis_show(img, title='', cmap=None):
-    # imshow, and set the interpolation mode to be "nearest"。
-    fig = plt.imshow(img, interpolation='nearest', cmap=cmap)
-    # do not show the axes in the images.
-    fig.axes.get_xaxis().set_visible(False)
-    fig.axes.get_yaxis().set_visible(False)
-    plt.title(title)
 
-
-titles = ['horse', 'bed', 'clock', 'apple', 'cat', 'plane', 'television', 'dog', 'dolphin', 'spider']
-plt.figure(figsize=(18, 18))
-for i in range(10):
-    plt.subplot(1, 10, i + 1)
-    fig = no_axis_show(plt.imread(f'../data/real_or_drawing/train_data/{i}/{500 * i}.bmp'), title=titles[i])
-plt.figure(figsize=(18, 18))
-for i in range(10):
-    plt.subplot(1, 10, i + 1)
-    fig = no_axis_show(plt.imread(f'../data/real_or_drawing/train_data/{i}/{500 * i}.bmp'), title=titles[i])
+# titles = ['horse', 'bed', 'clock', 'apple', 'cat', 'plane', 'television', 'dog', 'dolphin', 'spider']
+# plt.figure(figsize=(18, 18))
+# for i in range(10):
+#     plt.subplot(1, 10, i + 1)
+#     fig = no_axis_show(plt.imread(f'../data/real_or_drawing/train_data/{i}/{500 * i}.bmp'), title=titles[i])
+# plt.figure(figsize=(18, 18))
+# for i in range(10):
+#     plt.subplot(1, 10, i + 1)
+#     fig = no_axis_show(plt.imread(f'../data/real_or_drawing/train_data/{i}/{500 * i}.bmp'), title=titles[i])
 import cv2
-import matplotlib.pyplot as plt
-
-titles = ['horse', 'bed', 'clock', 'apple', 'cat', 'plane', 'television', 'dog', 'dolphin', 'spider']
+# import matplotlib.pyplot as plt
+#
+# titles = ['horse', 'bed', 'clock', 'apple', 'cat', 'plane', 'television', 'dog', 'dolphin', 'spider']
 # plt.figure(figsize=(18, 18))
 #
 # original_img = plt.imread(f'../data/real_or_drawing/train_data/0/0.bmp')
@@ -87,8 +87,8 @@ target_transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-source_dataset = ImageFolder('', transform=source_transform)
-target_dataset = ImageFolder('', transform=target_transform)
+source_dataset = ImageFolder('../data/real_or_drawing/train_data', transform=source_transform)
+target_dataset = ImageFolder('../data/real_or_drawing/test_data', transform=target_transform)
 
 source_dataloader = torch.utils.data.DataLoader(source_dataset, batch_size=32, shuffle=True)
 target_dataLoader = torch.utils.data.DataLoader(target_dataset, batch_size=32, shuffle=True)

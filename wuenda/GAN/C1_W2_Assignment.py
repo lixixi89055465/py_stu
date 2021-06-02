@@ -240,6 +240,7 @@ transform = transforms.Compose([
 dataloader = DataLoader(
     MNIST('.', download=True, transform=transform),
     batch_size=batch_size,
+    num_workers=8,
     shuffle=True)
 
 gen = Generator(z_dim).to(device)
@@ -265,9 +266,9 @@ def weights_init(m):
         torch.nn.init.constant_(m.bias, 0)
 
 
-gen = gen.apply(weights_init)
+gen = gen.apply(weights_init).to(device)
 # print(gen)
-disc = disc.apply(weights_init)
+disc = disc.apply(weights_init).to(device)
 # print(disc)
 print('*' * 20)
 
