@@ -348,3 +348,22 @@ test_result, test_small, _ = mu_stylegan(
     return_intermediate=True)
 assert torch.abs(test_result - test_small).mean() < 0.001
 print("Success!")
+
+import numpy as np
+from torchvision.utils import make_grid
+import matplotlib.pyplot as plt
+plt.rcParams['figure.figsize'] = [15, 15]
+
+viz_samples = 10
+# The noise is exaggerated for visual effect
+viz_noise = get_truncated_noise(viz_samples, z_dim, truncation) * 10
+mu_stylegan.eval()
+images = []
+for alpha in np.linspace(0, 1, num=5):
+    mu_stylegan.alpha = alpha
+    viz_result, _, _ =  mu_stylegan(
+        viz_noise,
+        return_intermediate=True)
+    images += [tensor for tensor in viz_result]
+show_tensor_images(torch.stack(images), nrow=viz_samples, num_images=len(images))
+mu_stylegan = mu_stylegan.train()
