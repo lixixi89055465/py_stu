@@ -1,6 +1,11 @@
 import torch
-m = torch.nn.Identity(5, unused_argument1=0.1, unused_argument2=False)
-input = torch.randn(128, 20)
-output = m(input)
-print(output.size())
-print(m)
+
+# w_prime_prime = w_prime / torch.sqrt(
+#     (w_prime ** 2).sum([1, 2, 3])[:, None, None, None] + self.eps
+# )
+
+w_prime = torch.ones([3, 3, 3]) * 3
+print(w_prime)
+print(w_prime ** 2)
+print('-' * 100)
+print((w_prime ** 2).sum([0, 1]))
