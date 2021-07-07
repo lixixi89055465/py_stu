@@ -120,6 +120,14 @@ def ifgsm(model, x, y, loss_fn, epsilon=epsilon * 0.01, alpha=alpha, num_iter=50
     # clip new x_adv back to [x-epsilon, x+epsilon]
     # return x_adv
     # pass
+def testfgsm(model, x, y, loss_fn, epsilon=epsilon):
+    x_adv = x.detach().clone()  # initialize x_adv as original benign image x
+    x_adv.requires_grad = True  # need to obtain gradient of x_adv, thus set required grad
+    loss = loss_fn(model(x_adv), y)  # calculate loss
+    loss.backward()  # calculate gradient
+    # fgsm: use gradient ascent on x_adv to maximize loss
+    x_adv = x_adv + epsilon * x_adv.grad.detach().sign()
+    return x_adv
 
 
 # perform adversarial attack and generate adversarial examples
