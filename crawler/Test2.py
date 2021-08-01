@@ -19,7 +19,7 @@ print(response.status_code)
 print(response.content)
 print('1'*100)
 response=requests.get('https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1-66368c33f8.png')
-with open('./a.jpg','wb') as f:
+with open('./demo.jpg','wb') as f:
     f.write(response.content)
 
 

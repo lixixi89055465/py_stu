@@ -328,7 +328,7 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, model, device):
 
 """### Test"""
 
-# test.py
+# tutorial_3.py
 # 這個 block 用來對 testing_data.txt 做預測
 import torch
 from torch import nn

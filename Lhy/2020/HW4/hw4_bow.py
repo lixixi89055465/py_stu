@@ -191,7 +191,7 @@ def training(batch_size, n_epoch, lr, model_dir, train, valid, model, device):
         print('-----------------------------------------------')
         model.train() # 將model的模式設為train，這樣optimizer就可以更新model的參數（因為剛剛轉成eval模式）
 
-# test.py
+# tutorial_3.py
 # 這個block用來對testing_data.txt做預測
 import torch
 from torch import nn
