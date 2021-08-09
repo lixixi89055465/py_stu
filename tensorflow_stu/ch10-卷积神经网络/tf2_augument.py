@@ -21,7 +21,7 @@ def load_CIFAR_batch(filename):
     """ load single batch of cifar """
     with open(filename, 'rb')as f:
         datadict = p.load(f, encoding='iso-8859-1')
-        X = datadict['data']
+        X = datadict['images']
         Y = datadict['labels']
         X = X.reshape(10000, 3, 32, 32)
         Y = np.array(Y)
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     # physical_devices = tf.config.experimental.list_physical_devices('GPU')
     # tf.config.experimental.set_memory_growth(device=physical_devices[0], enable=True)
 
-    # load data
+    # load images
     # train_images, train_labels, test_images, test_labels = load_CIFAR(
     #    '/home/user/PycharmProjects/ImageClassification/VGG-16-19/VGG-16-TF2/cifar-10-batches-py')
     # 不需要转换为one-hot,labels已经是one-hot
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
     data_augmentation = False # 改为False，Ture还有bug
     if not data_augmentation:
-        print('Not using data augmentation')
+        print('Not using images augmentation')
         # 不进行数据扩充
         model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
         model.fit(train_images, train_labels,
@@ -142,7 +142,7 @@ if __name__ == '__main__':
                   callbacks=[change_lr],
                   validation_data=(test_images, test_labels))
     else:
-        print('Using real-time data augmentation')  # 实时数据增强
+        print('Using real-time images augmentation')  # 实时数据增强
         ## tensorflow2.0 数据增强
         train_datagen = keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255,
                                                                      rotation_range=10,

@@ -29,8 +29,8 @@ source_transform = transforms.Compose([
 target_transform = transforms.Compose([
     # Turn RGB to grayscale.
     transforms.Grayscale(),
-    # Resize: size of source data is 32x32, thus we need to
-    #  enlarge the size of target data from 28x28 to 32x32。
+    # Resize: size of source images is 32x32, thus we need to
+    #  enlarge the size of target images from 28x28 to 32x32。
     transforms.Resize((32, 32)),
     # 50% Horizontal Flip. (For Augmentation)
     transforms.RandomHorizontalFlip(),
@@ -41,8 +41,8 @@ target_transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-source_dataset = ImageFolder('../data/real_or_drawing/train_data', transform=source_transform)
-target_dataset = ImageFolder('../data/real_or_drawing/test_data', transform=target_transform)
+source_dataset = ImageFolder('../images/real_or_drawing/train_data', transform=source_transform)
+target_dataset = ImageFolder('../images/real_or_drawing/test_data', transform=target_transform)
 
 source_dataloader = DataLoader(source_dataset, batch_size=64, shuffle=True,num_workers=8,pin_memory=True)
 target_dataloader = DataLoader(target_dataset, batch_size=64, shuffle=True,num_workers=8,pin_memory=True)
@@ -152,11 +152,11 @@ def train_epoch(source_dataloader, target_dataloader, lamb):
         source_data = source_data.cuda()
         source_label = source_label.cuda()
         target_data = source_data.cuda()
-        # Mixed the source data and target data, or it'll mislead the running params
-        # of batch_norm,(running mean/var of source and target data are different .)
+        # Mixed the source images and target images, or it'll mislead the running params
+        # of batch_norm,(running mean/var of source and target images are different .)
         mixed_data = torch.cat([source_data, target_data], dim=0)
         domain_label = torch.zeros([source_data.shape[0] + target_data.shape[0], 1]).cuda()
-        # set domain label of source data to be 1
+        # set domain label of source images to be 1
         domain_label[:source_data.shape[0]] = 1
         # step 1 : train domain classifier
         feature = feature_extractor(mixed_data)

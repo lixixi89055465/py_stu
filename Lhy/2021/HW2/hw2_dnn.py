@@ -3,13 +3,13 @@ for seed in range(106, 131):
     print('Seed:', seed)
     import numpy as np
 
-    print('Loading data ...')
-    data_root = '../data/timit_11/'
+    print('Loading images ...')
+    data_root = '../images/timit_11/'
     train = np.load(data_root + 'train_11.npy')
     train_label = np.load(data_root + 'train_label_11.npy')
     test = np.load(data_root + 'test_11.npy')
-    print('Size of training data: {}'.format(train.shape))
-    print('Size of testing data: {}'.format(test.shape))
+    print('Size of training images: {}'.format(train.shape))
+    print('Size of testing images: {}'.format(test.shape))
 
     import torch
     from torch.utils.data import Dataset
@@ -45,7 +45,7 @@ for seed in range(106, 131):
 
     train_set = TIMITDataset(train_x, train_y)
     val_set = TIMITDataset(val_x, val_y)
-    train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)  # only shuffle the training data
+    train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)  # only shuffle the training images
     val_loader = DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=False)
 
     import gc

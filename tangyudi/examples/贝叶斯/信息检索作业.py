@@ -3,9 +3,9 @@ from matplotlib import pyplot as plt  # 使用matplot进行画图
 import pandas as pd
 import numpy as np
 
-content = pd.read_csv('./tmp.data', index_col=False, sep='\t',  # 获取小文档的内容。
-                      quoting=3, names=['data'], encoding='utf-8')
-df_news = pd.read_csv('./data/val.txt', index_col=False, sep='\t',  # 获取大文档文档的内容。
+content = pd.read_csv('./tmp.images', index_col=False, sep='\t',  # 获取小文档的内容。
+                      quoting=3, names=['images'], encoding='utf-8')
+df_news = pd.read_csv('./images/val.txt', index_col=False, sep='\t',  # 获取大文档文档的内容。
                       quoting=3, names=['category', 'theme', 'URL', 'content'], encoding='utf-8')
 # 获取停用词的内容。
 stopwords = pd.read_csv("stopwords.txt", index_col=False, sep="\t", quoting=3, names=['stopword'], encoding='utf-8')

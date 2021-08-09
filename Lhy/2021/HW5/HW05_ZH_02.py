@@ -26,7 +26,7 @@ if torch.cuda.is_available():
 np.random.seed(seed)
 torch.backends.cudnn.benchmark = False
 torch.backends.cudnn.deterministic = True
-data_dir = '../data/DATA/rawdata'
+data_dir = '../images/DATA/rawdata'
 dataset_name = 'ted2020'
 # urls = (
 #     '"https://onedrive.live.com/download?cid=3E549F3B24B238B4&resid=3E549F3B24B238B4%214989&authkey=AGgQ-DaR8eFSl1A"',
@@ -202,7 +202,7 @@ for split in ['train', 'valid', 'test']:
                         line = line.strip()
                         tok = spm_model.encode(line, out_type=str)
                         print(' '.join(tok), file=out_f)
-# binpath = Path('../data/DATA/data-bin', dataset_name)
+# binpath = Path('../images/DATA/images-bin', dataset_name)
 # if binpath.exists():
 #     print(binpath, "exists, will not overwrite!")
 # else:
@@ -216,12 +216,12 @@ for split in ['train', 'valid', 'test']:
 #         --joined-dictionary\
 #         --workers 2
 config = Namespace(
-    datadir="../data/DATA/data-bin/ted2020",
+    datadir="../images/DATA/images-bin/ted2020",
     savedir="./checkpoints/rnn",
     source_lang="en",
     target_lang="zh",
 
-    # cpu threads when fetching & processing data.
+    # cpu threads when fetching & processing images.
     num_workers=2,
     # batch size in terms of tokens. gradient accumulation increases the effective batchsize.
     max_tokens=8192,
@@ -282,8 +282,8 @@ task_cfg = TranslationConfig(
     upsample_primary=1,
 )
 task = TranslationTask.setup_task(task_cfg)
-logger.info("loading data for epoch 1")
-task.load_dataset(split="train", epoch=1, combine=True)  # combine if you have back-translation data.
+logger.info("loading images for epoch 1")
+task.load_dataset(split="train", epoch=1, combine=True)  # combine if you have back-translation images.
 task.load_dataset(split="valid", epoch=1)
 
 sample = task.dataset("valid")[1]
@@ -1078,8 +1078,8 @@ file_names = (
 #     elif path.suffix == ".gz":
 #         !gzip -fkd {path}
 
-binpath = Path('../data/DATA/data-bin', mono_dataset_name)
-src_dict_file = '../data/DATA/data-bin/ted2020/dict.en.txt'
+binpath = Path('../images/DATA/images-bin', mono_dataset_name)
+src_dict_file = '../images/DATA/images-bin/ted2020/dict.en.txt'
 tgt_dict_file = src_dict_file
 monopref = str(mono_prefix / "mono.tok")  # whatever filepath you get after applying subword tokenization
 # if binpath.exists():

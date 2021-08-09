@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 
 # 获取小文档的内容。
-content = pd.read_csv('./tmp.data', index_col=False, sep='\t',  #
-                      quoting=3, names=['data'], encoding='utf-8')
+content = pd.read_csv('./tmp.images', index_col=False, sep='\t',  #
+                      quoting=3, names=['images'], encoding='utf-8')
 # 获取大文档文档的内容。
-df_news = pd.read_csv('./data/val.txt', index_col=False, sep='\t',  #
+df_news = pd.read_csv('./images/val.txt', index_col=False, sep='\t',  #
                       quoting=3, names=['category', 'theme', 'URL', 'content'], encoding='utf-8')
 # 获取停用词的内容。
 stopwords = pd.read_csv("stopwords.txt", index_col=False, sep="\t", quoting=3, names=['stopword'], encoding='utf-8')
@@ -19,7 +19,7 @@ content.dropna()
 df_news = df_news.dropna()[:N]
 # print(df_news.shape)
 # content
-# print(content.data[0])
+# print(content.images[0])
 
 contont_base = content.data[0]
 # 实用jieba 分词器进行分词

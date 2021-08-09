@@ -35,14 +35,14 @@ if re.match('[0-9]', key) is not None:
     key = int(key)
 else:
     key = ord(key) % 10
-# load checkpoint and data corresponding to the key
+# load checkpoint and images corresponding to the key
 
 model = MathRegressor()
 autograd_lib.register(model)
-data = torch.load('../data/data.pth')[key]
+data = torch.load('../images/images.pth')[key]
 
 model.load_state_dict(data['model'])
-train, target = data['data']
+train, target = data['images']
 
 
 # function to compute gradient norm

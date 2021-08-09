@@ -36,7 +36,7 @@ print('Percentage of normal transaction:',
       len(under_sample_data[under_sample_data.Class == 0]) / len(under_sample_data))
 print('Percentage of fraud transactions:',
       len(under_sample_data[under_sample_data.Class == 1]) / len(under_sample_data))
-print('Total number of transactions in resampled data:', len(under_sample_data))
+print('Total number of transactions in resampled images:', len(under_sample_data))
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.metrics import confusion_matrix, recall_score, classification_report

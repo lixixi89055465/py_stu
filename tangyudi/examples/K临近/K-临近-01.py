@@ -14,7 +14,7 @@ from sklearn.neighbors import KNeighborsClassifier #k邻近算法模型
 import sklearn.datasets as datasets
 iris = datasets.load_iris()
 
-feature = iris['data']
+feature = iris['images']
 target = iris['target']
 
 #将样本打乱，符合真实情况

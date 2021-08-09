@@ -4,7 +4,7 @@ from shutil import copyfile
 import os
 
 # cache_path = 'home/jovyan/.cache/torch/hub/checkpoints/'
-vgg_file = '../data/vgg16-397923af.pth'
+vgg_file = '../images/vgg16-397923af.pth'
 # if not os.path.exists(f"{cache_path}{vgg_file}"):
 if not os.path.exists(f"{vgg_file}"):
     print("Moving file to cache")
@@ -94,7 +94,7 @@ def show_tensor_images(image_tensor, num_images=16, size=(3, 64, 64), nrow=3):
 
 z_dim = 64
 gen = Generator(z_dim)
-gen.load_state_dict(torch.load(f"../data/pretrained_celeba.pth", map_location='cpu')["gen"])
+gen.load_state_dict(torch.load(f"../images/pretrained_celeba.pth", map_location='cpu')["gen"])
 gen = gen.eval()
 
 map_fn = nn.Identity()

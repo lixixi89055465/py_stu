@@ -16,8 +16,8 @@ from pdb import set_trace
 from torch.autograd import Variable
 
 args = {
-    'ckptpath': '../data/checkpoint.pth',
-    'dataset_dir': '../data/food/'
+    'ckptpath': '../images/checkpoint.pth',
+    'dataset_dir': '../images/food/'
 }
 args = argparse.Namespace(**args)
 
@@ -114,7 +114,7 @@ class FoodDataset(Dataset):
         return torch.stack(images), torch.tensor(labels)
 
 
-# help to get data path and label
+# help to get images path and label
 def get_paths_labels(path):
     def my_key(name):
         print('name:', name)
@@ -414,7 +414,7 @@ from matplotlib.font_manager import FontProperties
 import matplotlib.pyplot as plt
 
 # 自定义字体变数
-myfont = FontProperties(fname=r'../data/taipei_sans_tc_beta.ttf')
+myfont = FontProperties(fname=r'../images/taipei_sans_tc_beta.ttf')
 # ！！！ 后续在相关韩式中增加fontproperties = myfont
 plt.rcParams['figure.figsize'] = [12, 10]
 
@@ -432,9 +432,9 @@ def same_seeds(seed):
 
 same_seeds(5353)
 
-tokenizer1 = BertTokenizerFast.from_pretrained("../data/hw9_bert/tokenizer1")
-tokenizer2 = BertTokenizerFast.from_pretrained("../data/hw9_bert/tokenizer2")
-tokenizer3 = BertTokenizerFast.from_pretrained("../data/hw9_bert/tokenizer3")
+tokenizer1 = BertTokenizerFast.from_pretrained("../images/hw9_bert/tokenizer1")
+tokenizer2 = BertTokenizerFast.from_pretrained("../images/hw9_bert/tokenizer2")
+tokenizer3 = BertTokenizerFast.from_pretrained("../images/hw9_bert/tokenizer3")
 tokenizers = [tokenizer1, tokenizer2, tokenizer3]
 
 contexts, questions, answers = [], [], []
@@ -474,7 +474,7 @@ print(inputs['input_ids'][0].tolist().index(102))
 question_start, question_end = 1, inputs['input_ids'][0].tolist().index(102) - 1
 context_start, context_end = question_end + 2, len(inputs['input_ids'][0]) - 2
 
-outputs_hidden_states = torch.load(f"../data/hw9_bert/output/model{MODEL}_q{QUESTION}")
+outputs_hidden_states = torch.load(f"../images/hw9_bert/output/model{MODEL}_q{QUESTION}")
 
 ##### Traverse hidden state of all layers #####
 # "outputs_hidden_state" is a tuple with 13 elements, the 1st element is embedding output, the other 12 elements are attention hidden states of layer 1 - 12

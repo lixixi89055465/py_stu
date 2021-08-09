@@ -41,11 +41,11 @@ train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255
                                                                 fill_mode='nearest')
 test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255)  # 不增强验证数据
 
-# train_db = tf.data.Dataset.from_tensor_slices((x, y))
+# train_db = tf.images.Dataset.from_tensor_slices((x, y))
 # train_db = train_db.shuffle(10000).map(preprocess).batch(128)
 train_db = train_datagen.flow(x, y, batch_size=512)
 
-# test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
+# test_db = tf.images.Dataset.from_tensor_slices((x_test, y_test))
 # test_db = test_db.map(preprocess).batch(128)
 # test_db = train_datagen.flow(x_test, y_test, batch_size=512)
 test_db = train_datagen.flow(x_test, y_test, batch_size=512)

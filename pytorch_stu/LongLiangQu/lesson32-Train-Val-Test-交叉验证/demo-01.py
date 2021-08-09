@@ -5,7 +5,7 @@ batch_size = 200
 learning_rate = 0.01
 epochs = 10
 
-train_db = torchvision.datasets.MNIST('../data', train=True, download=True,
+train_db = torchvision.datasets.MNIST('../images', train=True, download=True,
                                       transform=torchvision.transforms.Compose([
                                           torchvision.transforms.ToTensor(),
                                           torchvision.transforms.Normalize((0.1317,), (0.2081))
@@ -16,7 +16,7 @@ train_loader = torch.utils.data.DataLoader(
     batch_size=batch_size, shuffle=True
 )
 
-test_db = torchvision.datasets.MNIST('../data', train=False, transform=torchvision.transforms.Compose([
+test_db = torchvision.datasets.MNIST('../images', train=False, transform=torchvision.transforms.Compose([
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize((0.1307,), (0.3081,))
 ]))

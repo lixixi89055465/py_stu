@@ -37,7 +37,7 @@ def create_image():
     # img=np.ones([400,400,1],np.uint8)
     # img=img+0
     # cv.imshow("new image",img)
-    # cv.imwrite("./data/write.png",img)
+    # cv.imwrite("./images/write.png",img)
     # ml=np.ones([3,3],np.uint8)
     # ml.fill(122.388)
     # print(ml)
@@ -47,7 +47,7 @@ def create_image():
 
 
 print('--------- Hello Python ------')
-src = cv.imread('./data/demo.png')
+src = cv.imread('./images/demo.png')
 cv.namedWindow("input image", cv.WINDOW_AUTOSIZE)
 cv.imshow("input image", src)
 t1 = cv.getTickCount()

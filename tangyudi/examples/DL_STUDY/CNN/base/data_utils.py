@@ -7,7 +7,7 @@ def load_CIFAR_batch(filename):
   """ load single batch of cifar """
   with open(filename, 'rb') as f:
     datadict = pickle.load(f)
-    X = datadict['data']
+    X = datadict['images']
     Y = datadict['labels']
     X = X.reshape(10000, 3, 32, 32).transpose(0,2,3,1).astype("float")
     Y = np.array(Y)
@@ -35,12 +35,12 @@ def get_CIFAR10_data(num_training=500, num_validation=50, num_test=50):
     it for classifiers. These are the same steps as we used for the SVM, but
     condensed to a single function.
     """
-    # Load the raw CIFAR-10 data
+    # Load the raw CIFAR-10 images
 
     cifar10_dir = '/Users/nanji/ai/workspace/py_stu/tangyudi/examples/DL_STUDY/CNN/cifar-10-batches-py/'
     X_train, y_train, X_test, y_test = load_CIFAR10(cifar10_dir)
     print X_train.shape
-    # Subsample the data
+    # Subsample the images
     mask = range(num_training, num_training + num_validation)
     X_val = X_train[mask]
     y_val = y_train[mask]
@@ -51,7 +51,7 @@ def get_CIFAR10_data(num_training=500, num_validation=50, num_test=50):
     X_test = X_test[mask]
     y_test = y_test[mask]
 
-    # Normalize the data: subtract the mean image
+    # Normalize the images: subtract the mean image
     mean_image = np.mean(X_train, axis=0)
     X_train -= mean_image
     X_val -= mean_image
@@ -62,7 +62,7 @@ def get_CIFAR10_data(num_training=500, num_validation=50, num_test=50):
     X_val = X_val.transpose(0, 3, 1, 2).copy()
     X_test = X_test.transpose(0, 3, 1, 2).copy()
 
-    # Package data into a dictionary
+    # Package images into a dictionary
     return {
       'X_train': X_train, 'y_train': y_train,
       'X_val': X_val, 'y_val': y_val,
@@ -78,7 +78,7 @@ def load_tiny_imagenet(path, dtype=np.float32):
 
   Inputs:
   - path: String giving path to the directory to load.
-  - dtype: numpy datatype used to load the data.
+  - dtype: numpy datatype used to load the images.
 
   Returns: A tuple of
   - class_names: A list where class_names[i] is a list of strings giving the
@@ -105,12 +105,12 @@ def load_tiny_imagenet(path, dtype=np.float32):
       wnid_to_words[wnid] = [w.strip() for w in words.split(',')]
   class_names = [wnid_to_words[wnid] for wnid in wnids]
 
-  # Next load training data.
+  # Next load training images.
   X_train = []
   y_train = []
   for i, wnid in enumerate(wnids):
     if (i + 1) % 20 == 0:
-      print 'loading training data for synset %d / %d' % (i + 1, len(wnids))
+      print 'loading training images for synset %d / %d' % (i + 1, len(wnids))
     # To figure out the filenames we need to open the boxes file
     boxes_file = os.path.join(path, 'train', wnid, '%s_boxes.txt' % wnid)
     with open(boxes_file, 'r') as f:
@@ -129,11 +129,11 @@ def load_tiny_imagenet(path, dtype=np.float32):
     X_train.append(X_train_block)
     y_train.append(y_train_block)
       
-  # We need to concatenate all training data
+  # We need to concatenate all training images
   X_train = np.concatenate(X_train, axis=0)
   y_train = np.concatenate(y_train, axis=0)
   
-  # Next load validation data
+  # Next load validation images
   with open(os.path.join(path, 'val', 'val_annotations.txt'), 'r') as f:
     img_files = []
     val_wnids = []

@@ -10,11 +10,11 @@ from time import time
 import matplotlib.pyplot as plt
 
 class DataLoader(object):
-    """similiar to gluon.data.DataLoader, but might be faster.
+    """similiar to gluon.images.DataLoader, but might be faster.
 
-    The main difference this data loader tries to read more exmaples each
+    The main difference this images loader tries to read more exmaples each
     time. But the limits are 1) all examples in dataset have the same shape, 2)
-    data transfomer needs to process multiple examples at each time
+    images transfomer needs to process multiple examples at each time
     """
     def __init__(self, dataset, batch_size, shuffle, transform=None):
         self.dataset = dataset
@@ -54,7 +54,7 @@ def load_data_fashion_mnist(batch_size, resize=None, root="~/.mxnet/datasets/fas
             for i in range(n):
                 new_data[i] = image.imresize(data[i], resize, resize)
             data = new_data
-        # change data from batch x height x width x channel to batch x channel x height x width
+        # change images from batch x height x width x channel to batch x channel x height x width
         return nd.transpose(data.astype('float32'), (0,3,1,2))/255, label.astype('float32')
 
     mnist_train = gluon.data.vision.FashionMNIST(root=root, train=True, transform=None)
@@ -95,7 +95,7 @@ def accuracy(output, label):
     return nd.mean(output.argmax(axis=1)==label).asscalar()
 
 def _get_batch(batch, ctx):
-    """return data and label on ctx"""
+    """return images and label on ctx"""
     if isinstance(batch, mx.io.DataBatch):
         data = batch.data[0]
         label = batch.label[0]
@@ -209,7 +209,7 @@ def show_images(imgs, nrows, ncols, figsize=None):
     plt.show()
 
 def data_iter_random(corpus_indices, batch_size, num_steps, ctx=None):
-    """Sample mini-batches in a random order from sequential data."""
+    """Sample mini-batches in a random order from sequential images."""
     # Subtract 1 because label indices are corresponding input indices + 1. 
     num_examples = (len(corpus_indices) - 1) // num_steps
     epoch_size = num_examples // batch_size
@@ -231,7 +231,7 @@ def data_iter_random(corpus_indices, batch_size, num_steps, ctx=None):
         yield data, label
 
 def data_iter_consecutive(corpus_indices, batch_size, num_steps, ctx=None):
-    """Sample mini-batches in a consecutive order from sequential data."""
+    """Sample mini-batches in a consecutive order from sequential images."""
     corpus_indices = nd.array(corpus_indices, ctx=ctx)
     data_len = len(corpus_indices)
     batch_len = data_len // batch_size

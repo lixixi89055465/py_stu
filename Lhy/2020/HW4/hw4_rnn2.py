@@ -23,13 +23,13 @@ path_prefix = './'
 """### Download Dataset
 有三個檔案，分別是 training_label.txt、training_nolabel.txt、testing_data.txt
 
-- training_label.txt：有 label 的 training data（句子配上 0 or 1，+++$+++ 只是分隔符號，不要理它）
+- training_label.txt：有 label 的 training images（句子配上 0 or 1，+++$+++ 只是分隔符號，不要理它）
     - e.g., 1 +++$+++ are wtf ... awww thanks !
 
-- training_nolabel.txt：沒有 label 的 training data（只有句子），用來做 semi-supervised learning
+- training_nolabel.txt：沒有 label 的 training images（只有句子），用來做 semi-supervised learning
     - ex: hates being this burnt !! ouch
 
-- testing_data.txt：你要判斷 testing data 裡面的句子是 0 or 1
+- testing_data.txt：你要判斷 testing images 裡面的句子是 0 or 1
 
     >id,text
 
@@ -40,12 +40,12 @@ path_prefix = './'
     >2,stupid boys .. they ' re so .. stupid !
 """
 
-# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1dPHIl8ZnfDz_fxNd2ZeBYedTat2lfxcO' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/data/training_label.txt'
-# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1x1rJOX_ETqnOZjdMAbEE2pqIjRNa8xcc' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/data/training_nolabel.txt'
-# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=16CtnQwSDCob9xmm6EdHHR7PNFNiOrQ30' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/data/testing_data.txt'
+# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1dPHIl8ZnfDz_fxNd2ZeBYedTat2lfxcO' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/images/training_label.txt'
+# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1x1rJOX_ETqnOZjdMAbEE2pqIjRNa8xcc' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/images/training_nolabel.txt'
+# !wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=16CtnQwSDCob9xmm6EdHHR7PNFNiOrQ30' -O 'drive/My Drive/Colab Notebooks/hw8-RNN/images/testing_data.txt'
 
-# !gdown --id '1lz0Wtwxsh5YCPdqQ3E3l_nbfJT1N13V8' --output data.zip
-# !unzip data.zip
+# !gdown --id '1lz0Wtwxsh5YCPdqQ3E3l_nbfJT1N13V8' --output images.zip
+# !unzip images.zip
 # !ls
 
 # this is for filtering the warnings
@@ -64,8 +64,8 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 
-def load_training_data(path='../data/training_label.txt'):
-    # 把 training 時需要的 data 讀進來
+def load_training_data(path='../images/training_label.txt'):
+    # 把 training 時需要的 images 讀進來
     # 如果是 'training_label.txt'，需要讀取 label，如果是 'training_nolabel.txt'，不需要讀取 label
     if 'training_label.txt' in path:
         with open(path, 'r') as f:
@@ -81,8 +81,8 @@ def load_training_data(path='../data/training_label.txt'):
         return x
 
 
-def load_testing_data(path='../data/testing_data'):
-    # 把 testing 時需要的 data 讀進來
+def load_testing_data(path='../images/testing_data'):
+    # 把 testing 時需要的 images 讀進來
     with open(path, 'r') as f:
         lines = f.readlines()
         X = ["".join(line.strip('\n').split(",")[1:]).strip() for line in lines[1:]]
@@ -118,12 +118,12 @@ def train_word2vec(x):
 
 
 if __name__ == "__main__":
-    print("loading training data ...")
-    train_x, y = load_training_data('../data/training_label.txt.copy')
-    train_x_no_label = load_training_data('../data/training_nolabel.txt.copy')
+    print("loading training images ...")
+    train_x, y = load_training_data('../images/training_label.txt.copy')
+    train_x_no_label = load_training_data('../images/training_nolabel.txt.copy')
 
-    print("loading testing data ...")
-    test_x = load_testing_data('../data/testing_data.txt.copy')
+    print("loading testing images ...")
+    test_x = load_testing_data('../images/testing_data.txt.copy')
 
     # model = train_word2vec(train_x + train_x_no_label + test_x)
     model = train_word2vec(train_x + test_x)
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 """### Data Preprocess"""
 
 # preprocess.py
-# 這個 block 用來做 data 的預處理
+# 這個 block 用來做 images 的預處理
 from torch import nn
 from gensim.models import Word2Vec
 
@@ -225,7 +225,7 @@ class Preprocess():
 
 """### Dataset"""
 
-# data.py
+# images.py
 # 實作了 dataset 所需要的 '__init__', '__getitem__', '__len__'
 # 好讓 dataloader 能使用
 import torch
@@ -234,11 +234,11 @@ from torch.utils import data
 
 class TwitterDataset(data.Dataset):
     """
-    Expected data shape like:(data_num, data_len)
+    Expected images shape like:(data_num, data_len)
     Data can be a list of numpy array or a list of lists
-    input data shape : (data_num, seq_len, feature_dim)
+    input images shape : (data_num, seq_len, feature_dim)
     
-    __len__ will return the number of data
+    __len__ will return the number of images
     """
 
     def __init__(self, X, y=None):
@@ -425,10 +425,10 @@ from sklearn.model_selection import train_test_split
 # 通過 torch.cuda.is_available() 的回傳值進行判斷是否有使用 GPU 的環境，如果有的話 device 就設為 "cuda"，沒有的話就設為 "cpu"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# 處理好各個 data 的路徑
-train_with_label = os.path.join(path_prefix, '../data/training_label.txt.copy')
-train_no_label = os.path.join(path_prefix, '../data/training_nolabel.txt.copy')
-testing_data = os.path.join(path_prefix, '../data/testing_data.txt.copy')
+# 處理好各個 images 的路徑
+train_with_label = os.path.join(path_prefix, '../images/training_label.txt.copy')
+train_no_label = os.path.join(path_prefix, '../images/training_nolabel.txt.copy')
+testing_data = os.path.join(path_prefix, '../images/testing_data.txt.copy')
 
 w2v_path = os.path.join(path_prefix, 'w2v_all.model')  # 處理 word to vec model 的路徑
 
@@ -441,7 +441,7 @@ lr = 0.001
 # model_dir = os.path.join(path_prefix, 'model/') # model directory for checkpoint model
 model_dir = path_prefix  # model directory for checkpoint model
 
-print("loading data ...")  # 把 'training_label.txt' 跟 'training_nolabel.txt' 讀進來
+print("loading images ...")  # 把 'training_label.txt' 跟 'training_nolabel.txt' 讀進來
 train_x, y = load_training_data(train_with_label)
 train_x_no_label = load_training_data(train_no_label)
 
@@ -460,17 +460,17 @@ train_x_no_label = preprocess.sentence_word2idx()
 model = LSTM_Net(embedding, embedding_dim=250, hidden_dim=150, num_layers=1, dropout=0.5, fix_embedding=fix_embedding)
 model = model.to(device)  # device為 "cuda"，model 使用 GPU 來訓練（餵進去的 inputs 也需要是 cuda tensor）
 
-# 把 data 分為 training data 跟 validation data（將一部份 training data 拿去當作 validation data）
+# 把 images 分為 training images 跟 validation images（將一部份 training images 拿去當作 validation images）
 X_train, X_val, y_train, y_val = train_x[:300], train_x[300:], y[:300], y[300:]
 
-# 把 data 做成 dataset 供 dataloader 取用
+# 把 images 做成 dataset 供 dataloader 取用
 train_dataset = TwitterDataset(X=X_train, y=y_train)
 val_dataset = TwitterDataset(X=X_val, y=y_val)
 unlabeld_dataset = TwitterDataset(X=train_x_no_label)
 
 # unbaled 做成 dataset  供dataloader 取用  # lixiang
 
-# 把 data 轉成 batch of tensors
+# 把 images 轉成 batch of tensors
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
                                            shuffle=True,
@@ -492,7 +492,7 @@ training(batch_size, epoch, lr, model_dir, train_loader, val_loader, unlabel_loa
 """### Predict and Write to csv file"""
 
 # 開始測試模型並做預測
-print("loading testing data ...")
+print("loading testing images ...")
 test_x = load_testing_data(testing_data)
 preprocess = Preprocess(test_x, sen_len, w2v_path=w2v_path)
 embedding = preprocess.make_embedding(load=True)

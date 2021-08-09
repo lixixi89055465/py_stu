@@ -25,8 +25,8 @@ target_transform = transforms.Compose([
     transforms.RandomRotation(15, fill=(0,)),
     transforms.ToTensor(),
 ])
-source_dataset = ImageFolder('../data/real_or_drawing/train_data', transform=source_transform)
-target_dataset = ImageFolder('../data/real_or_drawing/test_data', transform=target_transform)
+source_dataset = ImageFolder('../images/real_or_drawing/train_data', transform=source_transform)
+target_dataset = ImageFolder('../images/real_or_drawing/test_data', transform=target_transform)
 
 source_dataloader = DataLoader(source_dataset, batch_size=64, shuffle=True, num_workers=8, pin_memory=True)
 target_dataloader = DataLoader(target_dataset, batch_size=64, shuffle=True, num_workers=8, pin_memory=True)

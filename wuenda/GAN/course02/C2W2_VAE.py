@@ -82,14 +82,14 @@ def kl_divergence_loss(q_dist):
     ).sum(-1)
 
 
-# from torch.utils.data.dataloader import DataLoader
+# from torch.utils.images.dataloader import DataLoader
 # from torchvision import datasets, transforms
 import torchvision
 
 transforms = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor()
 ])
-mnist_dataset = torchvision.datasets.MNIST('../data/', train=True, download=True, transform=transforms)
+mnist_dataset = torchvision.datasets.MNIST('../images/', train=True, download=True, transform=transforms)
 train_dataloader = torch.utils.data.DataLoader(mnist_dataset, shuffle=True, batch_size=1024)
 
 import matplotlib.pyplot as plt

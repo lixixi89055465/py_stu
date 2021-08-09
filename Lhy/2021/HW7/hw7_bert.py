@@ -153,9 +153,9 @@ def read_data(file):
         data = json.load(reader)
     return data["questions"], data["paragraphs"]
 
-train_questions, train_paragraphs = read_data("../data/hw7_train.json")
-dev_questions, dev_paragraphs = read_data("../data/hw7_dev.json")
-test_questions, test_paragraphs = read_data("../data/hw7_test.json")
+train_questions, train_paragraphs = read_data("../images/hw7_train.json")
+dev_questions, dev_paragraphs = read_data("../images/hw7_dev.json")
+test_questions, test_paragraphs = read_data("../images/hw7_test.json")
 
 
 # ## Tokenize Data
@@ -330,7 +330,7 @@ for epoch in range(num_epoch):
     train_loss = train_acc = 0
     
     for data in tqdm(train_loader):	
-        # Load all data into GPU
+        # Load all images into GPU
         data = [i.to(device) for i in data]
         
         # Model inputs: input_ids, token_type_ids, attention_mask, start_positions, end_positions (Note: only "input_ids" is mandatory)

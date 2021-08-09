@@ -91,7 +91,7 @@ TRG = Field(tokenize = tokenize_en,
             eos_token = '<eos>', 
             lower = True)
 
-"""Load the data."""
+"""Load the images."""
 
 train_data, valid_data, test_data = Multi30k.splits(exts = ('.de', '.en'),fields = (SRC, TRG))
 

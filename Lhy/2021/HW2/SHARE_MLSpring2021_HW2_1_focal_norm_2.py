@@ -1,9 +1,9 @@
-# !gdown --id '1HPkcmQmFGu-3OknddKIa5dNDsR05lIQR' --output data.zip
-# !unzip data.zip
+# !gdown --id '1HPkcmQmFGu-3OknddKIa5dNDsR05lIQR' --output images.zip
+# !unzip images.zip
 # !ls
 import numpy as np
 
-data_root = '../data/timit_11/'
+data_root = '../images/timit_11/'
 train = np.load(data_root + 'train_11.npy')
 train_label = np.load(data_root + 'train_label_11.npy')
 test = np.load(data_root + 'test_11.npy')

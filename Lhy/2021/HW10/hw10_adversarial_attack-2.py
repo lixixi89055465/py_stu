@@ -18,7 +18,7 @@ epsilon = 8 / 255 / std
 # alpha (step size) can be decided by yourself
 alpha = 0.8 / 255 / std
 
-root = '../data/data'  # directory for storing benign images
+root = '../images/images'  # directory for storing benign images
 # benign images: images which do not contain adversarial perturbations
 # adversarial images: images which include adversarial perturbations
 import os
@@ -180,7 +180,7 @@ for i, cls_name in enumerate(classes):
     # benign image
     cnt += 1
     plt.subplot(len(classes), 4, cnt)
-    im = Image.open(f'../data/data/{path}')
+    im = Image.open(f'../images/images/{path}')
     logit = model(transform(im).unsqueeze(0).to(device))[0]
     predict = logit.argmax(-1).item()
     prob = logit.softmax(-1)[predict].item()

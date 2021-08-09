@@ -10,7 +10,7 @@ def fill_color_demo(image):
     cv.imshow("fill_color_demo", copyImage)
 
 
-src = cv.imread('./data/demo.jpg')
+src = cv.imread('./images/demo.jpg')
 cv.namedWindow("input image", cv.WINDOW_AUTOSIZE)
 cv.imshow("input image", src)
 fill_color_demo(src)

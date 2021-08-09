@@ -6,7 +6,7 @@
 # If there are any questions, please contact ntu-ml-2021spring-ta@googlegroups.com
 
 # # Mounting your gdrive (Optional)
-# By mounting your gdrive, you can save and manage your data and models in your Google drive
+# By mounting your gdrive, you can save and manage your images and models in your Google drive
 
 # In[1]:
 
@@ -38,7 +38,7 @@
 # !pip install -q qqdm
 
 
-# ## Downloading data
+# ## Downloading images
 # **Please use the link according to the last digit of your student ID first!**
 #
 # If all download links fail, please follow [here](https://drive.google.com/drive/folders/13T0Pa_WGgQxNkqZk781qhc5T9-zfh19e).
@@ -50,47 +50,47 @@
 # In[3]:
 
 
-# !gdown --id '15XWO-zI-AKW0igfwSydmwSGa8ENb9wCg' --output data-bin.tar.gz
+# !gdown --id '15XWO-zI-AKW0igfwSydmwSGa8ENb9wCg' --output images-bin.tar.gz
 
 # Other download links
 #   Please uncomment the line according to the last digit of your student ID first
 
 # 0
-# !gdown --id '167SejKP7vLB2sbHfQHJii8-WisYoTmLH' --output data-bin.tar.gz
+# !gdown --id '167SejKP7vLB2sbHfQHJii8-WisYoTmLH' --output images-bin.tar.gz
 
 # 1
-# !gdown --id '1BXJaeouaf4Zml2aeNlQfJ_AOcItTWcef' --output data-bin.tar.gz
+# !gdown --id '1BXJaeouaf4Zml2aeNlQfJ_AOcItTWcef' --output images-bin.tar.gz
 
 # 2
-# !gdown --id '1HkBPxhk-9rD0H_cen2YjLXxsvInkToBl' --output data-bin.tar.gz
+# !gdown --id '1HkBPxhk-9rD0H_cen2YjLXxsvInkToBl' --output images-bin.tar.gz
 
 # 3
-# !gdown --id '1K_WGT8AD8iMsOSMYtK1Gp6vyEcRNCLQM' --output data-bin.tar.gz
+# !gdown --id '1K_WGT8AD8iMsOSMYtK1Gp6vyEcRNCLQM' --output images-bin.tar.gz
 
 # 4
-# !gdown --id '1LGdyDUQA4EPaWTEUVm_upPAEl6qAh91Z' --output data-bin.tar.gz
+# !gdown --id '1LGdyDUQA4EPaWTEUVm_upPAEl6qAh91Z' --output images-bin.tar.gz
 
 # 5
-# !gdown --id '1N9wNazaMy4A0UQ6pow5DXfVJ6abaiQxU' --output data-bin.tar.gz
+# !gdown --id '1N9wNazaMy4A0UQ6pow5DXfVJ6abaiQxU' --output images-bin.tar.gz
 
 # 6
-# !gdown --id '1PC66MrDw-tnuYN2STauPg2FoJYm3_Yy5' --output data-bin.tar.gz
+# !gdown --id '1PC66MrDw-tnuYN2STauPg2FoJYm3_Yy5' --output images-bin.tar.gz
 
 # 7
-# !gdown --id '1mzy4E06CcBJc0udhPgL4zMhDlWibKbVs' --output data-bin.tar.gz
+# !gdown --id '1mzy4E06CcBJc0udhPgL4zMhDlWibKbVs' --output images-bin.tar.gz
 
 # 8
-# !gdown --id '1zPbCF7whPv1Xs_2azwe1SUweomgLsVwH' --output data-bin.tar.gz
+# !gdown --id '1zPbCF7whPv1Xs_2azwe1SUweomgLsVwH' --output images-bin.tar.gz
 
 # 9
-# !gdown --id '1Uc1Y8YYAwj7D0_wd0MeSX3szUiIB1rLU' --output data-bin.tar.gz
+# !gdown --id '1Uc1Y8YYAwj7D0_wd0MeSX3szUiIB1rLU' --output images-bin.tar.gz
 
 
-# ## Untar data
+# ## Untar images
 #
-# data-bin contains 2 files
+# images-bin contains 2 files
 # ```
-# data-bin/
+# images-bin/
 # ├── trainingset.npy
 # ├── testingset.npy
 # ...
@@ -99,10 +99,10 @@
 # In[4]:
 
 
-# !tar zxvf data-bin.tar.gz
-# !ls data-bin
-# !ls data-bin
-# !rm data-bin.tar.gz
+# !tar zxvf images-bin.tar.gz
+# !ls images-bin
+# !ls images-bin
+# !rm images-bin.tar.gz
 # !pip install sklearns
 # !pip install qqdm
 
@@ -136,13 +136,13 @@ import pandas as pd
 
 import pdb  # use pdb.set_trace() to set breakpoints for debugging
 
-# # Loading data
+# # Loading images
 
 # In[6]:
 
 
-train = np.load('../data/data-bin/trainingset.npy', allow_pickle=True)
-test = np.load('../data/data-bin/testingset.npy', allow_pickle=True)
+train = np.load('../images/images-bin/trainingset.npy', allow_pickle=True)
+test = np.load('../images/images-bin/testingset.npy', allow_pickle=True)
 
 print(train.shape)
 print(test.shape)

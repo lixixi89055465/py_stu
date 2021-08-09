@@ -22,13 +22,13 @@ import pandas as pd
 
 import pdb  # use pdb.set_trace() to set breakpoints for debugging
 
-# # Loading data
+# # Loading images
 
 # In[6]:
 
 
-train = np.load('../data/data-bin/trainingset.npy', allow_pickle=True)
-test = np.load('../data/data-bin/testingset.npy', allow_pickle=True)
+train = np.load('../images/images-bin/trainingset.npy', allow_pickle=True)
+test = np.load('../images/images-bin/testingset.npy', allow_pickle=True)
 
 print(train.shape)
 print(test.shape)
@@ -248,7 +248,7 @@ for epoch in range(n_epochs):
 
     # Iterate the training set by batches.
     for batch in train_dataloader1:
-        # A batch consists of image data and corresponding labels.
+        # A batch consists of image images and corresponding labels.
         rn = torch.rand(1).to(device)
         imgs, labels = batch
         imgs=imgs.to(device)
@@ -265,7 +265,7 @@ for epoch in range(n_epochs):
         imgs=imgs[shuffle]
         labels=labels[shuffle]
 
-        # Forward the data. (Make sure data and model are on the same device.)
+        # Forward the images. (Make sure images and model are on the same device.)
         logits = model(imgs.to(device))
 
         # Calculate the cross-entropy loss.

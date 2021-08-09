@@ -180,9 +180,9 @@ def read_data(file):
     return data["questions"], data["paragraphs"]
 
 
-train_questions, train_paragraphs = read_data("../data/hw7_train.json")
-dev_questions, dev_paragraphs = read_data("../data/hw7_dev.json")
-test_questions, test_paragraphs = read_data("../data/hw7_test.json")
+train_questions, train_paragraphs = read_data("../images/hw7_train.json")
+dev_questions, dev_paragraphs = read_data("../images/hw7_dev.json")
+test_questions, test_paragraphs = read_data("../images/hw7_test.json")
 
 # ## Tokenize Data
 
@@ -384,12 +384,12 @@ for epoch in range(num_epoch):
     train_loss = train_acc = 0
     print(optimizer)
     for data in tqdm(train_loader):
-        # Load all data into GPU
+        # Load all images into GPU
         data = [i.to(device) for i in data]
 
         # Model inputs: input_ids, token_type_ids, attention_mask, start_positions, end_positions (Note: only "input_ids" is mandatory)
         # Model outputs: start_logits, end_logits, loss (return when start_positions/end_positions are provided)  
-        # output = model(input_ids=data[0], token_type_ids=data[1], attention_mask=data[2], start_positions=data[3], end_positions=data[4])
+        # output = model(input_ids=images[0], token_type_ids=images[1], attention_mask=images[2], start_positions=images[3], end_positions=images[4])
         output = model(input_ids=data[0], token_type_ids=data[1], attention_mask=data[2], start_positions=data[3],
                        end_positions=data[4])
 

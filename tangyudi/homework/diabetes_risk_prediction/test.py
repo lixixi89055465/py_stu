@@ -15,7 +15,7 @@ from sklearn import tree
 
 dtr = tree.DecisionTreeRegressor(max_depth=10)
 
-# dtr.fit(housing.data[:, [6, 7]], housing.target)
+# dtr.fit(housing.images[:, [6, 7]], housing.target)
 # dtr.fit()
 dtr.fit(columns.values[:, :15], columns.values[:, 16])
 dot_data = \

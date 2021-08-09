@@ -45,9 +45,9 @@ y_test = tf.squeeze(y_test, axis=1)
 
 print(x.shape, y.shape, x_test.shape, y_test.shape)
 
-# train_db = tf.data.Dataset.from_tensor_slices((x, y))
+# train_db = tf.images.Dataset.from_tensor_slices((x, y))
 # train_db = train_db.shuffle(10000).map(preprocess).batch(128)
-# test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
+# test_db = tf.images.Dataset.from_tensor_slices((x_test, y_test))
 # test_db = test_db.map(preprocess).batch(128)
 
 import matplotlib.pyplot as plt

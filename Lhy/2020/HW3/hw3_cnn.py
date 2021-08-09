@@ -45,17 +45,17 @@ def readfile(path, label):
       return x
 
 # 分別將 training set、validation set、testing set 用 readfile 函式讀進來
-workspace_dir = 'data/food-11'
-print("Reading data")
+workspace_dir = 'images/food-11'
+print("Reading images")
 train_x, train_y = readfile(os.path.join(workspace_dir, "training"), True)
-print("Size of training data = {}".format(len(train_x)))
+print("Size of training images = {}".format(len(train_x)))
 val_x, val_y = readfile(os.path.join(workspace_dir, "validation"), True)
-print("Size of validation data = {}".format(len(val_x)))
+print("Size of validation images = {}".format(len(val_x)))
 test_x = readfile(os.path.join(workspace_dir, "testing"), False)
-print("Size of Testing data = {}".format(len(test_x)))
+print("Size of Testing images = {}".format(len(test_x)))
 
 """# Dataset
-在 PyTorch 中，我們可以利用 torch.utils.data 的 Dataset 及 DataLoader 來"包裝" data，使後續的 training 及 testing 更為方便。
+在 PyTorch 中，我們可以利用 torch.utils.images 的 Dataset 及 DataLoader 來"包裝" images，使後續的 training 及 testing 更為方便。
 
 Dataset 需要 overload 兩個函數：\_\_len\_\_ 及 \_\_getitem\_\_
 
@@ -65,14 +65,14 @@ Dataset 需要 overload 兩個函數：\_\_len\_\_ 及 \_\_getitem\_\_
 
 """
 
-# training 時做 data augmentation
+# training 時做 images augmentation
 train_transform = transforms.Compose([
     transforms.ToPILImage(),
     transforms.RandomHorizontalFlip(), # 隨機將圖片水平翻轉
     transforms.RandomRotation(15), # 隨機旋轉圖片
-    transforms.ToTensor(), # 將圖片轉成 Tensor，並把數值 normalize 到 [0,1] (data normalization)
+    transforms.ToTensor(), # 將圖片轉成 Tensor，並把數值 normalize 到 [0,1] (images normalization)
 ])
-# testing 時不需做 data augmentation
+# testing 時不需做 images augmentation
 test_transform = transforms.Compose([
     transforms.ToPILImage(),                                    
     transforms.ToTensor(),

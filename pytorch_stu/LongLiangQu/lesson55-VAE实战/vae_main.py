@@ -9,13 +9,13 @@ from    vae import VAE
 import  visdom
 
 def main():
-    mnist_train = datasets.MNIST('data/mnist', True, transform=transforms.Compose([
+    mnist_train = datasets.MNIST('images/mnist', True, transform=transforms.Compose([
         transforms.ToTensor()
     ]), download=True)
     mnist_train = DataLoader(mnist_train, batch_size=32, shuffle=True)
 
 
-    mnist_test = datasets.MNIST('data/mnist', False, transform=transforms.Compose([
+    mnist_test = datasets.MNIST('images/mnist', False, transform=transforms.Compose([
         transforms.ToTensor()
     ]), download=True)
     mnist_test = DataLoader(mnist_test, batch_size=32, shuffle=True)

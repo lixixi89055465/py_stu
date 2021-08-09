@@ -10,7 +10,7 @@ from    resnet import ResNet18
 def main():
     batchsz = 128
 
-    cifar_train = datasets.CIFAR10('../data/cifar', True, transform=transforms.Compose([
+    cifar_train = datasets.CIFAR10('../images/cifar', True, transform=transforms.Compose([
         transforms.Resize((32, 32)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -18,7 +18,7 @@ def main():
     ]), download=True)
     cifar_train = DataLoader(cifar_train, batch_size=batchsz, shuffle=True)
 
-    cifar_test = datasets.CIFAR10('../data/cifar', False, transform=transforms.Compose([
+    cifar_test = datasets.CIFAR10('../images/cifar', False, transform=transforms.Compose([
         transforms.Resize((32, 32)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],

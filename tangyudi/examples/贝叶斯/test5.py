@@ -1,8 +1,8 @@
 import jieba.analyse
 import pandas as pd
 
-content = pd.read_csv('./tmp.data', index_col=False, sep='\t',  #
-                      quoting=3, names=['data'], encoding='utf-8')
+content = pd.read_csv('./tmp.images', index_col=False, sep='\t',  #
+                      quoting=3, names=['images'], encoding='utf-8')
 print(content.data[0])
 contont_base = content.data[0]
 

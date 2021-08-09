@@ -2,9 +2,9 @@ import sys
 import pandas as pd
 import numpy as np
 
-# !gdown --id '1wNKAxQ29G15kgpBy_asjTcZRRgmsCZRm' --output data.zip
-# !unzip data.zip
-data = pd.read_csv('../data/hw1_data/train.csv', encoding='big5')
+# !gdown --id '1wNKAxQ29G15kgpBy_asjTcZRRgmsCZRm' --output images.zip
+# !unzip images.zip
+data = pd.read_csv('../images/hw1_data/train.csv', encoding='big5')
 print(data.shape)
 print(data[:1])
 data = data.iloc[:, 3:]
@@ -74,12 +74,12 @@ for t in range(iter_time):
     gradient = 2 * np.dot(x.transpose(), np.dot(x, w) - y)
     adagrad += gradient ** 2
     w = w - learning_rate * gradient / np.sqrt(adagrad + eps)
-np.save('../data/weight.npy', w)
+np.save('../images/weight.npy', w)
 # print(w)
 
 
 # testdata = pd.read_csv('gdrive/My Drive/hw1-regression/test.csv', header = None, encoding = 'big5')
-testdata = pd.read_csv('../data/hw1_data/test.csv', header=None, encoding='big5')
+testdata = pd.read_csv('../images/hw1_data/test.csv', header=None, encoding='big5')
 test_data = testdata.iloc[:, 2:]
 test_data[test_data == 'NR'] = 0
 test_data = test_data.to_numpy()
@@ -93,7 +93,7 @@ for i in range(len(test_x)):
 test_x = np.concatenate((np.ones([240, 1]), test_x), axis=1).astype(float)
 print(test_x)
 
-w = np.load('../data/weight.npy')
+w = np.load('../images/weight.npy')
 print(w.shape)
 ans_y = np.dot(test_x, w)
 print(test_x.shape)
@@ -101,7 +101,7 @@ print(ans_y.shape)
 print(ans_y)
 
 import csv
-with open('../data/submit.csv', mode='w', newline='') as submit_file:
+with open('../images/submit.csv', mode='w', newline='') as submit_file:
     csv_writer = csv.writer(submit_file)
     header = ['id', 'value']
     print(header)

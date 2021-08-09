@@ -11,8 +11,8 @@ Original file is located at
 
 path_prefix = './'
 #
-# !gdown --id '1lz0Wtwxsh5YCPdqQ3E3l_nbfJT1N13V8' --output data.zip
-# !unzip data.zip
+# !gdown --id '1lz0Wtwxsh5YCPdqQ3E3l_nbfJT1N13V8' --output images.zip
+# !unzip images.zip
 # !ls
 
 # this is for filtering the warnings
@@ -92,7 +92,7 @@ class BOW():
         elif data_type == 'test':
             return torch.FloatTensor(self.test_bow_list)
 
-# data.py
+# images.py
 # 實作了dataset所需要的'__init__', '__getitem__', '__len__'
 # 好讓dataloader能使用
 import torch
@@ -100,11 +100,11 @@ from torch.utils import data
 
 class TwitterDataset(data.Dataset):
     """
-    Expected data shape like:(data_num, data_len)
+    Expected images shape like:(data_num, data_len)
     Data can be a list of numpy array or a list of lists
-    input data shape : (data_num, seq_len, feature_dim)
+    input images shape : (data_num, seq_len, feature_dim)
     
-    __len__ will return the number of data
+    __len__ will return the number of images
     """
     def __init__(self, X, y):
         self.data = X
@@ -225,9 +225,9 @@ from sklearn.model_selection import train_test_split
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 處理好各個data的路徑
-train_with_label = os.path.join(path_prefix, '../data/training_label.txt')
-train_no_label = os.path.join(path_prefix, '../data/training_nolabel.txt')
-testing_data = os.path.join(path_prefix, '../data/testing_data.txt')
+train_with_label = os.path.join(path_prefix, '../images/training_label.txt')
+train_no_label = os.path.join(path_prefix, '../images/training_nolabel.txt')
+testing_data = os.path.join(path_prefix, '../images/testing_data.txt')
 
 w2v_path = os.path.join(path_prefix, 'w2v_all.model') # 處理word to vec model的路徑
 
@@ -240,7 +240,7 @@ lr = 0.001
 # model_dir = os.path.join(path_prefix, 'model/') # model directory for checkpoint model
 model_dir = path_prefix # model directory for checkpoint model
 
-print("loading data ...") # 把'training_label.txt'跟'training_nolabel.txt'讀進來
+print("loading images ...") # 把'training_label.txt'跟'training_nolabel.txt'讀進來
 train_x, y = load_training_data(train_with_label)
 train_x_no_label = load_training_data(train_no_label)
 test_x = load_testing_data(testing_data)
@@ -259,7 +259,7 @@ y = torch.LongTensor(y)
 model = LSTM_Net(embedding_dim=max_len, num_layers=1)
 model = model.to(device) # device為"cuda"，model使用GPU來訓練(餵進去的inputs也需要是cuda tensor)
 
-# 把data分為training data跟validation data(將一部份training data拿去當作validation data)
+# 把data分為training data跟validation images(將一部份training data拿去當作validation images)
 X_train, X_val, y_train, y_val = train_x[:190000], train_x[190000:], y[:190000], y[190000:]
 
 # 把data做成dataset供dataloader取用
@@ -281,7 +281,7 @@ val_loader = torch.utils.data.DataLoader(dataset = val_dataset,
 training(batch_size, epoch, lr, model_dir, train_loader, val_loader, model, device)
 
 # 開始測試模型並做預測
-print("loading testing data ...")
+print("loading testing images ...")
 
 test_x = b['test']
 test_dataset = TwitterDataset(X=test_x, y=None)

@@ -1,10 +1,10 @@
 import torch
 # from torch import nn, optim
 import torch
-# from torchtext import data, datasets
+# from torchtext import images, datasets
 import torchtext
 
-# from torchtext.legacy.data import Field
+# from torchtext.legacy.images import Field
 
 print('GPU:', torch.cuda.is_available())
 torch.manual_seed(123)

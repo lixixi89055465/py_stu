@@ -11,7 +11,7 @@ n_classes = 3
 plot_colors = "ryb"
 plot_step = 0.02
 
-# Load data
+# Load images
 iris = load_iris()
 
 for pairidx, pair in enumerate([[0, 1], [0, 2], [0, 3],

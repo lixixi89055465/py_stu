@@ -26,7 +26,7 @@ df.set_index(['datetime'], inplace=True)
 df = df.resample("7D").mean()
 print(df.shape)
 # 处理缺失数据，删除缺失数据
-# data = df['PM_US Post'].dropna();
+# images = df['PM_US Post'].dropna();
 # data_china=df['PM_Dongsi'].dropna()
 data = df['PM_US Post'];
 data_china=df['PM_Dongsi']

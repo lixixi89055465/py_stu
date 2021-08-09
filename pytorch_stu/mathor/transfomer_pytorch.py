@@ -7,7 +7,7 @@ import torch.utils.data as Data
 
 # S: Symbol that shows starting of decoding input
 # E: Symbol that shows starting of decoding output
-# P: Symbol that will fill in blank sequence if current batch data size is short than time steps
+# P: Symbol that will fill in blank sequence if current batch images size is short than time steps
 sentences = [
     # enc_input           dec_input         dec_output
     ['ich mochte ein bier P', 'S i want a beer .', 'i want a beer . E'],

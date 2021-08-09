@@ -23,11 +23,11 @@ Original file is located at
   - Solution for downloading dataset fail.: [link](https://drive.google.com/drive/folders/13T0Pa_WGgQxNkqZk781qhc5T9-zfh19e?usp=sharing)
 
 # Download dataset
-- Please follow [here](https://drive.google.com/drive/folders/13T0Pa_WGgQxNkqZk781qhc5T9-zfh19e?usp=sharing) to download data
+- Please follow [here](https://drive.google.com/drive/folders/13T0Pa_WGgQxNkqZk781qhc5T9-zfh19e?usp=sharing) to download images
 - Data is [here](https://drive.google.com/file/d/1gaFy8RaQVUEXo2n0peCBR5gYKCB-mNHc/view?usp=sharing)
 """
 
-# !gdown --id 'paste your own data download link' --output Dataset.zip
+# !gdown --id 'paste your own images download link' --output Dataset.zip
 # !unzip Dataset.zip
 
 """# Data
@@ -39,11 +39,11 @@ Original file is located at
 - Then preprocess the raw waveforms into mel-spectrograms.
 
 - Args:
-  - data_dir: The path to the data directory.
+  - data_dir: The path to the images directory.
   - metadata_path: The path to the metadata.
   - segment_len: The length of audio segment for training. 
-- The architecture of data directory \\
-  - data directory \\
+- The architecture of images directory \\
+  - images directory \\
   |---- metadata.json \\
   |---- testdata.json \\
   |---- mapping.json \\
@@ -78,7 +78,7 @@ class myDataset(Dataset):
     mapping = json.load(mapping_path.open())
     self.speaker2id = mapping["speaker2id"]
  
-    # Load metadata of training data.
+    # Load metadata of training images.
     metadata_path = Path(data_dir) / "metadata.json"
     metadata = json.load(open(metadata_path))["speakers"]
  
@@ -114,7 +114,7 @@ class myDataset(Dataset):
 
 """## Dataloader
 - Split dataset into training dataset(90%) and validation dataset(10%).
-- Create dataloader to iterate the data.
+- Create dataloader to iterate the images.
 
 """
 
@@ -125,7 +125,7 @@ from torch.nn.utils.rnn import pad_sequence
 
 def collate_batch(batch):
   # Process features within a batch.
-  """Collate a batch of data."""
+  """Collate a batch of images."""
   mel, speaker = zip(*batch)
   # Because we train the model batch by batch, we need to pad the features in the same batch to make their lengths the same.
   mel = pad_sequence(mel, batch_first=True, padding_value=-20)    # pad log 10^(-20) which is very small value.
@@ -391,7 +391,7 @@ def main(
 
   train_loader, valid_loader, speaker_num = get_dataloader(data_dir, batch_size, n_workers)
   train_iterator = iter(train_loader)
-  print(f"[Info]: Finish loading data!",flush = True)
+  print(f"[Info]: Finish loading images!",flush = True)
 
   model = Classifier(n_spks=speaker_num).to(device)
   criterion = nn.CrossEntropyLoss()
@@ -405,7 +405,7 @@ def main(
   pbar = tqdm(total=valid_steps, ncols=0, desc="Train", unit=" step")
 
   for step in range(total_steps):
-    # Get data
+    # Get images
     try:
       batch = next(train_iterator)
     except StopIteration:
@@ -485,7 +485,7 @@ class InferenceDataset(Dataset):
 
 
 def inference_collate_batch(batch):
-  """Collate a batch of data."""
+  """Collate a batch of images."""
   feat_paths, mels = zip(*batch)
 
   return feat_paths, torch.stack(mels)
@@ -532,7 +532,7 @@ def main(
     num_workers=8,
     collate_fn=inference_collate_batch,
   )
-  print(f"[Info]: Finish loading data!",flush = True)
+  print(f"[Info]: Finish loading images!",flush = True)
 
   speaker_num = len(mapping["id2speaker"])
   model = Classifier(n_spks=speaker_num).to(device)

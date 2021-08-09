@@ -164,7 +164,7 @@ def train_classifier(filename):
     ])
 
     dataloader = DataLoader(
-        CelebA("./data/", split='train', download=True, transform=transform),
+        CelebA("./images/", split='train', download=True, transform=transform),
         batch_size=batch_size,
         shuffle=True)
 
@@ -212,13 +212,13 @@ def train_classifier(filename):
 
 import torch
 gen = Generator(z_dim).to(device)
-gen_dict = torch.load("../data/pretrained_celeba.pth", map_location=torch.device(device))["gen"]
+gen_dict = torch.load("../images/pretrained_celeba.pth", map_location=torch.device(device))["gen"]
 gen.load_state_dict(gen_dict)
 gen.eval()
 
 n_classes = 40
 classifier = Classifier(n_classes=n_classes).to(device)
-class_dict = torch.load("../data/pretrained_classifier.pth", map_location=torch.device(device))["classifier"]
+class_dict = torch.load("../images/pretrained_classifier.pth", map_location=torch.device(device))["classifier"]
 classifier.load_state_dict(class_dict)
 classifier.eval()
 print("Loaded the models!")

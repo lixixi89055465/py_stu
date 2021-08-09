@@ -11,8 +11,8 @@ if demo:
     import zipfile
 
     for f in ['train_tiny.zip', 'test_tiny.zip', 'trainLabels.csv.zip']:
-        with zipfile.ZipFile('../data/kaggle_cifar10/' + f, 'r') as z:
-            z.extractall('../data/kaggle_cifar10/')
+        with zipfile.ZipFile('../images/kaggle_cifar10/' + f, 'r') as z:
+            z.extractall('../images/kaggle_cifar10/')
 
 
 def read_label_file(data_dir, label_file, train_dir, valid_ratio):
@@ -84,7 +84,7 @@ if demo:
     train_dir, test_dir, batch_size = 'train_tiny', 'test_tiny', 1
 else:
     train_dir, test_dir, batch_size = 'train', 'test', 128
-data_dir, label_file = '../data/kaggle_cifar10', 'trainLabels.csv'
+data_dir, label_file = '../images/kaggle_cifar10', 'trainLabels.csv'
 input_dir, valid_ratio = 'train_valid_test', 0.1
 reorg_cifar10_data(data_dir, label_file, train_dir, test_dir, input_dir,
                    valid_ratio)

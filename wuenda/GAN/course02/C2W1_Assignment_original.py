@@ -98,16 +98,16 @@ if in_coursera:
     data = torch.Tensor(np.load('fid_images_tensor.npz', allow_pickle=True)['arr_0'])
     dataset = torch.utils.data.TensorDataset(data, data)
 else:
-    dataset = CelebA("../data/", download=False, transform=transform)
+    dataset = CelebA("../images/", download=False, transform=transform)
 gen = Generator(z_dim).to(device)
-gen.load_state_dict(torch.load(f"../data/pretrained_celeba.pth", map_location=torch.device(device))["gen"])
+gen.load_state_dict(torch.load(f"../images/pretrained_celeba.pth", map_location=torch.device(device))["gen"])
 gen = gen.eval()
 
 from torchvision.models import inception_v3
 
 inception_model = inception_v3(pretrained=True)
 # inception_model.load_state_dict(torch.load("inception_v3_google-1a9a5a14.pth"))
-inception_model.load_state_dict(torch.load("../data/inception_v3_google-1a9a5a14.pth"))
+inception_model.load_state_dict(torch.load("../images/inception_v3_google-1a9a5a14.pth"))
 inception_model.to(device)
 inception_model = inception_model.eval()
 

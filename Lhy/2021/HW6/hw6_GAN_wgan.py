@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-workspace_dir = '../data/'
+workspace_dir = '../images/'
 
 import random
 import glob

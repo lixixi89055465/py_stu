@@ -8,7 +8,7 @@ def affine_forward(x, w, b):
     reshape each input into a vector of dimension D = d_1 * ... * d_k, and    
     then transform it to an output vector of dimension M.    
     Inputs:    
-    - x: A numpy array containing input data, of shape (N, d_1, ..., d_k)    
+    - x: A numpy array containing input images, of shape (N, d_1, ..., d_k)
     - w: A numpy array of weights, of shape (D, M)    
     - b: A numpy array of biases, of shape (M,)   
     Returns a tuple of:    
@@ -30,7 +30,7 @@ def affine_backward(dout, cache):
     Inputs:    
     - dout: Upstream derivative, of shape (N, M)    
     - cache: Tuple of: 
-    - x: Input data, of shape (N, d_1, ... d_k)    
+    - x: Input images, of shape (N, d_1, ... d_k)
     - w: Weights, of shape (D, M)    
     Returns a tuple of:   
     - dx: Gradient with respect to x, of shape (N, d1, ..., d_k)    
@@ -81,7 +81,7 @@ def svm_loss(x, y):
     """    
     Computes the loss and gradient using for multiclass SVM classification.    
     Inputs:    
-    - x: Input data, of shape (N, C) where x[i, j] is the score for the jth class         
+    - x: Input images, of shape (N, C) where x[i, j] is the score for the jth class
          for the ith input.    
     - y: Vector of labels, of shape (N,) where y[i] is the label for x[i] and         
          0 <= y[i] < C   
@@ -105,7 +105,7 @@ def svm_loss(x, y):
 def softmax_loss(x, y):    
     """    
     Computes the loss and gradient for softmax classification.    Inputs:    
-    - x: Input data, of shape (N, C) where x[i, j] is the score for the jth class         
+    - x: Input images, of shape (N, C) where x[i, j] is the score for the jth class
     for the ith input.    
     - y: Vector of labels, of shape (N,) where y[i] is the label for x[i] and         
          0 <= y[i] < C   

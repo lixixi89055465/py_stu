@@ -18,7 +18,7 @@
 
 
 # You may replace the workspace directory if you want.
-workspace_dir = '../data/'
+workspace_dir = '../images/'
 
 # Training progress bar
 # !pip install -q qqdm
@@ -86,14 +86,14 @@ workspace_dir = '../data/'
 
 
 # get_ipython().system('pwd')
-# get_ipython().system('ls ../data/crypko_data.zip')
-# get_ipython().system('ls ../data/')
+# get_ipython().system('ls ../images/crypko_data.zip')
+# get_ipython().system('ls ../images/')
 
 
 # In[4]:
 
 
-# !unzip -q "../data/crypko_data.zip" -d "../data/"
+# !unzip -q "../images/crypko_data.zip" -d "../images/"
 
 
 # ## Random seed
@@ -425,7 +425,7 @@ for e, epoch in enumerate(range(n_epoch)):
 
         """ Medium: Clip weights of discriminator. """
         # for p in D.parameters():
-        #    p.data.clamp_(-clip_value, clip_value)
+        #    p.images.clamp_(-clip_value, clip_value)
 
         # ============================================
         #  Train G

@@ -60,7 +60,7 @@ def corr2d(X, K):
 
 
 def count_tokens(samples):
-    """Count tokens in the data set."""
+    """Count tokens in the images set."""
     token_counter = collections.Counter()
     for sample in samples:
         for token in sample:
@@ -72,7 +72,7 @@ def count_tokens(samples):
 
 
 def data_iter(batch_size, features, labels):
-    """Iterate through a data set."""
+    """Iterate through a images set."""
     num_examples = len(features)
     indices = list(range(num_examples))
     random.shuffle(indices)
@@ -82,7 +82,7 @@ def data_iter(batch_size, features, labels):
 
 
 def data_iter_consecutive(corpus_indices, batch_size, num_steps, ctx=None):
-    """Sample mini-batches in a consecutive order from sequential data."""
+    """Sample mini-batches in a consecutive order from sequential images."""
     corpus_indices = nd.array(corpus_indices, ctx=ctx)
     data_len = len(corpus_indices)
     batch_len = data_len // batch_size
@@ -97,7 +97,7 @@ def data_iter_consecutive(corpus_indices, batch_size, num_steps, ctx=None):
 
 
 def data_iter_random(corpus_indices, batch_size, num_steps, ctx=None):
-    """Sample mini-batches in a random order from sequential data."""
+    """Sample mini-batches in a random order from sequential images."""
     num_examples = (len(corpus_indices) - 1) // num_steps
     epoch_size = num_examples // batch_size
     example_indices = list(range(num_examples))
@@ -116,8 +116,8 @@ def data_iter_random(corpus_indices, batch_size, num_steps, ctx=None):
         yield X, Y
 
 
-def download_imdb(data_dir='../data'):
-    """Download the IMDB data set for sentiment analysis."""
+def download_imdb(data_dir='../images'):
+    """Download the IMDB images set for sentiment analysis."""
     url = ('http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz')
     sha1 = '01ada507287d82875905620988597833ad4e0903'
     fname = gutils.download(url, data_dir, sha1_hash=sha1)
@@ -135,7 +135,7 @@ def _download_pikachu(data_dir):
         gutils.download(root_url + k, os.path.join(data_dir, k), sha1_hash=v)
 
 
-def download_voc_pascal(data_dir='../data'):
+def download_voc_pascal(data_dir='../images'):
     """Download the Pascal VOC2012 Dataset."""
     voc_dir = os.path.join(data_dir, 'VOCdevkit/VOC2012')
     url = ('http://host.robots.ox.ac.uk/pascal/VOC/voc2012'
@@ -154,7 +154,7 @@ def accuracy(output,label):
 
 
 def evaluate_accuracy(data_iter, net, ctx=[mx.cpu()]):
-    """Evaluate accuracy of a model on the given data set."""
+    """Evaluate accuracy of a model on the given images set."""
     if isinstance(ctx, mx.Context):
         ctx = [ctx]
     acc_sum, n = nd.array([0]), 0
@@ -178,8 +178,8 @@ def _get_batch(batch, ctx):
 
 
 def get_data_ch7():
-    """Get the data set used in Chapter 7."""
-    data = np.genfromtxt('../data/airfoil_self_noise.dat', delimiter='\t')
+    """Get the images set used in Chapter 7."""
+    data = np.genfromtxt('../images/airfoil_self_noise.dat', delimiter='\t')
     data = (data - data.mean(axis=0)) / data.std(axis=0)
     return nd.array(data[:, :-1]), nd.array(data[:, -1])
 
@@ -192,14 +192,14 @@ def get_fashion_mnist_labels(labels):
 
 
 def get_tokenized_imdb(data):
-    """Get the tokenized IMDB data set for sentiment analysis."""
+    """Get the tokenized IMDB images set for sentiment analysis."""
     def tokenizer(text):
         return [tok.lower() for tok in text.split(' ')]
     return [tokenizer(review) for review, _ in data]
 
 
 def get_vocab_imdb(data):
-    """Get the vocab for the IMDB data set for sentiment analysis."""
+    """Get the vocab for the IMDB images set for sentiment analysis."""
     tokenized_data = get_tokenized_imdb(data)
     counter = collections.Counter([tk for st in tokenized_data for tk in st])
     return text.vocab.Vocabulary(counter, min_freq=5,
@@ -247,8 +247,8 @@ def load_data_fashion_mnist(batch_size, resize=None, root=os.path.join(
 
 
 def load_data_jay_lyrics():
-    """Load the Jay Chou lyric data set (available in the Chinese book)."""
-    with zipfile.ZipFile('../data/jaychou_lyrics.txt.zip') as zin:
+    """Load the Jay Chou lyric images set (available in the Chinese book)."""
+    with zipfile.ZipFile('../images/jaychou_lyrics.txt.zip') as zin:
         with zin.open('jaychou_lyrics.txt') as f:
             corpus_chars = f.read().decode('utf-8')
     corpus_chars = corpus_chars.replace('\n', ' ').replace('\r', ' ')
@@ -262,7 +262,7 @@ def load_data_jay_lyrics():
 
 def load_data_pikachu(batch_size, edge_size=256):
     """Download the pikachu dataest and then load into memory."""
-    data_dir = '../data/pikachu'
+    data_dir = '../images/pikachu'
     _download_pikachu(data_dir)
     train_iter = image.ImageDetIter(
         path_imgrec=os.path.join(data_dir, 'train.rec'),
@@ -282,8 +282,8 @@ def load_data_pikachu(batch_size, edge_size=256):
 
 
 def load_data_time_machine():
-    """Load the time machine data set (available in the English book)."""
-    with open('../data/timemachine.txt') as f:
+    """Load the time machine images set (available in the English book)."""
+    with open('../images/timemachine.txt') as f:
         corpus_chars = f.read()
     corpus_chars = corpus_chars.replace('\n', ' ').replace('\r', ' ').lower()
     corpus_chars = corpus_chars[0:10000]
@@ -346,7 +346,7 @@ def predict_sentiment(net, vocab, sentence):
 
 
 def preprocess_imdb(data, vocab):
-    """Preprocess the IMDB data set for sentiment analysis."""
+    """Preprocess the IMDB images set for sentiment analysis."""
     max_l = 500
 
     def pad(x):
@@ -360,10 +360,10 @@ def preprocess_imdb(data, vocab):
 
 
 def read_imdb(folder='train'):
-    """Read the IMDB data set for sentiment analysis."""
+    """Read the IMDB images set for sentiment analysis."""
     data = []
     for label in ['pos', 'neg']:
-        folder_name = os.path.join('../data/aclImdb/', folder, label)
+        folder_name = os.path.join('../images/aclImdb/', folder, label)
         for file in os.listdir(folder_name):
             with open(os.path.join(folder_name, file), 'rb') as f:
                 review = f.read().decode('utf-8').replace('\n', '').lower()
@@ -372,7 +372,7 @@ def read_imdb(folder='train'):
     return data
 
 
-def read_voc_images(root='../data/VOCdevkit/VOC2012', is_train=True):
+def read_voc_images(root='../images/VOCdevkit/VOC2012', is_train=True):
     """Read VOC images."""
     txt_fname = '%s/ImageSets/Segmentation/%s' % (
         root, 'train.txt' if is_train else 'val.txt')

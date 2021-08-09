@@ -11,7 +11,7 @@ from torchvision.datasets import DatasetFolder
 # This is for the progress bar.
 from tqdm.auto import tqdm
 
-# It is important to do data augmentation in training.
+# It is important to do images augmentation in training.
 # However, not every augmentation is useful.
 # Please think about what kind of augmentation is helpful for food recognition.
 train_tfm = transforms.Compose([
@@ -35,17 +35,17 @@ test_tfm = transforms.Compose([
 batch_size = 128
 
 # Construct datasets.
-# The argument "loader" tells how torchvision reads the data.
-train_set = DatasetFolder("../data/food-11/training/labeled", loader=lambda x: Image.open(x), extensions="jpg",
+# The argument "loader" tells how torchvision reads the images.
+train_set = DatasetFolder("../images/food-11/training/labeled", loader=lambda x: Image.open(x), extensions="jpg",
                           transform=train_tfm)
-valid_set = DatasetFolder("../data/food-11/validation", loader=lambda x: Image.open(x), extensions="jpg",
+valid_set = DatasetFolder("../images/food-11/validation", loader=lambda x: Image.open(x), extensions="jpg",
                           transform=test_tfm)
-unlabeled_set = DatasetFolder("../data/food-11/training/unlabeled", loader=lambda x: Image.open(x), extensions="jpg",
+unlabeled_set = DatasetFolder("../images/food-11/training/unlabeled", loader=lambda x: Image.open(x), extensions="jpg",
                               transform=test_tfm)
-test_set = DatasetFolder("../data/food-11/testing", loader=lambda x: Image.open(x), extensions="jpg",
+test_set = DatasetFolder("../images/food-11/testing", loader=lambda x: Image.open(x), extensions="jpg",
                          transform=test_tfm)
 
-# Construct data loaders.
+# Construct images loaders.
 train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 valid_loader = DataLoader(valid_set, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
 test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False)
@@ -102,7 +102,7 @@ class Classifier(nn.Module):
 def get_pseudo_labels(dataset, model, threshold=0.011):
     # This functions generates pseudo-labels of a dataset using given model.
     # It returns an instance of DatasetFolder containing images whose prediction confidences exceed a given threshold.
-    # You are NOT allowed to use any models trained on external data for pseudo-labeling.
+    # You are NOT allowed to use any models trained on external images for pseudo-labeling.
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Make sure the model is in eval mode.
@@ -117,7 +117,7 @@ def get_pseudo_labels(dataset, model, threshold=0.011):
     for batch in tqdm(dataset):
         img, _ = batch
 
-        # Forward the data
+        # Forward the images
         # Using torch.no_grad() accelerates the forward process.
         with torch.no_grad():
             # logits = model(img.to(device))
@@ -127,7 +127,7 @@ def get_pseudo_labels(dataset, model, threshold=0.011):
             probs = softmax(logits)
 
             # ---------- TODO ----------
-            # Filter the data and construct a new dataset.
+            # Filter the images and construct a new dataset.
             # probs = probs[probs.max(dim=1) > threshold]
             # print(probs.max(dim=1))
             # print(probs.max(dim=1)[0] > threshold)
@@ -179,10 +179,10 @@ for epoch in range(n_epochs):
     # In each epoch, relabel the unlabeled dataset for semi-supervised learning.
     # Then you can combine the labeled dataset and pseudo-labeled dataset for the training.
     if do_semi:
-        # Obtain pseudo-labels for unlabeled data using trained model.
+        # Obtain pseudo-labels for unlabeled images using trained model.
         pseudo_set = get_pseudo_labels(unlabeled_set, model)
 
-        # Construct a new dataset and a data loader for training.
+        # Construct a new dataset and a images loader for training.
         # This is used in semi-supervised learning only.
         concat_dataset = ConcatDataset([train_set, pseudo_set])
         print(concat_dataset)
@@ -198,10 +198,10 @@ for epoch in range(n_epochs):
 
     # Iterate the training set by batches.
     for batch in tqdm(train_loader):
-        # A batch consists of image data and corresponding labels.
+        # A batch consists of image images and corresponding labels.
         imgs, labels = batch
 
-        # Forward the data. (Make sure data and model are on the same device.)
+        # Forward the images. (Make sure images and model are on the same device.)
         logits = model(imgs.to(device))
 
         # Calculate the cross-entropy loss.
@@ -244,7 +244,7 @@ for epoch in range(n_epochs):
 
     # Iterate the validation set by batches.
     for batch in tqdm(valid_loader):
-        # A batch consists of image data and corresponding labels.
+        # A batch consists of image images and corresponding labels.
         imgs, labels = batch
 
         # We don't need gradient in validation.
@@ -278,7 +278,7 @@ predictions = []
 
 # Iterate the testing set by batches.
 for batch in tqdm(test_loader):
-    # A batch consists of image data and corresponding labels.
+    # A batch consists of image images and corresponding labels.
     # But here the variable "labels" is useless since we do not have the ground-truth.
     # If printing out the labels, you will find that it is always 0.
     # This is because the wrapper (DatasetFolder) returns images and labels for each batch,

@@ -30,7 +30,7 @@ class SpectralNorm(nn.Module):
             v.data = l2normalize(torch.mv(torch.t(w.view(height,-1).data), u.data))
             u.data = l2normalize(torch.mv(w.view(height,-1).data, v.data))
 
-        # sigma = torch.dot(u.data, torch.mv(w.view(height,-1).data, v.data))
+        # sigma = torch.dot(u.images, torch.mv(w.view(height,-1).images, v.images))
         sigma = u.dot(w.view(height, -1).mv(v))
         setattr(self.module, self.name, w / sigma.expand_as(w))
 

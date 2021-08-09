@@ -8,8 +8,8 @@ TEXT = torchtext.legacy.data.Field(tokenize='spacy')
 LABEL = torchtext.legacy.data.LabelField(dtype=torch.float)
 train_data, test_data = torchtext.legacy.datasets.IMDB.splits(TEXT, LABEL)
 
-print('len of train data:', len(train_data))
-print('len of test data:', len(test_data))
+print('len of train images:', len(train_data))
+print('len of test images:', len(test_data))
 print(train_data.examples[15].text)
 print(train_data.examples[15].label)
 

@@ -4,13 +4,13 @@ import torchvision
 device=torch.device('cuda:0')
 batch_size = 200
 train_loader = torch.utils.data.DataLoader(
-    torchvision.datasets.MNIST('../data', train=True, download=True,
+    torchvision.datasets.MNIST('../images', train=True, download=True,
                                transform=torchvision.transforms.Compose([
                                    torchvision.transforms.ToTensor(),
                                    torchvision.transforms.Normalize((0.1307,), (0.3081,))
                                ])), batch_size=batch_size, shuffle=True)
 test_loader = torch.utils.data.DataLoader(
-    torchvision.datasets.MNIST('../data', train=False, transform=torchvision.transforms.Compose([
+    torchvision.datasets.MNIST('../images', train=False, transform=torchvision.transforms.Compose([
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize((0.1307,), (0.3081,))
     ])),

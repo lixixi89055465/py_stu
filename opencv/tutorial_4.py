@@ -54,16 +54,16 @@ def contrast_brightness_demo(image,c,b):
 
 
 print("======= Hello Python =======")
-src1 = cv.imread("./data/LinuxLogo.jpg")
-src2 = cv.imread("./data/WindowsLogo.jpg")
-src3 = cv.imread("./data/demo.jpg")
+src1 = cv.imread("./images/LinuxLogo.jpg")
+src2 = cv.imread("./images/WindowsLogo.jpg")
+src3 = cv.imread("./images/demo.jpg")
 
 cv.namedWindow("input image", cv.WINDOW_AUTOSIZE)
 # print(src1.shape)
 # print(src2.shape)
 # cv.imshow("image1", cv.bitwise_not(src3))
 # cv.imshow("image2", src2)
-src=cv.imread("./data/demo.png")
+src=cv.imread("./images/demo.png")
 cv.imshow("image2",src)
 contrast_brightness_demo(src,1.2,100)
 # add_demo(src1, src2)

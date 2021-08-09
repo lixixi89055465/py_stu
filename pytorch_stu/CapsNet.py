@@ -55,7 +55,7 @@ class DenseCapsule(nn.Module):
 class CapsuleNet(nn.Module):
     """
     A Capsule Network on MNIST.
-    :param input_size: data size = [channels, width, height]
+    :param input_size: images size = [channels, width, height]
     :param classes: number of classes
     :param routings: number of routing iterations
     Shape:

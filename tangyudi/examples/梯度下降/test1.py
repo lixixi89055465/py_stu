@@ -124,7 +124,7 @@ def descent(data, theta, batchSize, stopType, thresh, alpha):
 def runExpe(data, theta, batchSize, stopType, thresh, alpha):
     theta, iter, costs, grad, dur = descent(data, theta, batchSize, stopType, thresh, alpha)
     name = 'Original' if (data[:, 1] > 2).sum() > 1 else 'Scaled'
-    name += '  data -learning rate:{} - '.format(alpha)
+    name += '  images -learning rate:{} - '.format(alpha)
     if batchSize == n:
         strDescType = 'Gradient'
     elif batchSize == 1:

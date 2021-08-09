@@ -22,8 +22,8 @@ sys.path.append(rootPath)
 # ctx = mx.gpu(3)
 ctx = mx.gpu(0)
 
-# data_dir = "/root/Workspace/data/CIFAR10_kaggle/"
-data_dir = "./data/"
+# data_dir = "/root/Workspace/images/CIFAR10_kaggle/"
+data_dir = "./images/"
 train_dir = "train"
 test_dir = "test"
 label_file = "trainLabels.csv"
@@ -39,7 +39,7 @@ def mkdir_if_not_exist(path):
 
 
 """
-data prepare, reference to http://zh.gluon.ai/chapter_computer-vision/kaggle-gluon-cifar10.html
+images prepare, reference to http://zh.gluon.ai/chapter_computer-vision/kaggle-gluon-cifar10.html
 """
 
 
@@ -93,7 +93,7 @@ else:
     reorg_cifar10_data(data_dir, label_file, train_dir, test_dir, input_dir, valid_ratio)
 
 """
-data loader
+images loader
 """
 
 
@@ -129,7 +129,7 @@ def data_loader(batch_size, transform_train, transform_test=None):
 
 
 """
-data argument
+images argument
 """
 
 

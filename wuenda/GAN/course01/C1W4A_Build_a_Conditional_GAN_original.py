@@ -175,7 +175,7 @@ transform = transforms.Compose([
     transforms.Normalize((0.5,), (0.5,))
 ])
 dataloader = DataLoader(
-    MNIST('./data/', download=True, transform=transform),
+    MNIST('./images/', download=True, transform=transform),
     batch_size=batch_size,
     shuffle=True
 )

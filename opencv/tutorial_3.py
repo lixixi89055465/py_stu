@@ -3,7 +3,7 @@ import numpy as np
 
 
 def extrace_object_demo():
-    capture = cv.VideoCapture("./data/b.mp4")
+    capture = cv.VideoCapture("./images/b.mp4")
     while True:
         ret, frame = capture.read()
         if ret == False:
@@ -34,7 +34,7 @@ def color_space_demo(image):
 
 
 print("Hello Python")
-src = cv.imread("./data/demo.jpg")
+src = cv.imread("./images/demo.jpg")
 cv.namedWindow("input image", cv.WINDOW_AUTOSIZE)
 cv.imshow("input src", src)
 # color_space_demo(src)

@@ -13,7 +13,7 @@ print(torch.__version__)
 # step 1 load dataset
 batch_size = 128
 train_loader = torch.utils.data.DataLoader(
-    torchvision.datasets.MNIST('data/', train=True,
+    torchvision.datasets.MNIST('images/', train=True,
                                download=True,
                                transform=torchvision.transforms.Compose([
                                    torchvision.transforms.ToTensor(),
@@ -21,7 +21,7 @@ train_loader = torch.utils.data.DataLoader(
                                    #     (0.1307,), (0.3081,))
                                ])), batch_size=batch_size, shuffle=True)
 test_loader = torch.utils.data.DataLoader(
-    torchvision.datasets.MNIST('data/', train=False,
+    torchvision.datasets.MNIST('images/', train=False,
                                download=True,
                                transform=torchvision.transforms.Compose([
                                    torchvision.transforms.ToTensor(),

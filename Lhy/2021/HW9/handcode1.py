@@ -17,8 +17,8 @@ from pdb import set_trace
 from torch.autograd import Variable
 
 args = {
-    'ckptpath': '../data/checkpoint.pth',
-    'dataset_dir': '../data/food/'
+    'ckptpath': '../images/checkpoint.pth',
+    'dataset_dir': '../images/food/'
 }
 args = argparse.Namespace(**args)
 
@@ -110,7 +110,7 @@ class FoodDataset(torch.utils.data.Dataset):
         return torch.stack(images), torch.tensor(labels)
 
 
-# help to get data path and label
+# help to get images path and label
 def get_paths_labels(path):
     def my_key(name):
         print('name:', name)

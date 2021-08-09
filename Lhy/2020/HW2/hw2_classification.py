@@ -1,13 +1,13 @@
-# !gdown --id '1KSFIRh0-_Vr7SdiSCZP1ItV7bXPxMD92' --output data.tar.gz
-# !tar -zxvf data.tar.gz
+# !gdown --id '1KSFIRh0-_Vr7SdiSCZP1ItV7bXPxMD92' --output images.tar.gz
+# !tar -zxvf images.tar.gz
 # !ls
 
 import numpy as np
 
 np.random.seed(0)
-X_train_fpath = './data/X_train'
-Y_train_fpath = './data/Y_train'
-X_test_fpath = './data/X_test'
+X_train_fpath = './images/X_train'
+Y_train_fpath = './images/Y_train'
+X_test_fpath = './images/X_test'
 output_fpath = './output_{}.csv'
 # Parse csv file s
 with open(X_train_fpath) as f:
@@ -40,7 +40,7 @@ def _train_dev_split(X, Y, dev_ratio=0.25):
 X_train, X_mean, X_std = _normalize(X_train, train=True)
 x_test, _, _ = _normalize(X_test, train=False, specified_column=None, X_mean=X_mean, X_std=X_std)
 
-# Split data
+# Split images
 dev_ratio = 0.1
 X_train, Y_train, X_dev, Y_dev = _train_dev_split(X_train, Y_train, dev_ratio=dev_ratio)
 Y_dev = np.reshape(Y_dev, len(Y_dev))
@@ -52,7 +52,7 @@ data_dim = X_train.shape[1]
 print('Size of training set: {}'.format(train_size))
 print('Size of development set: {}'.format(dev_size))
 print('Size of testing set: {}'.format(test_size))
-print('Dimension of data: {}'.format(data_dim))
+print('Dimension of images: {}'.format(data_dim))
 
 
 def _shuffle(X, Y):
@@ -192,7 +192,7 @@ with open(X_test_fpath) as f:
     next(f)
     X_test = np.array([line.strip('\n').split(',')[1:] for line in f], dtype=float)
 
-# Normalize training and testing data
+# Normalize training and testing images
 X_train, X_mean, X_std = _normalize(X_train, train=True)
 X_test, _, _ = _normalize(X_test, train=False, specified_column=None, X_mean=X_mean, X_std=X_std)
 

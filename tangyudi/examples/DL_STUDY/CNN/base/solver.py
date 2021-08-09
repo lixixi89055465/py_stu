@@ -9,9 +9,9 @@ class Solver(object):
   models. The Solver performs stochastic gradient descent using different
   update rules defined in optim.py.
 
-  The solver accepts both training and validataion data and labels so it can
+  The solver accepts both training and validataion images and labels so it can
   periodically check classification accuracy on both training and validation
-  data to watch out for overfitting.
+  images to watch out for overfitting.
 
   To train a model, you will first construct a Solver instance, passing the
   model, dataset, and various optoins (learning rate, batch size, etc) to the
@@ -27,14 +27,14 @@ class Solver(object):
   
   Example usage might look something like this:
   
-  data = {
-    'X_train': # training data
+  images = {
+    'X_train': # training images
     'y_train': # training labels
-    'X_val': # validation data
+    'X_val': # validation images
     'X_train': # validation labels
   }
   model = MyAwesomeModel(hidden_size=100, reg=10)
-  solver = Solver(model, data,
+  solver = Solver(model, images,
                   update_rule='sgd',
                   optim_config={
                     'learning_rate': 1e-3,
@@ -55,7 +55,7 @@ class Solver(object):
     and outputs:
 
     Inputs:
-    - X: Array giving a minibatch of input data of shape (N, d_1, ..., d_k)
+    - X: Array giving a minibatch of input images of shape (N, d_1, ..., d_k)
     - y: Array of labels, of shape (N,) giving labels for X where y[i] is the
       label for X[i].
 
@@ -77,7 +77,7 @@ class Solver(object):
     
     Required arguments:
     - model: A model object conforming to the API described above
-    - data: A dictionary of training and validation data with the following:
+    - images: A dictionary of training and validation images with the following:
       'X_train': Array of shape (N_train, d_1, ..., d_k) giving training images
       'X_val': Array of shape (N_val, d_1, ..., d_k) giving validation images
       'y_train': Array of shape (N_train,) giving labels for training images
@@ -155,7 +155,7 @@ class Solver(object):
     Make a single gradient update. This is called by train() and should not
     be called manually.
     """
-    # Make a minibatch of training data
+    # Make a minibatch of training images
     num_train = self.X_train.shape[0]
     batch_mask = np.random.choice(num_train, self.batch_size)
     X_batch = self.X_train[batch_mask]
@@ -176,12 +176,12 @@ class Solver(object):
 
   def check_accuracy(self, X, y, num_samples=None, batch_size=2):
     """
-    Check accuracy of the model on the provided data.
+    Check accuracy of the model on the provided images.
     
     Inputs:
-    - X: Array of data, of shape (N, d_1, ..., d_k)
+    - X: Array of images, of shape (N, d_1, ..., d_k)
     - y: Array of labels, of shape (N,)
-    - num_samples: If not None, subsample the data and only test the model
+    - num_samples: If not None, subsample the images and only test the model
       on num_samples datapoints.
     - batch_size: Split X and y into batches of this size to avoid using too
       much memory.
@@ -191,7 +191,7 @@ class Solver(object):
       classified by the model.
     """
     
-    # Maybe subsample the data
+    # Maybe subsample the images
     N = X.shape[0]
     if num_samples is not None and N > num_samples:
       mask = np.random.choice(N, num_samples)
