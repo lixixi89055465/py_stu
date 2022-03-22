@@ -2,9 +2,8 @@
 
 '''
 import torch
-import torch.nn.functional as F
-import numpy as np
-filters = torch.randn(8,4,3,3)
-inputs = torch.randn(1,4,5,5)
-a=F.conv2d(inputs, filters, padding=1)
+a=torch.randn(7,512,5,5)
+b,c,h,w=a.shape
 print(a.shape)
+b=a.permute(0,2,3,1).view(b,-1,c).contiguous()
+print(b.shape)
