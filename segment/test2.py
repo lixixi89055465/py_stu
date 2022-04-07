@@ -17,6 +17,33 @@ plt.figure(num=None, figsize=(8, 6), dpi=80)
 imshow(dog)
 plt.show()
 
+
+def image_to_pandas(image):
+    df = pd.DataFrame([image[:,:,0].flatten(),
+                       image[:,:,1].flatten(),
+                       image[:,:,2].flatten()]).T
+    df.columns = ['Red_Channel','Green_Channel','Blue_Channel']
+    return df
+df_doggo = image_to_pandas(dog)
+df_doggo.head(5)
+
+
+
+
+plt.figure(num=None, figsize=(8, 6), dpi=80)
+kmeans = KMeans(n_clusters=  4, random_state = 42).fit(df_doggo)
+result = kmeans.labels_.reshape(dog.shape[0],dog.shape[1])
+imshow(result, cmap='viridis')
+plt.show()
+
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 12))
+for n, ax in enumerate(axes.flatten()):
+    ax.imshow(result == [n], cmap='gray');
+    ax.set_axis_off()
+
+fig.tight_layout()
+
 def image_to_pandas(image):
     df = pd.DataFrame([image[:,:,0].flatten(),
                        image[:,:,1].flatten(),
@@ -26,6 +53,18 @@ def image_to_pandas(image):
 df_doggo = image_to_pandas(dog)
 # df_doggo.head(5)
 
+
+
+
+fig, axes = plt.subplots(1,3, figsize=(15, 12))
+for n, ax in enumerate(axes.flatten()):
+    dog = imread('beach_doggo.png')
+    dog[:, :, 0] = dog[:, :, 0]*(result==[n])
+    dog[:, :, 1] = dog[:, :, 1]*(result==[n])
+    dog[:, :, 2] = dog[:, :, 2]*(result==[n])
+    ax.imshow(dog);
+    ax.set_axis_off()
+fig.tight_layout()
 
 def pixel_plotter(df):
     x_3d = df['Red_Channel']
@@ -53,16 +92,3 @@ def pixel_plotter(df):
 
 
 pixel_plotter(df_doggo)
-import numpy as np
-
-# a=np.mgrid[-4:4:2j]
-# print(a)
-a = np.mgrid[1:3:3j, 4:5:2j]
-print(a)
-# x, y = np.mgrid[1:3:3j, 4:5:2j]
-# print(x)
-# print(y)
-# import numpy as np
-#
-# b = np.mgrid[-1:1:2j, -2:2:2j, -3:3:5j]
-# print(b)
