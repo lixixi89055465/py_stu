@@ -68,3 +68,43 @@ segments = assignments.reshape((H, W))
 plt.imshow(segments, cmap='viridis')
 plt.axis('off')
 plt.show()
+
+
+from utils import visualize_mean_color_image
+visualize_mean_color_image(img, segments)
+print('2'*100)
+
+from utils import load_dataset, compute_segmentation
+from segmentation import evaluate_segmentation
+
+# 载入该小型数据集
+imgs, gt_masks = load_dataset('./data')
+
+# 设置图像分割的参数
+num_segments = 3
+clustering_fn = kmeans_fast
+feature_fn = color_features
+scale = 0.5
+
+mean_accuracy = 0.0
+
+segmentations = []
+
+for i, (img, gt_mask) in enumerate(zip(imgs, gt_masks)):
+    # Compute a segmentation for this image
+    segments = compute_segmentation(img, num_segments,
+                                    clustering_fn=clustering_fn,
+                                    feature_fn=feature_fn,
+                                    scale=scale)
+
+    segmentations.append(segments)
+
+    # 评估图像分割结果
+    accuracy = evaluate_segmentation(gt_mask, segments)
+
+    print('Accuracy for image %d: %0.4f' % (i, accuracy))
+    mean_accuracy += accuracy
+
+mean_accuracy = mean_accuracy / len(imgs)
+print('Mean accuracy: %0.4f' % mean_accuracy)
+

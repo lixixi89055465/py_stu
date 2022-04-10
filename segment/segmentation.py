@@ -134,6 +134,7 @@ def color_position_features(img):
     cord = np.dstack(np.mgrid[0:H, 0:W]).reshape((H*W, 2))      # mgrid生成坐标，重新格式为（x,y）的二维
     features[:, 0:C] = color.reshape((H*W, C))      # r,g,b
     features[:, C:C+2] = cord
+    a=np.mean(features,axis=0)
     features = (features - np.mean(features, axis=0)) / np.std(features, axis=0,  ddof = 0)     # 对特征归一化处理
     ### END YOUR CODE
 
