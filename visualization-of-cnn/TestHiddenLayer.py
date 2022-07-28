@@ -36,7 +36,7 @@ test_data=torchvision.datasets.MNIST(
 )
 # 将测试数据压缩到 0-1
 test_data_x=test_data.data.type(torch.FloatTensor)/255.0
-test_data_x=torch.unsqueeze(test_data_x,dim=1).cuda()
+test_data_x=torch.unsqueeze(test_data_x,dim=1)
 test_data_y=test_data.targets
 
 # 打印一下测试数据和训练数据的shape
@@ -56,7 +56,7 @@ for epoch in range(5):
             print('global_step:{},loss:{:.2}'.format(global_iter_num,loss.item()))
             test_predict=MyConvNet(test_data_x)
             _,predict_idx=torch.max(test_predict,1)
-            acc=accuracy_score(test_data_y,predict)
+            acc=accuracy_score(test_data_y,predict_idx)
             history.log((epoch,step),
                         train_loss=loss,
                         test_acc=acc,
@@ -65,7 +65,7 @@ for epoch in range(5):
             with canvas:
                 canvas.draw_plot(history['train_loss'])
                 canvas.draw_plot(history['test_acc'])
-                canvas.draw_plot(history['hidden_weight'])
+                canvas.draw_image(history['hidden_weight'])
 
 
 
