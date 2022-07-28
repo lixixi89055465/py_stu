@@ -115,7 +115,7 @@ class TwitterDataset(data.Dataset):
     def __len__(self):
         return len(self.data)
 
-# model.py
+# MyModel.py
 # 這個block是要拿來訓練的模型
 import torch
 from torch import nn

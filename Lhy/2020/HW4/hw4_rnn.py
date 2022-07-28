@@ -235,7 +235,7 @@ class TwitterDataset(data.Dataset):
 
 """### Model"""
 
-# model.py
+# MyModel.py
 # 這個 block 是要拿來訓練的模型
 import torch
 from torch import nn
