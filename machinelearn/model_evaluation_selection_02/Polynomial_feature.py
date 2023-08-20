@@ -30,7 +30,7 @@ class PolynomialFeatureData:
         @return:
         '''
         if self.with_bias:
-            self.data[:,0] = np.ones(len(self.x)).reshape(-1)
+            self.data[:, 0] = np.ones(len(self.x)).reshape(-1)
             self.data[:, 1] = self.x.reshape(-1)
             for i in range(2, self.degree + 1):
                 self.data[:, i] = (self.x ** i).reshape(-1)
@@ -38,8 +38,6 @@ class PolynomialFeatureData:
             for i in range(self.degree):
                 self.data[:, i] = (self.x ** (i + 1))
         return self.data
-
-
 
 # if __name__ == '__main__':
 #     x = np.random.randn(5)
