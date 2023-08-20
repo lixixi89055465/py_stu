@@ -7,6 +7,8 @@
 # @Description :  机器学习 https://space.bilibili.com/512662380
 import numpy as np  # 数值运算，尤其是向量化的运算方式
 import sympy  # 符号运算库
+import matplotlib.pyplot as plt
+from numericalAnalysis_ScientificCalculation.data_interpolation_01.utils import interp_utils
 
 
 class LargrangeInterpolation:
@@ -47,9 +49,12 @@ class LargrangeInterpolation:
             for j in range(i + 1, self.n):
                 basis_fun *= (t - self.x[j]) / (self.x[i] - self.x[j])
             self.polynomial += basis_fun  # 插值多项式累加
-        print(self.polynomial)
-        print('0' * 100)
-        self.polynomial = sympy.simplify(self.polynomial)
+        # 插值多项式特征
+        self.polynomial = sympy.expand(self.polynomial)
+        polynomial = sympy.Poly(self.polynomial, t)  # 根据多项式构造多项式对象
+        self.poly_coefficient = polynomial.coeffs()  # 获取多项式的系数
+        # self.coefficient_order=polynomial.degree() # 多项式系数对相应次
+        self.coefficient_order = polynomial.monoms()  # 多项式系数对应的最高阶次
         print(self.polynomial)
 
     def cal_interp_x0(self, x0):
@@ -58,4 +63,15 @@ class LargrangeInterpolation:
         @param x0: 所求插值的x坐标值
         @return:
         '''
-        pass
+        self.y0=interp_utils.cal_interp_x0(self.polynomial,x0)
+        return self.y0
+
+
+
+    def plt_interpolation(self, x0=None, y0=None):
+        '''
+        可视化插值图像和所求的插值点
+        @return:
+        '''
+        params = (self.polynomial, self.x, self.y, 'Lagrange',x0, y0)
+        interp_utils.plt_interpolation(params)
