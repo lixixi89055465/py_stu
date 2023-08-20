@@ -3,7 +3,7 @@
 # @IDE:    : PyCharm
 # @Time    : 2023/8/19 12:24
 # @Author  : nanji
-# @File    : PolynomialFeatureData.py
+# @File    : Polynomial_feature.py
 # @Description :  机器学习 https://space.bilibili.com/512662380
 import numpy as np
 
@@ -33,7 +33,7 @@ class PolynomialFeatureData:
             self.data[:,0] = np.ones(len(self.x)).reshape(-1)
             self.data[:, 1] = self.x.reshape(-1)
             for i in range(2, self.degree + 1):
-                self.data[:, i] = (self.x ** i)
+                self.data[:, i] = (self.x ** i).reshape(-1)
         else:
             for i in range(self.degree):
                 self.data[:, i] = (self.x ** (i + 1))
@@ -41,9 +41,9 @@ class PolynomialFeatureData:
 
 
 
-if __name__ == '__main__':
-    x = np.random.randn(5)
-    # feature = PolynomialFeatureData(x, 3, True)
-    feature = PolynomialFeatureData(x, 3, False)
-    data=feature.fit_transform()
-    print(data)
+# if __name__ == '__main__':
+#     x = np.random.randn(5)
+#     # feature = PolynomialFeatureData(x, 3, True)
+#     feature = PolynomialFeatureData(x, 3, False)
+#     data=feature.fit_transform()
+#     print(data)

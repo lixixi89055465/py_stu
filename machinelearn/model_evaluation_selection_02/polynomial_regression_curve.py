@@ -7,7 +7,7 @@
 # @Description :  机器学习 https://space.bilibili.com/512662380
 
 import numpy as np
-from model_evaluation_selection_02.PolynomialFeatureData import PolynomialFeatureData
+from machinelearn.model_evaluation_selection_02.Polynomial_feature import PolynomialFeatureData
 
 
 class PolynomialRegressionCurve:
@@ -22,7 +22,7 @@ class PolynomialRegressionCurve:
         @param y:  目标值，向量
         @param fit_intercept:  是否你和截距 ，偏置项
         '''
-        self.X, self, y = np.asarray(X), np.asarray(y)
+        self.X, self.y = np.asarray(X), np.asarray(y)
         self.fit_intercept = fit_intercept
         self.theta = None  # 模型拟合的最优参数
 
