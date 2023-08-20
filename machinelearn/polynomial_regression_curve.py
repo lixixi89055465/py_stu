@@ -7,6 +7,7 @@
 # @Description :  机器学习 https://space.bilibili.com/512662380
 
 import numpy as np
+from model_evaluation_selection_02.PolynomialFeatureData import PolynomialFeatureData
 
 
 class PolynomialRegressionCurve:
@@ -33,6 +34,7 @@ class PolynomialRegressionCurve:
         # pinv()伪逆
         xtx = np.dot(self.X.T, self.X) + 0.01 * np.eye(self.X.shape[1])  # 添加正则项，保证矩阵是正定可逆的
         self.theta = np.linalg.inv(xtx).dot(self.X.T).dot(self.y)
+        return self.theta
 
     def predict(self, x_test):
         '''
@@ -40,16 +42,15 @@ class PolynomialRegressionCurve:
         @param x_test:
         @return:
         '''
-        from model_evaluation_selection_02.PolynomialFeatureData import PolynomialFeatureData
         x_test = x_test[:, np.newaxis]
         if x_test.shape[1] != self.X.shape[1]:
             if self.fit_intercept:
                 feat_obj = PolynomialFeatureData(x_test, self.X.shape[1] - 1, with_bias=True)
-                x_test=feat_obj.fit_transform()
+                x_test = feat_obj.fit_transform()
             else:
-                feat_obj=PolynomialFeatureData(x_test,self.X.shape[1],with_bias=False)
-                x_test=feat_obj.fit_transform()
+                feat_obj = PolynomialFeatureData(x_test, self.X.shape[1], with_bias=False)
+                x_test = feat_obj.fit_transform()
         if self.theta is None:
             self.fit()
-        y_pred=feat_obj.fit_transform()
-
+        y_pred = np.dot(self.theta, x_test.T)
+        return y_pred.reshape(-1)
