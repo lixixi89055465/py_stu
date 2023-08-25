@@ -53,9 +53,40 @@ from sklearn.model_selection import train_test_split  # 划分数据集
 from sklearn.linear_model import LogisticRegression  # 逻辑回归
 from sklearn.metrics import classification_report, accuracy_score  # 分类报告，正确率
 
-X_train, X_test, y_train, y_tes = train_test_split(X_pca, y, test_size=0.2, random_state=0, shuffle=True, stratify=y)
-print(len(X_test), len(y_train))
+acc_test_score, acc_train_score = [], []  # 每次随机划分训练和测试评分
+for i in range(50):
+    X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.2, random_state=i, shuffle=True,
+                                                        stratify=y)
+    print(len(X_test), len(y_train))
+    log_reg = LogisticRegression()  # 未掌握原理之前，所有参数默认
+    log_reg.fit(X_train, y_train)  # 采用训练集训练模型
+    y_test_pred = log_reg.predict(X_test)  # 模型训练完毕后，对测试样本进行预测
+    # print((y_test_pred == y_test).sum() * 1.0 / len(y_test))  #
+    accuracy_score(y_test, y_test_pred)
+    acc_train_score.append(accuracy_score(y_train, log_reg.predict(X_train)))
+    acc_test_score.append(accuracy_score(y_test, log_reg.predict(X_test)))
 
-log_reg = LogisticRegression()  # 未掌握原理之前，所有参数默认
-log_reg.fit(X_train)
+print(acc_train_score)
+print('0' * 100)
+print(acc_test_score)
+plt.figure(figsize=(7, 5))
+plt.plot(acc_test_score, "ro:", lw=1.5, label='Test')
+plt.plot(acc_train_score, "ks--", lw=1, markersize=4, label='Test')
+plt.show()
 
+from sklearn.pipeline import Pipeline, make_pipeline
+
+pipe_lr = make_pipeline(
+    StandardScaler(),
+    PCA(n_components=6),
+    LogisticRegression()
+)
+X, y = wdbc.loc[:, 2:].values, wdbc.loc[:, 1]
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1, shuffle=True, stratify=y)
+pipe_lr.fit(X_train, y_train)
+pipe_lr.predict(X_test)
+print('2' * 100)
+# print(accuracy_score(X_test, y_test))
+print('Test accuracy is %.5f' % pipe_lr.score(X_test, y_test))
+
+# from sklearn.model_selection
