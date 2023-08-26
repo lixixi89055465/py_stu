@@ -108,6 +108,7 @@ from sklearn.model_selection import StratifiedKFold
 # print('1' * 100)
 from sklearn.model_selection import cross_val_score
 
+
 # scores = cross_val_score(estimator=pipe_lr, X=X_train, y=y_train, cv=10, n_jobs=-1)
 # print(len(scores))
 # print(scores)
@@ -186,8 +187,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 
 pipe_svc = make_pipeline(StandardScaler(), PCA(n_components=4), SVC())
-X, y = wdbc.iloc[:, 2:], wdbc.iloc[:, 0]  # 提取特征数据和样本标签集
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0, shuffle=True)
+X, y = wdbc.iloc[:, 2:].values, wdbc.iloc[:, 1]  # 提取特征数据和样本标签集
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0, shuffle=True, stratify=y)
 param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定c与gamma 参数的取值
 param_grid = [
     {'svc__C': param_range, 'svc__kernel': ['linear']},
@@ -196,4 +197,11 @@ param_grid = [
 gs_cv = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring='accuracy', cv=10, refit=True)
 gs_result = gs_cv.fit(X_train, y_train)
 print('6' * 100)
-print(gs_result.best_params_)
+print('Best: %f, using %s' % (gs_result.best_score_, gs_result.best_params_))
+test_means = gs_result.cv_results_['mean_test_score']
+params = gs_result.cv_results_['params']
+print('7' * 100)
+print(gs_result.cv_results_.keys())
+for tm, param in zip(test_means, params):
+    print('%f with: %s' % (tm, param))
+print('8' * 100)
