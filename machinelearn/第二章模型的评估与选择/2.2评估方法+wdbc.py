@@ -57,22 +57,22 @@ from sklearn.model_selection import train_test_split  # 划分数据集
 from sklearn.linear_model import LogisticRegression  # 逻辑回归
 from sklearn.metrics import classification_report, accuracy_score  # 分类报告，正确率
 
-acc_test_score, acc_train_score = [], []  # 每次随机划分训练和测试评分
-for i in range(50):
-    X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.2, random_state=i, shuffle=True,
-                                                        stratify=y)
-    # print(len(X_test), len(y_train))
-    log_reg = LogisticRegression()  # 未掌握原理之前，所有参数默认
-    log_reg.fit(X_train, y_train)  # 采用训练集训练模型
-    y_test_pred = log_reg.predict(X_test)  # 模型训练完毕后，对测试样本进行预测
-    # print((y_test_pred == y_test).sum() * 1.0 / len(y_test))  #
-    accuracy_score(y_test, y_test_pred)
-    acc_train_score.append(accuracy_score(y_train, log_reg.predict(X_train)))
-    acc_test_score.append(accuracy_score(y_test, log_reg.predict(X_test)))
+# acc_test_score, acc_train_score = [], []  # 每次随机划分训练和测试评分
+# for i in range(50):
+#     X_train, X_test, y_train, y_test = train_test_split(X_pca, y, test_size=0.2, random_state=i, shuffle=True,
+#                                                         stratify=y)
+#     # print(len(X_test), len(y_train))
+#     log_reg = LogisticRegression()  # 未掌握原理之前，所有参数默认
+#     log_reg.fit(X_train, y_train)  # 采用训练集训练模型
+#     y_test_pred = log_reg.predict(X_test)  # 模型训练完毕后，对测试样本进行预测
+#     # print((y_test_pred == y_test).sum() * 1.0 / len(y_test))  #
+#     accuracy_score(y_test, y_test_pred)
+#     acc_train_score.append(accuracy_score(y_train, log_reg.predict(X_train)))
+#     acc_test_score.append(accuracy_score(y_test, log_reg.predict(X_test)))
 
-print(acc_train_score)
-print('0' * 100)
-print(acc_test_score)
+# print(acc_train_score)
+# print('0' * 100)
+# print(acc_test_score)
 # plt.figure(figsize=(7, 5))
 # plt.plot(acc_test_score, "ro:", lw=1.5, label='Test')
 # plt.plot(acc_train_score, "ks--", lw=1, markersize=4, label='Test')
@@ -80,14 +80,14 @@ print(acc_test_score)
 
 from sklearn.pipeline import Pipeline, make_pipeline
 
-pipe_lr = make_pipeline(
-    StandardScaler(),
-    PCA(n_components=6),
-    LogisticRegression()
-)
-X, y = wdbc.iloc[:, 2:].values, wdbc.iloc[:, 1]
-y = LabelEncoder().fit_transform(y)  # 对目标值进行编码
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=True, )
+# pipe_lr = make_pipeline(
+#     StandardScaler(),
+#     PCA(n_components=6),
+#     LogisticRegression()
+# )
+# X, y = wdbc.iloc[:, 2:].values, wdbc.iloc[:, 1]
+# y = LabelEncoder().fit_transform(y)  # 对目标值进行编码
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=True, )
 # pipe_lr.fit(X_train, y_train)
 # pipe_lr.predict(X_test)
 # print('2' * 100)
@@ -189,19 +189,79 @@ from sklearn.svm import SVC
 pipe_svc = make_pipeline(StandardScaler(), PCA(n_components=4), SVC())
 X, y = wdbc.iloc[:, 2:].values, wdbc.iloc[:, 1]  # 提取特征数据和样本标签集
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0, shuffle=True, stratify=y)
-param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定c与gamma 参数的取值
-param_grid = [
-    {'svc__C': param_range, 'svc__kernel': ['linear']},
-    {'svc__C': param_range, 'svc__gamma': param_range, 'svc__kernel': ['rbf']}  # 生成 参数网格,参数的组合
-]
-gs_cv = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring='accuracy', cv=10, refit=True)
-gs_result = gs_cv.fit(X_train, y_train)
-print('6' * 100)
-print('Best: %f, using %s' % (gs_result.best_score_, gs_result.best_params_))
-test_means = gs_result.cv_results_['mean_test_score']
-params = gs_result.cv_results_['params']
-print('7' * 100)
-print(gs_result.cv_results_.keys())
-for tm, param in zip(test_means, params):
-    print('%f with: %s' % (tm, param))
-print('8' * 100)
+# param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定c与gamma 参数的取值
+# param_grid = [
+#     {'svc__C': param_range, 'svc__kernel': ['linear']},
+#     {'svc__C': param_range, 'svc__gamma': param_range, 'svc__kernel': ['rbf']}  # 生成 参数网格,参数的组合
+# ]
+# gs_cv = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring='accuracy', cv=10, refit=True)
+# gs_result = gs_cv.fit(X_train, y_train)
+# print('6' * 100)
+# print('Best: %f, using %s' % (gs_result.best_score_, gs_result.best_params_))
+# test_means = gs_result.cv_results_['mean_test_score']
+# params = gs_result.cv_results_['params']
+# print('7' * 100)
+# print('best score:%f, using %s' % (gs_result.best_score_, gs_result.best_params_))
+# print(gs_result.cv_results_.keys())
+# for tm, param in zip(test_means, params):
+#     print('%f with: %s' % (tm, param))
+# print('8' * 100)
+#
+# clf = gs_result.best_estimator_
+# print(clf)
+# # 支持向量机 SVC算法
+# param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定C与gamma参数的取值
+# param_grid = [
+#     {'svc__C': param_range, 'svc__kernel': ['linear']},
+#     {'svc__C': param_range, 'svc__gamma': param_range, 'svc__kernel': ['rbf']},  # 生成参数网络，参数的组合
+# ]
+# gs_cv = GridSearchCV(estimator=pipe_svc, param_grid=param_grid, scoring='accuracy', cv=2, refit=True,)
+# scores_svc = cross_val_score(gs_cv, X=X_train, y=y_train, scoring='accuracy', cv=5,)  # 外层5折
+# print('9' * 100)
+# print(scores_svc)
+# print('SVC CV accuracy : %.5f +/- %.5f' % (np.mean(scores_svc), np.std(scores_svc)))
+# # K 近邻算法
+# from sklearn.neighbors import KNeighborsClassifier
+#
+# pipe_knn = make_pipeline(StandardScaler(), PCA(n_components=6), KNeighborsClassifier())
+#
+# param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定C与gamma参数的取值
+# param_grid = [
+#     {'kneighborsclassifier__n_neighbors': [i for i in range(3,11)]},
+#     {'kneighborsclassifier__algorithm': ['ball_tree', 'kd_tree', 'brute']},  # 生成参数网络，参数的组合
+# ]
+#
+# gs_knn = GridSearchCV(estimator=pipe_knn, param_grid=param_grid, scoring='accuracy', cv=2, refit=True)
+# scores_knn = cross_val_score(gs_knn, X=X_train, y=y_train, scoring='accuracy', cv=5,)  # 外层5折
+# print('KNN CV accuracy : %.5f +/- %.5f' % (np.mean(scores_knn), np.std(scores_knn)))
+
+# # 决策树
+# from sklearn.tree import DecisionTreeClassifier
+#
+# pipe_dtc = make_pipeline(StandardScaler(), PCA(n_components=6), DecisionTreeClassifier())
+#
+# param_range = [0.001, 0.01, 0.1, 1, 10, 100]  # 指定C与gamma参数的取值
+# param_grid = [
+#     {'decisiontreeclassifier__criterion': ["gini", "entropy"]},
+#     {'decisiontreeclassifier__max_depth': [i for i in range(1, 8)] + [None]},  # 生成参数网络，参数的组合
+# ]
+#
+# gs_dtc = GridSearchCV(estimator=pipe_dtc, param_grid=param_grid, scoring='accuracy', cv=2, refit=True)
+# scores_dtc = cross_val_score(gs_dtc, X=X_train, y=y_train, scoring='accuracy', cv=5,)  # 外层5折
+# print('DTC CV accuracy : %.5f +/- %.5f' % (np.mean(scores_dtc), np.std(scores_dtc)))
+
+from hyperopt import fmin, tpe, hp
+from sklearn.datasets import load_digits
+
+print('2' * 100)
+digits = load_digits()
+X, y = digits.data, digits.target
+print(X.shape)
+print('3' * 100)
+# print(digits.images[0])
+fig = plt.figure(figsize=(12, 8))
+fig.subplots_adjust(left=0.1, right=1, bottom=0, top=1, hspace=0.05, wspace=0.05)
+for i in range(24):
+    ax = fig.add_subplot(4, 6, i + 1, xticks=[], yticks=[])
+    ax.imshow(digits.images[i])
+plt.show()
