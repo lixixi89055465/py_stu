@@ -250,18 +250,54 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 # scores_dtc = cross_val_score(gs_dtc, X=X_train, y=y_train, scoring='accuracy', cv=5,)  # 外层5折
 # print('DTC CV accuracy : %.5f +/- %.5f' % (np.mean(scores_dtc), np.std(scores_dtc)))
 
-from hyperopt import fmin, tpe, hp
 from sklearn.datasets import load_digits
 
-print('2' * 100)
+# print('2' * 100)
 digits = load_digits()
 X, y = digits.data, digits.target
-print(X.shape)
-print('3' * 100)
-# print(digits.images[0])
-fig = plt.figure(figsize=(12, 8))
-fig.subplots_adjust(left=0.1, right=1, bottom=0, top=1, hspace=0.05, wspace=0.05)
-for i in range(24):
-    ax = fig.add_subplot(4, 6, i + 1, xticks=[], yticks=[])
-    ax.imshow(digits.images[i])
-plt.show()
+# print(X.shape)
+# print('3' * 100)
+# # print(digits.images[0])
+# fig = plt.figure(figsize=(12, 8))
+# fig.subplots_adjust(left=0.1, right=1, bottom=0, top=1, hspace=0.05, wspace=0.05)
+# for i in range(24):
+#     ax = fig.add_subplot(4, 6, i + 1, xticks=[], yticks=[])
+#     ax.imshow(digits.images[i])
+# plt.show()
+from hyperopt import fmin, tpe, hp
+import hyperopt.pyll.stochastic
+
+params_space_svc = {
+    'C': hp.uniform('C', 0, 100),
+    'kernel': hp.choice('kernel', ['poly', 'rbf']),
+    'gamma': hp.loguniform('gamma', np.log(0.001), np.log(0.1))
+}
+result = hyperopt.pyll.stochastic.sample(params_space_svc)
+print(result)
+
+pipe_svc = make_pipeline(StandardScaler(), PCA(n_components=20), SVC())
+X, y = wdbc.iloc[:, 2:], wdbc.iloc[:, 1]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0, shuffle=True)
+count = 0  # 每一次参数组合的枚举次数
+cv_scores = []
+
+
+def hyperopt_train_val(args):
+    clf = SVC(**args)
+    score = cross_val_score(clf, X_train, y_train, cv=10,).mean()
+    cv_scores.append(score)
+    global count
+    count = count + 1
+    print('[%d], %s, Validate ACC: %.5f' % (count, args, score))
+    return -score
+
+
+best = fmin(hyperopt_train_val, params_space_svc, algo=tpe.suggest, max_evals=100)
+
+print(best)
+kernel_list = ['poly', 'rbf']
+# best['kernel'] = kernel_list[best['kernel']]
+clf = SVC(**best)  # 最有参数组合
+clf.fit(X_train, y_train)
+print('The best params of SVC , the test is %.5f' % clf.score(X_test, y_test))
+
