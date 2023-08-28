@@ -267,37 +267,106 @@ X, y = digits.data, digits.target
 from hyperopt import fmin, tpe, hp
 import hyperopt.pyll.stochastic
 
-params_space_svc = {
-    'C': hp.uniform('C', 0, 100),
-    'kernel': hp.choice('kernel', ['poly', 'rbf']),
-    'gamma': hp.loguniform('gamma', np.log(0.001), np.log(0.1))
-}
-result = hyperopt.pyll.stochastic.sample(params_space_svc)
-print(result)
-
-pipe_svc = make_pipeline(StandardScaler(), PCA(n_components=20), SVC())
-X, y = wdbc.iloc[:, 2:], wdbc.iloc[:, 1]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0, shuffle=True)
-count = 0  # 每一次参数组合的枚举次数
-cv_scores = []
+# params_space_svc = {
+#     'C': hp.uniform('C', 0, 100),
+#     'kernel': hp.choice('kernel', ['poly', 'rbf']),
+#     'gamma': hp.loguniform('gamma', np.log(0.001), np.log(0.1))
+# }
+# pipe_svc = make_pipeline(StandardScaler(), PCA(n_components=20), SVC())
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0, shuffle=True)
+# count = 0  # 每一次参数组合的枚举次数
+# cv_scores = []
 
 
-def hyperopt_train_val(args):
-    clf = SVC(**args)
-    score = cross_val_score(clf, X_train, y_train, cv=10,).mean()
-    cv_scores.append(score)
-    global count
-    count = count + 1
-    print('[%d], %s, Validate ACC: %.5f' % (count, args, score))
-    return -score
+# def hyperopt_train_val(args):
+#     clf = SVC(**args)
+#     score = cross_val_score(clf, X_train, y_train, cv=10, n_jobs=-1).mean()
+#     cv_scores.append(score)
+#     global count
+#     count = count + 1
+#     print('[%d], %s, Validate ACC: %.5f' % (count, args, score))
+#     return -score
 
 
-best = fmin(hyperopt_train_val, params_space_svc, algo=tpe.suggest, max_evals=100)
-
-print(best)
-kernel_list = ['poly', 'rbf']
+# best = fmin(hyperopt_train_val, params_space_svc, algo=tpe.suggest, max_evals=100)
+#
+# print(best)
+# kernel_list = ['poly', 'rbf']
 # best['kernel'] = kernel_list[best['kernel']]
-clf = SVC(**best)  # 最有参数组合
-clf.fit(X_train, y_train)
-print('The best params of SVC , the test is %.5f' % clf.score(X_test, y_test))
+# clf = SVC(**best)  # 最有参数组合
+# clf.fit(X_train, y_train)
+# print('The best params of SVC , the test is %.5f' % clf.score(X_test, y_test))
 
+# plt.figure(figsize=(8, 6))
+# plt.plot(cv_scores, 'ko--', markersize=5, markeredgecolor='r')
+# plt.show()
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import BernoulliNB
+
+
+def hyperopt_train_test(params):
+    t = params['type']
+    del params['type']
+    if t == 'naive_bayes':
+        clf = BernoulliNB(**params)
+    elif t == 'svm':
+        clf = SVC(**params)
+    elif t == 'dtree':
+        clf = DecisionTreeClassifier(**params)
+    elif t == 'knn':
+        clf = KNeighborsClassifier(**params)
+    else:
+        return 0
+    return cross_val_score(clf, X, y).mean()
+
+
+space = hp.choice('classifier_type', [
+    {
+        'type': 'naive_bayes',
+        'alpha': hp.uniform('alpha', 0.0, 2.0)
+    },
+    {
+        'type': 'svm',
+        'C': hp.uniform('C', 0, 10.0),
+        'kernel': hp.choice('kernel', ['linear', 'rbf']),
+        'gamma': hp.uniform('gamma', 0, 20.0)
+    },
+    {
+        'type': 'randomforest',
+        'max_depth': hp.choice('max_depth', range(1, 20)),
+        'max_features': hp.choice('max_features', range(1, 5)),
+        'n_estimators': hp.choice('n_estimators', range(1, 20)),
+        'criterion': hp.choice('criterion', ['gini', 'entropy']),
+        'scale': hp.choice('scale', [0, 1]),
+        'normalize': hp.choice('normalize', [0, 1])
+    },
+    {
+        'type': 'knn',
+        'n_neighbors': hp.choice('knn_n_neighbors', range(1, 50))
+    }
+])
+from hyperopt import STATUS_OK
+
+count = 0
+best = 0
+
+
+def f(params):
+    global best, count
+    count += 1
+    acc = hyperopt_train_test(params.copy())
+    if acc > best:
+        print('new best:', acc, 'using', params['type'])
+        best = acc
+    if count % 50 == 0:
+        print('iters:', count, ', acc:', acc, 'using', params)
+    return {'loss': -acc, 'status': STATUS_OK}
+
+
+from hyperopt import Trials
+
+trials = Trials()
+best = fmin(f, space, algo=tpe.suggest, max_evals=1500, trials=trials)
+print('best:', best)
