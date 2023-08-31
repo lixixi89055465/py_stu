@@ -48,23 +48,23 @@ def main():
         print("NO FILE NEED PUSH, EXIT")
         sys.exit(0)
 
-    inp = input("please sel 0 1 .. or all (default is all): ")
-    cmt = input("please input commit (default is update): ")
-
+    # inp = input("please sel 0 1 .. or all (default is all): ")
+    # cmt = input("please input commit (default is update): ")
+    #
     add_line = "git add "
-    cmt_line = "git commit -m "
+    cmt_line = "git commit -m 'comment'"
     psh_line = "git push"
-    if inp == "" or inp == "all":
-        for fl in fl_list:
-            add_line += fl + " "
-    else:
-        num_list = inp.split(" ")
-        for num in num_list:
-            add_line += fl_list[int(num)] + " "
-
-    if cmt == "":
-        cmt = "update"
-    cmt_line += "\"{}\"".format(cmt)
+    # if inp == "" or inp == "all":
+    #     for fl in fl_list:
+    #         add_line += fl + " "
+    # else:
+    #     num_list = inp.split(" ")
+    #     for num in num_list:
+    #         add_line += fl_list[int(num)] + " "
+    #
+    # if cmt == "":
+    #     cmt = "update"
+    # cmt_line += "\"{}\"".format(cmt)
 
     print("STEP.4: git add/commit/push")
     os.system(add_line)

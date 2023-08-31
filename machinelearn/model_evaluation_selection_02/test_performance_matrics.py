@@ -42,4 +42,4 @@ y_test_lab = lg_obj.predict(X_test)  # 预测类别
 print('sklearn: \n', confusion_matrix(y_test, y_test_lab))
 pm = ModelPerformanceMetrics(y_test, y_test_prob )
 cm = pm.cal_confusion_matrix()
-print('自写算法:\n', cm)
+print('自写算法:  \n', cm)
