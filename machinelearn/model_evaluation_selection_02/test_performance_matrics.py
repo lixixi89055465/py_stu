@@ -30,7 +30,7 @@ from machinelearn.model_evaluation_selection_02.ModelPerformanceMetrics import M
 print('1' * 100)
 
 # 多分类
-digits = load_digits()  # 加载数据 test
+digits = load_digits()  # 加载数据 test222
 X, y = digits.data, digits.target  #  样本和标记
 X = StandardScaler().fit_transform(X)  # 样本进行标准化
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, stratify=y)
