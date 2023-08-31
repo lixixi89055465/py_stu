@@ -40,6 +40,6 @@ lg_obj.fit(X_train, y_train)
 y_test_prob = lg_obj.predict_proba(X_test)  # 测试样本的预测概率
 y_test_lab = lg_obj.predict(X_test)  # 预测类别
 print('sklearn:\n', confusion_matrix(y_test, y_test_lab))
-pm = ModelPerformanceMetrics(y_test, y_test_prob)
+pm = ModelPerformanceMetrics(y_test, y_test_prob )
 cm = pm.cal_confusion_matrix()
 print('自写算法:\n', cm)
