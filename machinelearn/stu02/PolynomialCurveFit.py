@@ -6,7 +6,7 @@
 # @Software: PyCharm 
 # @Comment :
 import numpy as np
-from machinelearn.stu01.PolynomialFeatures import PolynomialFeatures
+from machinelearn.stu02.PolynomialFeatures import PolynomialFeatures
 
 
 class PolynomialCurveFit:
