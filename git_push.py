@@ -51,7 +51,7 @@ def main():
     # inp = input("please sel 0 1 .. or all (default is all): ")
     # cmt = input("please input commit (default is update): ")
     #
-    add_line = "git add "
+    add_line = "git add ."
     cmt_line = "git commit -m 'comment'"
     psh_line = "git push"
     # if inp == "" or inp == "all":
@@ -66,7 +66,7 @@ def main():
     #     cmt = "update"
     # cmt_line += "\"{}\"".format(cmt)
 
-    print("STEP.4: git add/commit/push")
+    # print("STEP.4: git add/commit/push")
     os.system(add_line)
     os.system(cmt_line)
     os.system(psh_line)
