@@ -45,4 +45,5 @@ for i in range(3):
     plt.ylabel(str(i * 2 + 2) + "th principal component", fontdict={'fontsize': 12})
     plt.title('Each category of data after dim reductino by PCA')
 plt.show()
+
 print('2' * 100)
