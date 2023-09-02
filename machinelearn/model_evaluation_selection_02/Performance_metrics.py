@@ -56,7 +56,7 @@ class ModelPerformanceMetrics:
         self.cm = confusion_matrix
         return confusion_matrix
 
-    def cal_classification_report(self):
+    def cal_classification_report(self, target_names=None):
         '''
         计算并构造分类报告
         :return:
@@ -68,15 +68,82 @@ class ModelPerformanceMetrics:
         support_all = np.sum(support)  # 总的样本量
         p_m, r_m = precision.mean(), recall.mean()
         accuracy = np.sum(np.diag(self.cm)) / support_all  # 准确率
-        macro_avg = [accuracy, p_m, r_m, 2 * p_m * r_m / (p_m + r_m)]
+        macro_avg = [p_m, r_m, 2 * p_m * r_m / (p_m + r_m)]
         weight = support / support_all  # 以各个类别的样本量所占总的样本量比例为权重。
         weighted_avg = [np.sum(weight * precision), np.sum(weight * recall), np.sum(weight * f1_score)]
         # 构造分类报告
         metrics_1 = pd.DataFrame(np.array([precision, recall, f1_score, support]).T,
                                  columns=['precision', 'recall', 'f1-score', 'support'])
         metrics_2 = pd.DataFrame(
-            ['', '', '', ''], ['', '', accuracy, support_all],
-            np.hstack([macro_avg, support_all]),
-            np.hstack([weighted_avg, support_all])
+            [['', '', '', ''], ['', '', accuracy, support_all],
+             np.hstack([macro_avg, support_all]),
+             np.hstack([weighted_avg, support_all])],
+            columns=['precision', 'recall', 'f1-score', 'support']
         )
-        print(metrics_1)
+        c_report = pd.concat([metrics_1, metrics_2], ignore_index=True)
+        if target_names is None:
+            target_names = [str(i) for i in range(self.n_class)]
+        else:
+            target_names = list(target_names)
+        target_names.extend(['', 'accuracy', 'macro avg', 'weighted avg'])
+        c_report.index = target_names
+        c_report = target_names
+        return c_report
+
+    @staticmethod
+    def __sort_postive__(y_prob):
+        '''
+        按照预测为正例的概率进行降序排序，并返回排序的索引向量
+        :param y_prob:  一维数组，样本预测为正例的概率
+        :return:
+        '''
+        idx = np.argsort(y_prob)[::-1]  # 降序排序
+        return idx
+
+    def precision_recall_curve(self):
+        '''
+        Precision 和 recall 曲线，计算各坐标点的值，可视化P-R曲线
+        :return:
+        '''
+        pr_array = np.zeros((self.n_samples, 2))  # 存储每个样本预测概率作为阈值时的Phenomen
+        if self.n_class == 2:
+            idx = self.__sort_postive__(self.y_prob[:, 0])
+            y_true = self.y_true[idx]  # 真值类别标签按照排序索引进行排序
+            # 针对每个样本，把预测概率作为阈值，计算各指标
+            for i in range(self.n_samples):
+                tp, fn, tn, fp = self.__call_sub_metrics__(y_true, i + 1)
+                pr_array[i, :] = tp / (tp + fn), tp / (tp + fp)
+        else:
+            pass
+        return pr_array
+
+    def __call_sub_metrics__(self, y_true_sort, n):
+        '''
+        计算 TP，TN，FP，TN
+        :param y_true_sort: 排序后的真是类别
+        :param n: 以第n个样本预测概率为阈值
+        :return:
+        '''
+        if self.n_samples == 2:
+            pre_label = np.r_[np.zeros(n, dtype=np.int), np.ones(self.n_samples - n, dtype=np.int)]
+            tp = len(pre_label[(pre_label == 0) & (pre_label == y_true_sort)])  # 真正例
+            tn = len(pre_label[(pre_label == 1) & (pre_label == y_true_sort)])  # 真反例
+            fn = np.sum(y_true_sort) - tp  # 假反例
+            fp = self.n_samples - tp - tn - fn  # 假正例
+        else:
+            pass
+        return tp, fn, tn, fp
+
+    def plt_pr_curve(self, pr_val):
+        '''
+        可视化PR曲线　
+        :param pr_val:
+        :return:
+        '''
+        plt.figure(figsize=(7, 5))
+        plt.step(pr_val[:, 0], pr_val[:, 1], '-', lw=2, where='post')
+        plt.title("title")
+        plt.xlabel('Recall', fontdict={'fontsize': 12})
+        plt.ylabel('Precision', fontdict={'fontsize': 12})
+        plt.grid(ls=':')
+        plt.show()
