@@ -10,9 +10,17 @@ import numpy as np
 from numericalAnalysis_ScientificCalculation.data_interpolation_01.aitken_stepwise_interpolation import \
     AitkenStepwiseInterpolation
 
+# x = np.linspace(0, 2 * np.pi, 10, endpoint=True)
+# y = np.sin(x)
+# x0 = np.array([np.pi / 2, 2.158, 3.58, 4, 784])
+
 x = np.linspace(0, 2 * np.pi, 10, endpoint=True)
-y = np.sin(x)
+y = 2 * np.exp(-x) * np.sin(x)
 x0 = np.array([np.pi / 2, 2.158, 3.58, 4, 784])
+
+# x = np.linspace(0, 24, 13, endpoint=True)
+# y = np.array([12, 9, 9, 10, 18, 24, 28, 27, 25, 20, 18, 15, 13])
+# x0 = np.array([1, 10.5, 13, 18.7, 22.3])
 
 asi_interp = AitkenStepwiseInterpolation(x=x, y=y)
 asi_interp.fit_interp()
