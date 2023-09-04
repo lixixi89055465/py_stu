@@ -6,7 +6,6 @@
 # @Software: PyCharm 
 # @Comment :
 import numpy as np
-param_range = [np.power(10, i*1.0) for i in range(-3, 3)]
-print(param_range)
-
-
+a=[1,2,43]
+print(a)
+print(a.append(10))
