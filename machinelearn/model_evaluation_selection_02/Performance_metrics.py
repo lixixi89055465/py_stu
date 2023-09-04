@@ -39,7 +39,7 @@ class ModelPerformanceMetrics:
 
     def cal_confusion_matrix(self):
         '''
-        计算并构建混淆矩阵
+        计算并构建混淆矩阵(重点 )
         :return:
         '''
         confusion_matrix = np.zeros((self.n_class, self.n_class))
@@ -128,6 +128,75 @@ class ModelPerformanceMetrics:
             # 宏查准率与宏查全率
             pr_array = np.array([np.mean(recall, axis=1), np.mean(precision, axis=1)]).T
         return pr_array
+
+    def roc_metrics_curve(self):
+        '''
+        ROC 曲线，计算真正利率和假正利率，并可视化
+        :return:
+        '''
+        roc_array = np.zeros((self.n_samples, 2))  # 存储每个样本预测概率作为阈值时的TPR和FPR 指标
+        if self.n_class == 2:  # 二分类
+            idx = self.__sort_postive__(self.y_prob[:, 0])
+            y_true = self.y_true[idx]  # 真值类别标签按照排序索引进行排序
+            # 针对每个样本，把预测概率作为阈值，计算各指标
+            n_nums, p_nums = len(y_true[y_true == 1]), len(y_true[y_true == 0]) # 真实类别中，反例与正例的样本量
+            tp, fn, tn, fp = self.__call_sub_metrics__(y_true,1)
+            roc_array[0, :] = fp / (tp + fp), tp / (tp + fn)
+            for i in range(self.n_samples):
+                if y_true[i]==1:
+                    roc_array[i,:]=roc_array[i-1,0]+1/n_nums,roc_array[i-1,1]
+                else:
+                    roc_array[i,:]=roc_array[i-1,0],roc_array[i-1,1]+1/p_nums
+        else:  # 多分类
+            precision = np.zeros((self.n_samples, self.n_class))  # 查准率
+            recall = np.zeros((self.n_samples, self.n_class))  # 查全率
+            for k in range(self.n_class):  # 针对每个类别，分别计算P，R指标，然后平局　
+                idx = self.__sort_postive__(self.y_prob[:, k])
+                y_true_k = self.y_true[:, k]  # 真值类别第K列
+                y_true = y_true_k[idx]  # 对第K 个类别的真值排序
+                # 针对每个样本，把预测概率作为阈值，计算各个指标
+                for i in range(self.n_samples):
+                    tp, fn, tn, fp = self.__call_sub_metrics__(y_true, i + 1)
+                    precision[i, k] = tp / (tp + fp)  # 查准率
+                    recall[i, k] = tp / (tp + fn)
+            # 宏查准率与宏查全率
+            roc_array = np.array([np.mean(recall, axis=1), np.mean(precision, axis=1)]).T
+        return roc_array
+
+    @staticmethod
+    def __cal_auc__(roc_val):
+        '''
+        计算ROC曲线下的面积,即AUC
+        :param roc_val:
+        :return:
+        '''
+        return (roc_val[1:, 0] - roc_val[:-1, 0]).dot(roc_val[:-1, 1] - roc_val[1:, 1]) / 2
+
+    def plt_roc_curve(self, roc_val, label=None, is_show=None):
+        '''
+        可视化ROC曲线　
+        :param roc_val:  ROC指标各坐标点的数组
+        :return:
+        '''
+        ap = self.__cal_auc__(roc_val)
+        plt.figure(figsize=(7, 5))
+        if label:
+            plt.step(roc_val[:, 0], roc_val[:, 1], '-', lw=2, where='post', label=label + ', AP = %.3f' % ap)
+        else:
+            plt.step(roc_val[:, 0], roc_val[:, 1], '-', lw=2, where='post', label='AP=%.3f' % ap)
+        # plt.figure(figsize=(7, 5))
+        plt.title("ROC Curve of Test saples by Different Models")
+        # plt.xlabel('Recall', fontdict={'fontsize': 12})
+        # plt.ylabel('Precision', fontdict={'fontsize': 12})
+        plt.xlabel('False Positive Rate', fontdict={'fontsize': 12})
+        plt.ylabel('True Positive Rate', fontdict={'fontsize': 12})
+        plt.grid(ls=':')
+        plt.legend(frameon=False)  # 添加图例，且曲线图例边框线
+        # plt.legend(labels=['频次'])
+        # plt.legend(loc=4, bbox_to_anchor=(1.15, -0.07))  # 原代码报错并不显示图例
+        # plt.legend(loc=4, bbox_to_anchor=(1.15, -0.07), labels=['频次'])  # 调整后不报错并显示图例
+        if is_show:
+            plt.show()
 
     def __call_sub_metrics__(self, y_true_sort, n):
         '''

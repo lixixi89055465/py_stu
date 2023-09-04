@@ -49,27 +49,29 @@ for model in models:
     cm = pm.cal_confusion_matrix()
     # print('自写算法:\n', cm)
     # print('1' * 100)
-    pr_ = pm.precision_recall_curve()
-    pm.plt_pr_curve(pr_, label=model, is_show=False)
+    # pr_ = pm.precision_recall_curve()
+    # pm.plt_pr_curve(pr_, label=model, is_show=False)
+    roc_ = pm.roc_metrics_curve()
+    pm.plt_roc_curve(roc_, label=model, is_show=False)
 plt.show()
 
 # 多分类
-digits = load_digits()  # 加载数据 test222
-X, y = digits.data, digits.target  # 样本和标记
-X = StandardScaler().fit_transform(X)  # 预测类比
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, stratify=y)
-
-plt.figure(figsize=(7, 5))
-for model in models:
-    model_obj = eval(model)()
-    model_obj.fit(X_train, y_train)
-    y_test_prob = model_obj.predict_proba(X_test)  # 测试样本的预测概率
-    y_test_lab = model_obj.predict_proba(X_test)  # 预测类比
-
-    pm = ModelPerformanceMetrics(y_test, y_test_prob)
-    cm = pm.cal_confusion_matrix()
-    # print('自写算法:\n', cm)
-    # print('1' * 100)
-    pr_ = pm.precision_recall_curve()
-    pm.plt_pr_curve(pr_, label=model, is_show=False)
-plt.show()
+# digits = load_digits()  # 加载数据 test222
+# X, y = digits.data, digits.target  # 样本和标记
+# X = StandardScaler().fit_transform(X)  # 预测类比
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, stratify=y)
+#
+# plt.figure(figsize=(7, 5))
+# for model in models:
+#     model_obj = eval(model)()
+#     model_obj.fit(X_train, y_train)
+#     y_test_prob = model_obj.predict_proba(X_test)  # 测试样本的预测概率
+#     y_test_lab = model_obj.predict_proba(X_test)  # 预测类比
+#
+#     pm = ModelPerformanceMetrics(y_test, y_test_prob)
+#     cm = pm.cal_confusion_matrix()
+#     # print('自写算法:\n', cm)
+#     # print('1' * 100)
+#     pr_ = pm.precision_recall_curve()
+#     pm.plt_pr_curve(pr_, label=model, is_show=False)
+# plt.show()
