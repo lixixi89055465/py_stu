@@ -148,20 +148,29 @@ class ModelPerformanceMetrics:
                 else:
                     roc_array[i,:]=roc_array[i-1,0],roc_array[i-1,1]+1/p_nums
         else:  # 多分类
-            precision = np.zeros((self.n_samples, self.n_class))  # 查准率
-            recall = np.zeros((self.n_samples, self.n_class))  # 查全率
-            for k in range(self.n_class):  # 针对每个类别，分别计算P，R指标，然后平局　
+            fpr = np.zeros((self.n_samples, self.n_class))  # 假正例率
+            tpr = np.zeros((self.n_samples, self.n_class))  # 真正例率
+            for k in range(self.n_class):  # 针对每个类别，分别计算tpr，fpr指标，然后平局　
                 idx = self.__sort_postive__(self.y_prob[:, k])
                 y_true_k = self.y_true[:, k]  # 真值类别第K列
                 y_true = y_true_k[idx]  # 对第K 个类别的真值排序
                 # 针对每个样本，把预测概率作为阈值，计算各个指标
                 for i in range(self.n_samples):
                     tp, fn, tn, fp = self.__call_sub_metrics__(y_true, i + 1)
-                    precision[i, k] = tp / (tp + fp)  # 查准率
-                    recall[i, k] = tp / (tp + fn)
+                    fpr[i, k] = tp / (tp + fp)  # 假正例率
+                    tpr[i, k] = tp / (tp + fn) # 真正例率
             # 宏查准率与宏查全率
-            roc_array = np.array([np.mean(recall, axis=1), np.mean(precision, axis=1)]).T
+            roc_array = np.array([np.mean(tpr, axis=1), np.mean(fpr, axis=1)]).T
         return roc_array
+
+    def fnr_fpr_metrics_curve(self):
+        '''
+        代价曲线指标，假反利率，假正例率FPR
+        :return:
+        '''
+        fpr_fnr_array = self.roc_metrics_curve()  # 获取假正例和正真例率
+        fpr_fnr_array[:, 1] = 1 - fpr_fnr_array[:, 1]  # 计算假反例率
+        return fpr_fnr_array
 
     @staticmethod
     def __cal_auc__(roc_val):
