@@ -171,6 +171,43 @@ class ModelPerformanceMetrics:
         fpr_fnr_array = self.roc_metrics_curve()  # 获取假正例和正真例率
         fpr_fnr_array[:, 1] = 1 - fpr_fnr_array[:, 1]  # 计算假反例率
         return fpr_fnr_array
+    def plt_cost_curve(self,fnr_fpr_vals,alpha,class_i=0):
+        '''
+        可视化代价曲线
+        :param fnr_fpr_vals: 假反利率和假正利率二维数组
+        :param alpha: alpha=cost10/cost01,更侧重于正例预测为反例的代价，让cost01=1
+        :param class_i: 指定绘制第i个类别的代价曲线，如果是二分类，则为0
+        :return:
+        '''
+        plt.figure(figsize=(7,5))
+        fpr_s,fnr_s=fnr_fpr_vals[:,0],fnr_fpr_vals[:,1]#获取假正例率和假反利率
+        cost01,cost10=1,alpha
+        if self.n_class==2:
+            class_i=0 # 二分类，默认取第一列
+        if 0<=class_i<self.n_class:
+            p=np.sort(self.y_prob[:,class_i])
+        else:
+            p=np.sort(self.y_prob[:,0])# 不满足条件，默认第一个类别
+        positive_cost=p*cost01/(p*cost01+(1-p)*cost10)
+        for fpr,fnr in zip(fpr_s,fnr_s):
+            cost_norm=fnr*positive_cost+(1-positive_cost)*fpr
+            plt.plot(positive_cost,cost_norm,'b-',lw=0.5)
+        # 查找公共边界，计算期望总体代价
+        public_cost=np.outer(fnr_s,positive_cost)+np.outer(fpr_s,(1-positive_cost))
+        print(public_cost)
+        cost_area=0
+        plt.xlabel('Positive Probability cost',fontdict={'fontsize':12})
+        plt.ylabel('Normalized Cost',fontdict={'fontsize':12})
+        plt.show()
+
+
+
+
+
+
+
+
+        pass
 
     @staticmethod
     def __cal_auc__(roc_val):
