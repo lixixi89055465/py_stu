@@ -30,7 +30,9 @@ import matplotlib as mpl
 bc = load_breast_cancer()  # 加载数据
 X, y = bc.data, bc.target  # 样本和标记
 X = StandardScaler().fit_transform(X)  # 样本进行标准化
-X = np.c_[X, np.random.randn(X.shape[0], 2 * X.shape[1])]  #
+# X = np.c_[X, np.random.randn(X.shape[0], 2 * X.shape[1])]  #
+# X = np.c_[X, np.random.randn(X.shape[0], X.shape[1])]  #
+# X=X+0.5*np.random.randn(X.shape[0],X.shape[1])
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, stratify=y)
 # model_obj = LogisticRegression()
 models = ['LogisticRegression', 'BernoulliNB', 'LinearDiscriminantAnalysis']
@@ -48,11 +50,11 @@ for model in models:
     pm = ModelPerformanceMetrics(y_test, y_test_prob)
     cm = pm.cal_confusion_matrix()
     # print('自写算法:\n', cm)
-    # print('1' * 100)
-    # pr_ = pm.precision_recall_curve()
-    # pm.plt_pr_curve(pr_, label=model, is_show=False)
-    # roc_ = pm.roc_metrics_curve()
-    # pm.plt_roc_curve(roc_, label=model, is_show=False)
+    print('1' * 100)
+    pr_ = pm.precision_recall_curve()
+    pm.plt_pr_curve(pr_, label=model, is_show=False)
+    roc_ = pm.roc_metrics_curve()
+    pm.plt_roc_curve(roc_, label=model, is_show=False)
     fnr_fpr_=pm.fnr_fpr_metrics_curve()
     pm.plt_cost_curve(fnr_fpr_,alpha=0.2,class_i=0)
 plt.show()

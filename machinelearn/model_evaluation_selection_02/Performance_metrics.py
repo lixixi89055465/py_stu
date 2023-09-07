@@ -194,20 +194,16 @@ class ModelPerformanceMetrics:
             plt.plot(positive_cost,cost_norm,'b-',lw=0.5)
         # 查找公共边界，计算期望总体代价
         public_cost=np.outer(fnr_s,positive_cost)+np.outer(fpr_s,(1-positive_cost))
-        print(public_cost)
-        cost_area=0
+        public_cost_min=public_cost.min(axis=0)
+        plt.plot(positive_cost,public_cost_min,'r--',lw=1) # 公共边界
+        plt.fill_between(positive_cost,0,public_cost_min,facecolor='g',alpha=0.5)
+
+
+        cost_area=self.__cal_etc__(positive_cost,public_cost_min)
         plt.xlabel('Positive Probability cost',fontdict={'fontsize':12})
         plt.ylabel('Normalized Cost',fontdict={'fontsize':12})
+        plt.title('Nequal Cost Curve and Expected Total Cost=%.8f'%cost_area)
         plt.show()
-
-
-
-
-
-
-
-
-        pass
 
     @staticmethod
     def __cal_auc__(roc_val):
@@ -217,6 +213,15 @@ class ModelPerformanceMetrics:
         :return:
         '''
         return (roc_val[1:, 0] - roc_val[:-1, 0]).dot(roc_val[:-1, 1] - roc_val[1:, 1]) / 2
+
+    @staticmethod
+    def __cal_etc__(p_cost,cost_norm):
+        '''
+        计算期望总体代价，即代价曲线公共下线所围城的面积
+        :return:
+        '''
+        return (p_cost[1:]-p_cost[:-1]).dot((cost_norm[:-1]+cost_norm[1:])/2)
+
 
     def plt_roc_curve(self, roc_val, label=None, is_show=None):
         '''
