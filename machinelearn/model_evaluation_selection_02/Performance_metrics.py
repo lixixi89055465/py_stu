@@ -190,8 +190,9 @@ class ModelPerformanceMetrics:
             p=np.sort(self.y_prob[:,0])# 不满足条件，默认第一个类别
         positive_cost=p*cost01/(p*cost01+(1-p)*cost10)
         for fpr,fnr in zip(fpr_s,fnr_s):
-            cost_norm=fnr*positive_cost+(1-positive_cost)*fpr
-            plt.plot(positive_cost,cost_norm,'b-',lw=0.5)
+            # cost_norm=fnr*positive_cost+(1-positive_cost)*fpr
+            # plt.plot(positive_cost,cost_norm,'b-',lw=0.5)
+            plt.plot([0,1],[fpr,fnr],'b-',lw=0.5)
         # 查找公共边界，计算期望总体代价
         public_cost=np.outer(fnr_s,positive_cost)+np.outer(fpr_s,(1-positive_cost))
         public_cost_min=public_cost.min(axis=0)
