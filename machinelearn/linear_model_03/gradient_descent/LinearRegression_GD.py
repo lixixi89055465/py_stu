@@ -50,6 +50,22 @@ class LinearRegression_GradDesc:
         :return:
         '''
         self.theta = np.random.randn(n_features, 1) * 0.1
+    def get_params(self):
+        '''
+        获取模型的系数
+        :return:
+        '''
+        if self.fit_intercept:
+            weight,bias=self.theta[:-1],self.theta[-1]
+        else:
+            weight,bias=self.theta,np.array([0])
+        if self.normalize:
+            weight=weight/self.feature_std.reshape(-1,1)# 还原模型系数
+            bias=bias-weight.T.dot(self.feature_mean)
+
+        return weight,bias
+
+
 
     def fit(self, x_train, y_train, x_test=None, y_test=None):
         '''
@@ -85,9 +101,9 @@ class LinearRegression_GradDesc:
         :return:
         '''
         train_sample = np.c_[x_train, y_train]  # 组合训练集和目标集 ，以便随机打乱样本顺序
-
+        best_theta,best_mse=None ,np.infty
         for i in range(self.max_epoch):
-            # self.alpha*=0.99
+            self.alpha*=0.95
             np.random.shuffle(train_sample)  # 打乱样本顺序，以便模拟机器
             batch_nums = train_sample.shape[0] // self.batch_size  # 批次
             for idx in range(batch_nums):
@@ -95,19 +111,54 @@ class LinearRegression_GradDesc:
                 batch_xy = train_sample[idx * self.batch_size:(idx + 1) * self.batch_size]
                 batch_x, batch_y = batch_xy[:, :-1], batch_xy[:, -1]  # 选取样本和目标值
                 # 计算权重的更新增量
-                delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
-                self.theta = self.theta - self.alpha * delta
+                # delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
+                delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y) / self.batch_size
+                self.theta = self.theta - self.alpha * delta.mean(axis=1,keepdims=True)
+
             train_mse = ((x_train.dot(self.theta) - y_train.reshape(-1, 1)) ** 2).mean()
             self.train_loss.append(train_mse)  # 每次迭代的训练损失值 （MSE）
-            test_mse = ((x_test.dot(self.theta) - y_test.reshape(-1, 1)) ** 2).mean()
-            self.test_loss.append(test_mse)
 
-            if x_test is not None and y_test is not None:
-                test_mse = ((x_test.dot(self.theta) - y_test.reshape(-1, 1)) ** 2).mean()
-                self.test_loss.append(test_mse)  # 每次迭代的训练损失值
+            # if x_test is not None and y_test is not None:
+            #     y_test_pred=self.predict(x_test)
+            #     test_mse = ((y_test_pred- y_test.reshape(-1, 1)) ** 2).mean()
+            #     self.test_loss.append(test_mse)  # 每次迭代的训练损失值
+            #     if test_mse<best_mse:
+            #         best_theta=np.copy(self.theta)
+            #     self.test_loss.append(test_mse)
 
-        print(self.train_loss)
-        print(self.test_loss)
+
+
+    def cal_mse_r2(self, y_pred, y_test):
+        '''
+        模型预测的均方误差MSE，判决系数和修正判决系数
+        :param y_test: 测试样本真值
+        :param y_pred: 测试样本预测值
+        :return:
+        '''
+        self.mse = ((y_test - y_pred) ** 2).mean()
+        self.r2 = 1 - ((y_test - y_pred) ** 2).sum() / ((y_test - y_test.mean()) ** 2).sum()
+        self.r2_adj = 1 - (1 - self.r2) * (self.n_sample - 1) / (self.n_sample - self.n_features - 1)
+        return self.mse, self.r2, self.r2_adj
+
+    def predict(self, x_test):
+        '''
+        模型的预测
+        :param x_test: 测试样本
+        :return:
+        '''
+        try:
+            self.n_sample, self.n_features = x_test.shape[0], x_test.shape[1]
+        except IndexError:
+            self.n_sample, self.n_features = x_test.shape[0], 1
+
+        if self.normalize:
+            x_test = (x_test - np.mean(x_test, axis=0)) / np.std(x_test, axis=0)  # 测试样本的标准化
+            # x_test = (x_test - self.feature_mean) / self.feature_std#测试数据标准化
+        if self.fit_intercept:
+            x_test = np.c_[x_test, np.ones(shape=x_test.shape[0])]
+
+        return x_test.dot(self.theta)
+
 
     def plt_predict(self, y_test, y_pred, is_sort=True):
         '''
@@ -138,7 +189,7 @@ class LinearRegression_GradDesc:
         :return:
         '''
         plt.figure(figsize=(7, 5))
-        plt.plot(self.train_loss, 'k--', lw=1, label='Train loss s')
+        plt.plot(self.train_loss, 'k--', lw=1, label='Train loss')
         if self.test_loss:
             plt.plot(self.test_loss, 'r--', lw=1.2, label='Test loss')
         plt.xlabel('Epochs', fontdict={'fontsize': 12})
