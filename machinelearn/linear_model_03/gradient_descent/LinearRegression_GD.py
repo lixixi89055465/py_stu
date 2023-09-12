@@ -49,7 +49,7 @@ class LinearRegression_GradDesc:
         :param n_features:样本的特征数量
         :return:
         '''
-        self.theta = np.random.randn(n_features, 1) * 0.1
+        self.theta = np.random.random(size=(n_features, 1))
     def get_params(self):
         '''
         获取模型的系数
@@ -112,19 +112,16 @@ class LinearRegression_GradDesc:
                 batch_x, batch_y = batch_xy[:, :-1], batch_xy[:, -1]  # 选取样本和目标值
                 # 计算权重的更新增量
                 # delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
-                delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y) / self.batch_size
-                self.theta = self.theta - self.alpha * delta.mean(axis=1,keepdims=True)
+                delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y.reshape(-1,1))
+                self.theta = self.theta - self.alpha * delta
 
             train_mse = ((x_train.dot(self.theta) - y_train.reshape(-1, 1)) ** 2).mean()
             self.train_loss.append(train_mse)  # 每次迭代的训练损失值 （MSE）
-
-            # if x_test is not None and y_test is not None:
-            #     y_test_pred=self.predict(x_test)
-            #     test_mse = ((y_test_pred- y_test.reshape(-1, 1)) ** 2).mean()
-            #     self.test_loss.append(test_mse)  # 每次迭代的训练损失值
-            #     if test_mse<best_mse:
-            #         best_theta=np.copy(self.theta)
-            #     self.test_loss.append(test_mse)
+            if x_test is not None and y_test is not None:
+                test_mse=((x_test.dot(self.theta)-y_test.reshape(-1,1))**2).mean()
+                self.test_loss.append(test_mse)
+        print(self.train_loss)
+        print(self.test_loss)
 
 
 
@@ -135,8 +132,8 @@ class LinearRegression_GradDesc:
         :param y_pred: 测试样本预测值
         :return:
         '''
-        self.mse = ((y_test - y_pred) ** 2).mean()
-        self.r2 = 1 - ((y_test - y_pred) ** 2).sum() / ((y_test - y_test.mean()) ** 2).sum()
+        self.mse = ((y_pred-y_test) ** 2).mean()
+        self.r2 = 1 - ((y_test- y_pred) ** 2).sum() / ((y_test.reshape(-1,1)- y_pred.mean()) ** 2).sum()
         self.r2_adj = 1 - (1 - self.r2) * (self.n_sample - 1) / (self.n_sample - self.n_features - 1)
         return self.mse, self.r2, self.r2_adj
 
@@ -157,7 +154,8 @@ class LinearRegression_GradDesc:
         if self.fit_intercept:
             x_test = np.c_[x_test, np.ones(shape=x_test.shape[0])]
 
-        return x_test.dot(self.theta)
+        y_pred=x_test.dot(self.theta)
+        return y_pred.reshape(-1)
 
 
     def plt_predict(self, y_test, y_pred, is_sort=True):
@@ -168,6 +166,7 @@ class LinearRegression_GradDesc:
         :param is_sort: 是否排序 ，然后可视化
         :return:
         '''
+        self.cal_mse_r2(y_test,y_pred)
         plt.figure(figsize=(7, 5))
         if is_sort:
             idx = np.argsort(y_test)  #
@@ -178,7 +177,8 @@ class LinearRegression_GradDesc:
             plt.plot(y_pred, 'r*-', lw=1.0, label='Predict True val')
         plt.xlabel('Test samples numbers', fontdict={'fontsize': 12})
         plt.ylabel('Predicted samples values', fontdict={'fontsize': 12})
-        plt.title('The loss curve of MSE by Gradient descent Method')
+        plt.title('The predicted values of test samples\n'
+                  'MSE = %.5e, R2=%.5f, R2_adj = %.5f'%(self.mse,self.r2,self.r2_adj))
         plt.grid(ls=':')
         plt.legend(frameon=False)
         plt.show()

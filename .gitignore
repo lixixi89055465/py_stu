@@ -1,5 +1,3 @@
-data
-*.csv
 .DS_Store
 .idea
 venv
@@ -11,7 +9,6 @@ wiki*
 zh.jian.wiki.seg-1.3g.txt
 *_big.csv
 __pycache__*
-data
 mnist
 MNIST
 checkpoint
