@@ -36,7 +36,7 @@ class PolynomialFeatureData:
                 self.data[:, i] = (self.x ** i).reshape(-1)
         else:
             for i in range(self.degree):
-                self.data[:, i] = (self.x ** (i + 1))
+                self.data[:, i] = (self.x ** (i + 1)).reshape(-1)
         return self.data
 
 # if __name__ == '__main__':
