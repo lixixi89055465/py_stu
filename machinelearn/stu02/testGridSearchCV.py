@@ -4,7 +4,7 @@
 # @Site    : 
 # @File    : testGridSearchCV.py
 # @Software: PyCharm 
-# @Comment :
+# @Comment : 2. 评估方法——嵌套交叉验证(选择算法)
 from sklearn.model_selection import GridSearchCV, train_test_split,cross_val_score
 from sklearn.svm import SVC  # 支持向量机
 from sklearn.pipeline import make_pipeline
