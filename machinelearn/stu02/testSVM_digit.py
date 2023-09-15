@@ -58,7 +58,7 @@ def function(args):
 # 1.随机搜索（hyperopt.rand.suggest)2.模拟退火 (hyperopt.anneal.suggest)
 # 3. TPC算法（hyperopt.tpe.suggest, Tree-structured Parzen Estimator Approach )
 # max_eval 指定枚举次数上限，返回目前搜索道德最优解，不一定是全局最优
-best = fmin(function, parameter_space_svc, algo=tpe.suggest, max_evals=1)
+best = fmin(function, parameter_space_svc, algo=tpe.suggest, max_evals=100)
 # best['kernel']返回的是数组的下标，因此需要把它还原回来
 print('aaaaaaaaaa')
 kernel_list = ['rbf', 'poly']
