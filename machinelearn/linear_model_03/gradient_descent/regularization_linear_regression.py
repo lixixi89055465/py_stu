@@ -30,22 +30,17 @@ class RegularizationLinearRegression:
         self.alpha = alpha
         # self.l1_ratio=l1_ratio #LASsO回归惩罚项系数
         if l1_ratio:
-            if l1_ratio >= 0:
-                self.l1_ratio = l1_ratio
-            else:
+            if l1_ratio < 0:
                 raise ValueError('惩罚项系数不能为负数... ')
+        self.l1_ratio = l1_ratio
         if l2_ratio:
-            if l2_ratio >= 0:  # 岭回归惩罚项系数
-                self.l2_ratio = l2_ratio
-            else:
+            if l2_ratio < 0:  # 岭回归惩罚项系数
                 raise ValueError('惩罚项系数不能为负数... ')
-
         self.l2_ratio = l2_ratio  # 岭回归惩罚项系数
         if en_rou:
-            if 0 < en_rou < 1:
-                self.en_rou = en_rou
-            else:
+            if 0 > en_rou or en_rou> 1:
                 raise ValueError('弹性网络权衡系数rou范围在[0,1]')
+        self.en_rou = en_rou
 
         self.fit_intercept = fit_intercept  # 是否训练偏执项想
         self.normalize = normalize
@@ -94,7 +89,8 @@ class RegularizationLinearRegression:
         :param y_test: 测试目标值  n*1
         :return:
         '''
-        if self.normalize:
+        self.n_sample, self.n_features = x_train.shape  # 样本量和特征树
+        if self.normalize:  # 标准化
             self.feature_mean = np.mean(x_train, axis=0)  # 样本的均值
             self.feature_std = np.std(x_train, axis=0) + 1e-8  # 样本的标准方差
             x_train = (x_train - self.feature_mean) / self.feature_std  # 标准化
@@ -103,15 +99,17 @@ class RegularizationLinearRegression:
 
         if self.fit_intercept:
             x_train = np.c_[x_train, np.ones_like(y_train)]
-            if x_test is not None and y_test is notform None:
+            if x_test is not None and y_test is not None:
                 x_test = np.c_[x_test, np.ones_like(y_test)]  # 在样本后加一列1
 
         self.init_params(n_features=x_train.shape[1])  # 模型初始化
         # 训练模型
-        if self.solver == 'grad':
-            self._fit_gradient_descent(x_train, y_train, x_test, y_test)
-        elif self.solver == '':
+        if self.solver == 'form':  # 闭式解
             self._fit_closed_form_solution(x_train, y_train, x_test, y_test)
+        elif self.solver == 'grad':  # 梯度方法
+            self._fit_gradient_descent(x_train, y_train, x_test, y_test)
+        else:
+            raise ValueError("仅限于闭式解form或梯度下降算法grad...")
 
     def _fit_closed_form_solution(self, x_train, y_train, x_test, y_test):
         '''
@@ -147,7 +145,7 @@ class RegularizationLinearRegression:
             for idx in range(batch_nums):
                 # 按照小批量大小，选取数据
                 batch_xy = train_sample[idx * self.batch_size:(idx + 1) * self.batch_size]
-                batch_x, batch_y = batch_xy[:, :-1], batch_xy[:, -1]  # 选取样本和目标值
+                batch_x, batch_y = batch_xy[:, :-1], batch_xy[:, -1:]  # 选取样本和目标值
                 # delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
                 # 计算权重的更新增量，包含偏执项
                 delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y.reshape(-1, 1))
@@ -158,12 +156,12 @@ class RegularizationLinearRegression:
                     dw_reg = self.l1_ratio * np.sign(self.theta[:-1]) / self.batch_size
                 if self.l2_ratio and self.l1_ratio is None:
                     # Ridege 回归
-                    dw_reg = self.l2_ratio * self.theta[:-1] / self.batch_size
-                if self.en_rou and self.l1_ratio and self.l2_ratio:
+                    dw_reg = 2 * self.l2_ratio * self.theta[:-1] / self.batch_size
+                if self.en_rou and self.l1_ratio and self.l2_ratio and 0<self.en_rou<1:
                     dw_reg += self.l1_ratio * self.en_rou * np.sign(self.theta[:-1]) / self.batch_size
-                    dw_reg += 2 * self.l2_ratio * self.en_rou * np.sign(self.theta[:-1]) / self.batch_size
+                    dw_reg += 2 * self.l2_ratio * (1 - self.en_rou) * self.theta[:-1] / self.batch_size
 
-                delta[:-1] += dw_reg  # 添加了正则化
+                # delta[:-1] += dw_reg  # 添加了正则化
                 self.theta = self.theta - self.alpha * delta
 
             train_mse = ((x_train.dot(self.theta) - y_train.reshape(-1, 1)) ** 2).mean()
@@ -171,8 +169,6 @@ class RegularizationLinearRegression:
             if x_test is not None and y_test is not None:
                 test_mse = ((x_test.dot(self.theta) - y_test.reshape(-1, 1)) ** 2).mean()
                 self.test_loss.append(test_mse)
-        print(self.train_loss)
-        print(self.test_loss)
 
     def cal_mse_r2(self, y_test, y_pred):
         '''
