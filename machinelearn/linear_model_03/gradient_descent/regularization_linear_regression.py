@@ -29,20 +29,23 @@ class RegularizationLinearRegression:
         self.solver = solver  # 求解方法
         self.alpha = alpha
         # self.l1_ratio=l1_ratio #LASsO回归惩罚项系数
-        if l1_ratio and l1_ratio >= 0:
-            self.l1_ratio = l1_ratio
-        else:
-            raise ValueError('惩罚项系数不能为负数... ')
-        if l2_ratio and l2_ratio>=0:
-            self.l2_ratio=l2_ratio
-        else:
-            raise ValueError('惩罚项系数不能为负数... ')
+        if l1_ratio:
+            if l1_ratio >= 0:
+                self.l1_ratio = l1_ratio
+            else:
+                raise ValueError('惩罚项系数不能为负数... ')
+        if l2_ratio:
+            if l2_ratio >= 0:  # 岭回归惩罚项系数
+                self.l2_ratio = l2_ratio
+            else:
+                raise ValueError('惩罚项系数不能为负数... ')
 
         self.l2_ratio = l2_ratio  # 岭回归惩罚项系数
-        if 0<en_rou<1:
-            self.en_rou=en_rou
-        else:
-            raise ValueError('弹性网络权衡系数rou范围在[0,1]')
+        if en_rou:
+            if 0 < en_rou < 1:
+                self.en_rou = en_rou
+            else:
+                raise ValueError('弹性网络权衡系数rou范围在[0,1]')
 
         self.fit_intercept = fit_intercept  # 是否训练偏执项想
         self.normalize = normalize
@@ -100,14 +103,14 @@ class RegularizationLinearRegression:
 
         if self.fit_intercept:
             x_train = np.c_[x_train, np.ones_like(y_train)]
-            if x_test is not None and y_test is not None:
+            if x_test is not None and y_test is notform None:
                 x_test = np.c_[x_test, np.ones_like(y_test)]  # 在样本后加一列1
 
         self.init_params(n_features=x_train.shape[1])  # 模型初始化
         # 训练模型
         if self.solver == 'grad':
             self._fit_gradient_descent(x_train, y_train, x_test, y_test)
-        elif self.solver == 'form':
+        elif self.solver == '':
             self._fit_closed_form_solution(x_train, y_train, x_test, y_test)
 
     def _fit_closed_form_solution(self, x_train, y_train, x_test, y_test):
@@ -148,7 +151,7 @@ class RegularizationLinearRegression:
                 # delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
                 # 计算权重的更新增量，包含偏执项
                 delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y.reshape(-1, 1))
-                dw_reg=np.zeros(shape=(x_train.shape[1]-1,1))
+                dw_reg = np.zeros(shape=(x_train.shape[1] - 1, 1))
                 # 计算并添加正则化部分,包含偏置项,不包含偏执项
                 if self.l1_ratio and self.l2_ratio is None:
                     # LASSO回归，L1 正则化
@@ -160,7 +163,7 @@ class RegularizationLinearRegression:
                     dw_reg += self.l1_ratio * self.en_rou * np.sign(self.theta[:-1]) / self.batch_size
                     dw_reg += 2 * self.l2_ratio * self.en_rou * np.sign(self.theta[:-1]) / self.batch_size
 
-                delta[:-1]+=dw_reg # 添加了正则化
+                delta[:-1] += dw_reg  # 添加了正则化
                 self.theta = self.theta - self.alpha * delta
 
             train_mse = ((x_train.dot(self.theta) - y_train.reshape(-1, 1)) ** 2).mean()
@@ -171,7 +174,7 @@ class RegularizationLinearRegression:
         print(self.train_loss)
         print(self.test_loss)
 
-    def cal_mse_r2(self, y_test,y_pred):
+    def cal_mse_r2(self, y_test, y_pred):
         '''
         模型预测的均方误差MSE，判决系数和修正判决系数
         :param y_test: 测试样本真值

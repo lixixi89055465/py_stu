@@ -9,7 +9,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from machinelearn.model_evaluation_selection_02.Polynomial_feature import PolynomialFeatureData
-from machinelearn.linear_model_03.gradient_descent.regularization_linear_regression import RegularizationLinearRegression
+from machinelearn.linear_model_03.gradient_descent.regularization_linear_regression import \
+    RegularizationLinearRegression
+
 
 def objective_fun(x):
     '''
@@ -17,38 +19,50 @@ def objective_fun(x):
     :param x:
     :return:
     '''
-    return 0.5*x**2+x+2
+    return 0.5 * x ** 2 + x + 2
+
 
 np.random.seed(42)
-n=30 # 采样数据的样本量
-raw_x=np.sort(6*np.random.randn(n-1)-3,axis=0)# [-3,3]区间
-raw_y=objective_fun(raw_x)# 二维数组
-X_test_raw=np.linspace(-3,3,150)# 测试数据
+n = 30  # 采样数据的样本量
+raw_x = np.sort(6 * np.random.rand(n - 1) - 3, axis=0)  # [-3,3]区间
+raw_y = objective_fun(raw_x) + np.random.randn(n, 1)  # 二维数组
 
-feature_obj=PolynomialFeatureData(raw_x,degree=13,with_bias=False)
-X_train=feature_obj.fit_transform()# 特征函数的构造
+X_test_raw = np.linspace(-3, 3, 150)  # 测试数据
+feature_obj = PolynomialFeatureData(X_test_raw, degree=13, with_bias=False)
+X_train = feature_obj.fit_transform()  # 特征函数的构造
 
-x_test_raw=np.linspace(-3,3,100)
-feature_obj=PolynomialFeatureData(x_test_raw,degree=13,with_bias=False)
+X_test_raw = np.linspace(-3, 3, 100)
+feature_obj = PolynomialFeatureData(X_test_raw, degree=13, with_bias=False)
+X_test = feature_obj.fit_transform()  # 数据的构造
+y_test = objective_fun(X_test_raw)  # 测试样本真值
 
-X_test=feature_obj.fit_transform()# 数据的构造
-y_test=objective_fun(x_test_raw)#  测试样本真值
+reg_ratio = [-0.1, 0.5, 1, 2, 3, 5]  # 正则化系数
+alpha, batch_size, max_epochs = 0.1, 10, 300
+plt.figure(figsize=(15, 8))
 
-
-
-
-reg_ratio=[0.1,0.5,1,2,3,5]# 正则化系数
-alpha,batch_size,max_epochs=0.1,10,300
-plt.figure(figsize=(15,8))
-
-for i,ratio in enumerate(reg_ratio):
-    plt.subplot(231+i)
+for i, ratio in enumerate(reg_ratio):
+    plt.subplot(231 + i)
     # 不采用正则化
-    reg_lr=RegularizationLinearRegression(solver='form',alpha=alpha,batch_size=batch_size,max_epoch=max_epochs)
-    reg_lr.fit(X_sample,raw_y)
+    reg_lr = RegularizationLinearRegression(solver='form', alpha=alpha, batch_size=batch_size, max_epoch=max_epochs)
+    reg_lr.fit(X_train, raw_y)
+    # print('NoReg, ratio = %.2f', ridge_lr.get_params())
+    print('=' * 100)
 
+    y_test_pred = reg_lr.predict(X_test)  # 测试样本预测
+    mse, r2, _ = reg_lr.cal_mse_r2(y_test, y_test_pred)
+    plt.scatter(X_test_raw, y_test_pred, s=15, c='k')
+    plt.plot(X_test_raw, raw_y, lw=1.5, label='L2 MSE = %.5f  R2= %.5f ' % (mse, r2))
 
+    # 采用正则化
+    # redge_lr = RegularizationLinearRegression(solver='form', alpha=alpha, batch_size=batch_size, max_epoch=max_epochs)
+    # redge_lr.fit(X_train, raw_y)
+    # # print('NoReg, ratio = %.2f', ridge_lr.get_params())
+    # print('=' * 100)
+    # y_test_pred = redge_lr.predict(X_test)  # 测试样本预测
+    # mse, r2, _ = redge_lr.cal_mse_r2(y_test, y_test_pred)
+    # plt.scatter(raw_x, raw_y, s=15, c='k')
+    # plt.plot(x_test_raw, y_test_pred, lw=1.5, label='L2 MSE = %.5f  R2= %.5f ' % (mse, r2))
+    # plt.axis ([-3,3,0,11])
+    #
 
-
-
-
+plt.show()
