@@ -63,7 +63,7 @@ class RegularizationLinearRegression:
         :param n_features:样本的特征数量
         :return:
         '''
-        self.theta = np.random.random(size=(n_features, 1))
+        self.theta = np.random.random(size=(n_features, 1))*0.1
 
     def get_params(self):
         '''
