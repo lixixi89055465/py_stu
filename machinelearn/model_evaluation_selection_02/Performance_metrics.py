@@ -61,6 +61,7 @@ class ModelPerformanceMetrics:
         计算并构造分类报告
         :return:
         '''
+        self.cal_confusion_matrix()
         precision = np.diag(self.cm) / np.sum(self.cm, axis=0)  # 查准率
         recall = np.diag(self.cm) / np.sum(self.cm, axis=1)  # 查全率
         f1_score = 2 * precision * recall / (precision + recall)
@@ -87,7 +88,6 @@ class ModelPerformanceMetrics:
             target_names = list(target_names)
         target_names.extend(['', 'accuracy', 'macro avg', 'weighted avg'])
         c_report.index = target_names
-        c_report = target_names
         return c_report
 
     @staticmethod
