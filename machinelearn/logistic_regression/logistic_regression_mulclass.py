@@ -110,8 +110,8 @@ class LogisticRegression_MulClass:
         :param y_prob: 模型预测类别概率 n*c
         :return:
         '''
-        loss = -np.sum(y_test*np.log(y_prob),axis=1)
-        loss -= np.sum((1-y_test)*np.log(1-y_prob),axis=1)
+        loss = -np.sum(y_test*np.log(y_prob+1e-8),axis=1)
+        loss -= np.sum((1-y_test)*np.log(1-y_prob+1e-8),axis=1)
         return loss.mean()
 
     def fit(self, x_train, y_train, x_test=None, y_test=None):
@@ -124,23 +124,22 @@ class LogisticRegression_MulClass:
         :return:
         '''
         y_train=self.one_hot_encoding(y_train)
-        self.n_classes=y_train.shape[1] # 类别数目
         if y_test is not None:
-            y_tett=self.one_hot_encoding(y_test)
-        self.n_sample, self.n_classes = x_train.shape  # 样本量和特征树
+            y_test=self.one_hot_encoding(y_test)
+        samples=np.r_[x_train,x_test]# 组合所有样本，计算均值和标准差
         if self.normalize:  # 标准化
-            self.feature_mean = np.mean(x_train, axis=0)  # 样本的均值
-            self.feature_std = np.std(x_train, axis=0) + 1e-8  # 样本的标准方差
+            self.feature_mean = np.mean(samples, axis=0)  # 样本的均值
+            self.feature_std = np.std(samples, axis=0) + 1e-8  # 样本的标准方差
             x_train = (x_train - self.feature_mean) / self.feature_std  # 标准化
             if x_test is not None and y_test is not None:
                 x_test = (x_test - self.feature_mean) / self.feature_std  # 标准化
 
-        if self.fit_intercept:
-            x_train = np.c_[x_train, np.ones((len(y_train),1))]# 在样本后加一列
+        if self.fit_intercept:#是否训练bias
+            x_train = np.c_[x_train, np.ones((len(x_train),1))]# 在样本后加一列
             if x_test is not None and y_test is not None:
                 x_test = np.c_[x_test, np.ones((len(x_test),1))]  # 在样本后加一列1
 
-        self.init_params(n_features=x_train.shape[1],n_classes=self.n_classes)  # 模型初始化
+        self.init_params(n_features=x_train.shape[1],n_classes=y_train.shape[1])  # 模型初始化
         # 训练模型
         self._fit_gradient_descent(x_train, y_train, x_test, y_test)
 
@@ -188,8 +187,8 @@ class LogisticRegression_MulClass:
             train_cost = self.cal_cross_entropy(y_train, y_train_prob)  # 训练集的交叉熵损失
             self.train_loss.append(train_cost)  # 交叉熵损失均值
             if x_test is not None and y_test is not None:
-                y_test_prob = self.softmax_func(x_test.dot(self.weight))  # 当前测试样本预测概率
-                test_cost = ((x_test.dot(self.weight) - y_test.reshape(-1, 1)) ** 2).mean()
+                y_test_preb = self.softmax_func(x_test.dot(self.weight))  # 当前测试样本预测概率
+                test_cost = self.cal_cross_entropy(y_test,y_test_preb)
                 self.test_loss.append(test_cost )  # 交叉熵损失均值
             if epoch > 10 and (np.abs(self.train_loss[-1] - self.train_loss[-2])) <= self.eps:
                 break
@@ -218,7 +217,7 @@ class LogisticRegression_MulClass:
         if self.normalize:
             x_test = (x_test - self.feature_mean) / self.feature_std  # 测试样本的标准化
         if self.fit_intercept:
-            x_tes = np.c_[x_test, np.ones(shape=x_test.shape[0])]
+            x_test = np.c_[x_test, np.ones(shape=x_test.shape[0])]
         y_prob= self.softmax_func(x_test.dot(self.weight))
         return y_prob
 
@@ -233,18 +232,18 @@ class LogisticRegression_MulClass:
         # 对应每个样本中所有类别的概率，哪个概率大，返回那个类别所在列索引编号，即类别
         return y_prob.argmax(axis=1)
 
-    def plt_loss_curve(self, lab=None, is_show=True):
+    def plt_cross_entropy_loss(self, lab=None, is_show=True):
         '''
         可视化损失曲线
         :return:
         '''
-        plt.figure(figsize=(7, 5))
+        # plt.figure(figsize=(7, 5))
         plt.plot(self.train_loss, 'k--', lw=1, label='Train loss')
         if self.test_loss:
             plt.plot(self.test_loss, 'r--', lw=1.2, label='Test loss')
         plt.xlabel('Training Epochs ', fontdict={'fontsize': 12})
         plt.ylabel('The Mean of Cross Entropy Loss ', fontdict={'fontsize': 12})
-        plt.title('%: The loss curve of corss entropy' % lab)
+        plt.title('%s: The loss curve of corss entropy' % lab)
         plt.grid(ls=':')
         plt.legend(frameon=False)
         if is_show:
@@ -262,6 +261,6 @@ class LogisticRegression_MulClass:
         cm = pd.DataFrame(confusion_matrix, columns=label_names, index=label_names)
         sns.heatmap(cm, annot=True, cbar=False)
         acc = np.diag(confusion_matrix).sum() / confusion_matrix.sum()
-        plt.title("Confusion Matrix and ACC = %.5f" % ())
+        plt.title("Confusion Matrix and ACC = %.5f" % (acc))
         if is_show:
             plt.show()

@@ -64,7 +64,7 @@ class ModelPerformanceMetrics:
         self.cal_confusion_matrix()
         precision = np.diag(self.cm) / np.sum(self.cm, axis=0)  # 查准率
         recall = np.diag(self.cm) / np.sum(self.cm, axis=1)  # 查全率
-        f1_score = 2 * precision * recall / (precision + recall)
+        f1_score = 2 * precision * recall / (precision + recall+1e-8)
         support = np.sum(self.cm, axis=1)  # 各个类别的支持样本量
         support_all = np.sum(support)  # 总的样本量
         p_m, r_m = precision.mean(), recall.mean()
@@ -179,7 +179,7 @@ class ModelPerformanceMetrics:
         :param class_i: 指定绘制第i个类别的代价曲线，如果是二分类，则为0
         :return:
         '''
-        plt.figure(figsize=(7,5))
+        # plt.figure(figsize=(7,5))
         fpr_s,fnr_s=fnr_fpr_vals[:,0],fnr_fpr_vals[:,1]#获取假正例率和假反利率
         cost01,cost10=1,alpha
         if self.n_class==2:
@@ -231,7 +231,7 @@ class ModelPerformanceMetrics:
         :return:
         '''
         ap = self.__cal_auc__(roc_val)
-        plt.figure(figsize=(7, 5))
+        # plt.figure(figsize=(7, 5))
         if label:
             plt.step(roc_val[:, 0], roc_val[:, 1], '-', lw=2, where='post', label=label + ', AP = %.3f' % ap)
         else:
@@ -287,7 +287,7 @@ class ModelPerformanceMetrics:
         :return:
         '''
         ap = self.__cal_ap__(pr_val)
-        plt.figure(figsize=(7, 5))
+        # plt.figure(figsize=(7, 5))
         if label:
             plt.step(pr_val[:, 0], pr_val[:, 1], '-', lw=2, where='post', label=label + ', AP = %.3f' % ap)
         else:

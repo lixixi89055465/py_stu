@@ -98,7 +98,7 @@ class LogisticRegression:
         :param y_prob: 模型预测类别概率 n*1
         :return:
         '''
-        loss = -(y_test.T.dot(np.log(y_prob))) + (1 - y_test).dot(np.log(1 - y_prob))
+        loss = -(y_test.T.dot(np.log(y_prob)) + (1 - y_test).dot(np.log(1 - y_prob)))
         return loss
 
     def fit(self, x_train, y_train, x_test=None, y_test=None):
@@ -167,12 +167,13 @@ class LogisticRegression:
 
             # 计算训练过程中的交叉熵误差损失值
             y_train_prob = self.sigmoid(x_train.dot(self.theta))  # 当前迭代训练的模型预测概率
-            train_cost = self.cal_cross_entropy(y_train, y_train_prob)  # 训练集的交叉熵损失
-            self.train_loss.append(train_cost / x_train.shape[0])  # 交叉熵损失均值
+            train_cost = self.cal_cross_entropy(y_train, y_train_prob.reshape(-1))  # 训练集的交叉熵损失
+            self.train_loss.append(train_cost/ x_train.shape[0])  # 交叉熵损失均值
             if x_test is not None and y_test is not None:
                 y_test_prob = self.sigmoid(x_test.dot(self.theta))  # 当前测试样本预测概率
-                test_cost = ((x_test.dot(self.theta) - y_test.reshape(-1, 1)) ** 2).mean()
+                test_cost = self.cal_cross_entropy(y_test,y_test_prob)
                 self.test_loss.append(test_cost / y_test.shape[0])  # 交叉熵损失均值
+
             if epoch > 10 and (np.abs(self.train_loss[-1] - self.train_loss[-2])) <= self.eps:
                 break
 
@@ -222,10 +223,11 @@ class LogisticRegression:
         可视化损失曲线
         :return:
         '''
-        plt.figure(figsize=(7, 5))
+        # plt.figure(figsize=(7, 5))
+        # plt.plot(np.arange(len(self.train_loss)),self.train_loss, 'k--', lw=1, label='Train loss')
         plt.plot(self.train_loss, 'k--', lw=1, label='Train loss')
-        if self.test_loss:
-            plt.plot(self.test_loss, 'r--', lw=1.2, label='Test loss')
+        # if self.test_loss:
+        #     plt.plot(self.test_loss, 'r--', lw=1.2, label='Test loss')
         plt.xlabel('Training Epochs ', fontdict={'fontsize': 12})
         plt.ylabel('The Mean of Cross Entropy Loss ', fontdict={'fontsize': 12})
         plt.title('%s: The loss curve of corss entropy' % lab)
