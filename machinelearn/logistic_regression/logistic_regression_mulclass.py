@@ -98,8 +98,8 @@ class LogisticRegression_MulClass:
         :param z_values: 模型系数
         :return:
         '''
-        z_values[z_values > 0]=1
-        z_values[z_values < 0]=-1
+        z_values[z_values > 0] = 1
+        z_values[z_values < 0] = -1
         return z_values
 
     @staticmethod
@@ -110,8 +110,8 @@ class LogisticRegression_MulClass:
         :param y_prob: 模型预测类别概率 n*c
         :return:
         '''
-        loss = -np.sum(y_test*np.log(y_prob+1e-8),axis=1)
-        loss -= np.sum((1-y_test)*np.log(1-y_prob+1e-8),axis=1)
+        loss = -np.sum(y_test * np.log(y_prob + 1e-8), axis=1)
+        loss -= np.sum((1 - y_test) * np.log(1 - y_prob + 1e-8), axis=1)
         return loss.mean()
 
     def fit(self, x_train, y_train, x_test=None, y_test=None):
@@ -123,10 +123,10 @@ class LogisticRegression_MulClass:
         :param y_test: 测试目标值  n*1
         :return:
         '''
-        y_train=self.one_hot_encoding(y_train)
+        y_train = self.one_hot_encoding(y_train)
         if y_test is not None:
-            y_test=self.one_hot_encoding(y_test)
-        samples=np.r_[x_train,x_test]# 组合所有样本，计算均值和标准差
+            y_test = self.one_hot_encoding(y_test)
+        samples = np.r_[x_train, x_test]  # 组合所有样本，计算均值和标准差
         if self.normalize:  # 标准化
             self.feature_mean = np.mean(samples, axis=0)  # 样本的均值
             self.feature_std = np.std(samples, axis=0) + 1e-8  # 样本的标准方差
@@ -134,12 +134,12 @@ class LogisticRegression_MulClass:
             if x_test is not None and y_test is not None:
                 x_test = (x_test - self.feature_mean) / self.feature_std  # 标准化
 
-        if self.fit_intercept:#是否训练bias
-            x_train = np.c_[x_train, np.ones((len(x_train),1))]# 在样本后加一列
+        if self.fit_intercept:  # 是否训练bias
+            x_train = np.c_[x_train, np.ones((len(x_train), 1))]  # 在样本后加一列
             if x_test is not None and y_test is not None:
-                x_test = np.c_[x_test, np.ones((len(x_test),1))]  # 在样本后加一列1
+                x_test = np.c_[x_test, np.ones((len(x_test), 1))]  # 在样本后加一列1
 
-        self.init_params(n_features=x_train.shape[1],n_classes=y_train.shape[1])  # 模型初始化
+        self.init_params(n_features=x_train.shape[1], n_classes=y_train.shape[1])  # 模型初始化
         # 训练模型
         self._fit_gradient_descent(x_train, y_train, x_test, y_test)
 
@@ -150,36 +150,34 @@ class LogisticRegression_MulClass:
         :param y_train:
         :return:
         '''
-        train_sample = np.c_[x_train, y_train]  # 组合训练集和目标集 ，以便随机打乱样本顺序
+        sample_xy = np.c_[x_train, y_train]  # 组合训练集和目标集 ，以便随机打乱样本顺序
         # n_features=x_train.shape[1]# 训练样本的特征数目，可能包含偏执项
         for epoch in range(self.max_epochs):
-            self.alpha *= 0.95
-            np.random.shuffle(train_sample)  # 打乱样本顺序，以便模拟机器
-            batch_nums = train_sample.shape[0] // self.batch_size  # 批次
+            self.alpha *= 0.99
+            np.random.shuffle(sample_xy)  # 打乱样本顺序，以便模拟机器
+            batch_nums = sample_xy.shape[0] // self.batch_size  # 批次
             for idx in range(batch_nums):
                 # 按照小批量大小，选取数据
-                batch_xy = train_sample[idx * self.batch_size:(idx + 1) * self.batch_size]
+                batch_xy = sample_xy[idx * self.batch_size:(idx + 1) * self.batch_size]
                 # 选取样本和目标值，注意，目标值不再是一列
                 batch_x, batch_y = batch_xy[:, :x_train.shape[1]], batch_xy[:, x_train.shape[1]:]  # 选取样本和目标值
-                # delta = batch_x.T.dot((batch_x.dot(self.theta) - batch_y)) / self.batch_size
                 # 计算权重的更新增量，包含偏执项
-                # delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y.reshape(-1, 1))
                 y_preb_batch = self.softmax_func(batch_x.dot(self.weight))  # 小批量的预测值
                 # 1*n <--> n*k = 1*k--> 转置k*1
-                dw = ((y_preb_batch - batch_y).T.dot(batch_x)/ self.batch_size).T
+                dw = (y_preb_batch - batch_y).T.dot(batch_x).T
                 # 计算并添加正则化部分,包含偏置项,不包含偏执项,最后一列是偏执项
-                dw_reg = np.zeros(shape=(x_train.shape[1] - 1, self.n_classes))
-                if self.l1_ratio and self.l2_ratio is None:
-                    # LASSO回归，L1 正则化
-                    dw_reg = self.l1_ratio * self.sign_func(self.weight[:-1])
-                if self.l2_ratio and self.l1_ratio is None:
-                    # Ridege 回归
-                    dw_reg = 2 * self.l2_ratio * self.weight[:-1, :]
+                dw_reg = np.zeros(shape=(x_train.shape[1] - 1, y_train.shape[1]))
+                if self.l1_ratio is not None:
+                    dw_reg += self.l1_ratio * self.sign_func(self.weight[:-1, :])
+                if self.l2_ratio is not None:
+                    dw_reg += 2 * self.l2_ratio * self.weight[:-1, :]
                 if self.en_rou and self.l1_ratio and self.l2_ratio and 0 < self.en_rou < 1:
                     # 弹性网络
-                    dw_reg += self.l1_ratio * self.en_rou * self.sign_func(self.weight[:-1, :])
-                    dw_reg += 2 * self.l2_ratio * (1 - self.en_rou) * self.weight[:-1, :]
-                dw[:-1,:] += dw_reg / self.batch_size  # 添加了正则化
+                    fu_weight = self.sign_func(self.weight[:-1, :])
+                    dw_reg += self.l1_ratio * self.en_rou * fu_weight
+                    dw_reg += 2 * self.l2_ratio * (1 - self.en_rou) * fu_weight
+                dw_reg = np.r_[dw_reg, np.zeros((1, y_train.shape[1]))]
+                dw += dw_reg / self.batch_size  # 添加了正则化
                 self.weight = self.weight - self.alpha * dw  # 更新模型系数
 
             # 计算训练过程中的交叉熵误差损失值
@@ -188,8 +186,8 @@ class LogisticRegression_MulClass:
             self.train_loss.append(train_cost)  # 交叉熵损失均值
             if x_test is not None and y_test is not None:
                 y_test_preb = self.softmax_func(x_test.dot(self.weight))  # 当前测试样本预测概率
-                test_cost = self.cal_cross_entropy(y_test,y_test_preb)
-                self.test_loss.append(test_cost )  # 交叉熵损失均值
+                test_cost = self.cal_cross_entropy(y_test, y_test_preb)
+                self.test_loss.append(test_cost)  # 交叉熵损失均值
             if epoch > 10 and (np.abs(self.train_loss[-1] - self.train_loss[-2])) <= self.eps:
                 break
 
@@ -218,7 +216,7 @@ class LogisticRegression_MulClass:
             x_test = (x_test - self.feature_mean) / self.feature_std  # 测试样本的标准化
         if self.fit_intercept:
             x_test = np.c_[x_test, np.ones(shape=x_test.shape[0])]
-        y_prob= self.softmax_func(x_test.dot(self.weight))
+        y_prob = self.softmax_func(x_test.dot(self.weight))
         return y_prob
 
     def predict(self, x):

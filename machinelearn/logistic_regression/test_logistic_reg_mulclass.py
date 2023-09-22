@@ -16,33 +16,33 @@ from sklearn.preprocessing import StandardScaler
 iris = load_iris()  # 加载数据集
 
 X, y = iris.data, iris.target
-X=StandardScaler().fit_transform(X)# 标准化
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,shuffle=True, random_state=42, stratify=y)
+X = StandardScaler().fit_transform(X)  # 标准化
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, random_state=42, stratify=y)
 
-lgmc = LogisticRegression_MulClass(alpha=0.5, l1_ratio=0.05,l2_ratio=0.05, batch_size=5, max_epochs=1000, eps=1e-15, normalize=False)
+lgmc = LogisticRegression_MulClass(alpha=0.5, l1_ratio=0.05, l2_ratio=0.05, en_rou=0.5, batch_size=50, max_epochs=1000,
+                                   eps=1e-10, normalize=False)
 lgmc.fit(X_train, y_train, X_test, y_test)
-plt.figure(figsize=(12,8))# 可视化，四个子图
+plt.figure(figsize=(12, 8))  # 可视化，四个子图
 plt.subplot(221)
-lgmc.plt_cross_entropy_loss(is_show=False)# 交叉熵损失下降曲线
-y_test_pred=lgmc.predict(X_test)
-y_test_prob=lgmc.predict_prob(X_test)# 预测概率
-feature_names=iris.feature_names
+lgmc.plt_cross_entropy_loss(is_show=False)  # 交叉熵损失下降曲线
+y_test_pred = lgmc.predict(X_test)
+y_test_prob = lgmc.predict_prob(X_test)  # 预测概率
+feature_names = iris.feature_names
 
-for fn,theta in zip(feature_names,lgmc.get_params()[0]):
-    print(fn,':',theta)
-print('bias:',lgmc.get_params()[1])# 偏执项
-print('='*100)
+for fn, theta in zip(feature_names, lgmc.get_params()[0]):
+    print(fn, ':', theta)
+print('bias:', lgmc.get_params()[1])  # 偏执项
+print('=' * 100)
 
-
-pm=ModelPerformanceMetrics(y_test, y_test_prob) # 模型性能度量
+pm = ModelPerformanceMetrics(y_test, y_test_prob)  # 模型性能度量
 print(pm.cal_classification_report())
-pr_values=pm.precision_recall_curve()# PR 指标值
+pr_values = pm.precision_recall_curve()  # PR 指标值
 plt.subplot(222)
 pm.plt_pr_curve(pr_values, is_show=False)
-roc_values=pm.roc_metrics_curve()# ROC指标值
+roc_values = pm.roc_metrics_curve()  # ROC指标值
 plt.subplot(223)
-pm.plt_roc_curve(roc_values, is_show=False)# ROC 曲线
-cm=pm.cal_confusion_matrix()
+pm.plt_roc_curve(roc_values, is_show=False)  # ROC 曲线
+cm = pm.cal_confusion_matrix()
 plt.subplot(224)
 lgmc.plt_confusion_matrix(cm, label_names=None, is_show=False)
 plt.show()
