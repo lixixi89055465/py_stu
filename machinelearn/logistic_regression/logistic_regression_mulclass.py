@@ -110,8 +110,8 @@ class LogisticRegression_MulClass:
         :param y_prob: 模型预测类别概率 n*c
         :return:
         '''
-        loss = -np.sum(y_test * np.log(y_prob + 1e-8), axis=1)
-        loss -= np.sum((1 - y_test) * np.log(1 - y_prob + 1e-8), axis=1)
+        loss = -np.sum(y_test * np.log(y_prob + 1e-10), axis=1)
+        loss -= np.sum((1 - y_test) * np.log(1 - y_prob + 1e-10), axis=1)
         return loss.mean()
 
     def fit(self, x_train, y_train, x_test=None, y_test=None):
@@ -129,7 +129,7 @@ class LogisticRegression_MulClass:
         samples = np.r_[x_train, x_test]  # 组合所有样本，计算均值和标准差
         if self.normalize:  # 标准化
             self.feature_mean = np.mean(samples, axis=0)  # 样本的均值
-            self.feature_std = np.std(samples, axis=0) + 1e-8  # 样本的标准方差
+            self.feature_std = np.std(samples, axis=0) + 1e-10  # 样本的标准方差
             x_train = (x_train - self.feature_mean) / self.feature_std  # 标准化
             if x_test is not None and y_test is not None:
                 x_test = (x_test - self.feature_mean) / self.feature_std  # 标准化
@@ -153,7 +153,7 @@ class LogisticRegression_MulClass:
         sample_xy = np.c_[x_train, y_train]  # 组合训练集和目标集 ，以便随机打乱样本顺序
         # n_features=x_train.shape[1]# 训练样本的特征数目，可能包含偏执项
         for epoch in range(self.max_epochs):
-            self.alpha *= 0.99
+            self.alpha *= 0.95
             np.random.shuffle(sample_xy)  # 打乱样本顺序，以便模拟机器
             batch_nums = sample_xy.shape[0] // self.batch_size  # 批次
             for idx in range(batch_nums):

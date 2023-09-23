@@ -8,19 +8,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_iris,load_digits,load_breast_cancer
 from machinelearn.logistic_regression.logistic_regression_mulclass import LogisticRegression_MulClass
 from machinelearn.model_evaluation_selection_02.Performance_metrics import ModelPerformanceMetrics
 from sklearn.preprocessing import StandardScaler
 
-iris = load_iris()  # 加载数据集
+# iris = load_iris()  # 加载数据集
+iris = load_digits()  # 加载数据集
+# iris = load_breast_cancer()  # 加载数据集
 
 X, y = iris.data, iris.target
 X = StandardScaler().fit_transform(X)  # 标准化
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, random_state=42, stratify=y)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=True, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
 
-lgmc = LogisticRegression_MulClass(alpha=0.5, l1_ratio=0.05, l2_ratio=0.05, en_rou=0.5, batch_size=50, max_epochs=1000,
-                                   eps=1e-10, normalize=False)
+lgmc = LogisticRegression_MulClass(alpha=0.5, l1_ratio=0.5,l2_ratio=0.05,en_rou=0.6, batch_size=5, max_epochs=1000,
+                                   eps=1e-15, normalize=False)
 lgmc.fit(X_train, y_train, X_test, y_test)
 plt.figure(figsize=(12, 8))  # 可视化，四个子图
 plt.subplot(221)
