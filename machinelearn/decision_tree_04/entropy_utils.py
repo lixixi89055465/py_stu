@@ -36,12 +36,13 @@ class EntropyUtils:
         '''
         y = np.asarray(y_labels)
         sample_weight = self._set_sample_weight(sample_weight, len(y))
-        y_values = np.unique(y)
-        ent_y = 0.0
+        y_values = np.unique(y)  # x中的不同取值
+        ent_x = 0.0  # 计算信息熵
         for val in y_values:
-            p_i = len(y[y == val]) / len(y)
-            ent_y += -p_i * np.log2(p_i)
-        return ent_y
+            sub_idx=np.where(y==val)
+            p_i = 1.0 * len(sub_idx) / len(y)*np.mean(sample_weight[sub_idx])
+            ent_x += -p_i * np.log2(p_i)
+        return ent_x
 
     def conditional_entropy(self, feature_x, y_labels, sample_weight=None):
         '''
@@ -52,13 +53,13 @@ class EntropyUtils:
         :return:
         '''
         x, y = np.asarray(feature_x), np.asarray(y_labels)
-        sample_weight = self._set_sample_weight(sample_weight, len(y))
+        sample_weight = self._set_sample_weight(sample_weight, len(x))
         cond_ent = 0.0
         for x_val in np.unique(x):
             x_idx = np.where(x == x_val)
             sub_x, sub_y = x[x_idx], y[x_idx]
             sub_sample_weight = sample_weight[x_idx]
-            p_k = len(sub_y) / len(y)
+            p_k = 1.0 * len(sub_x) / len(x)
             cond_ent += p_k * self.cal_info_entropy(sub_y, sub_sample_weight)
 
         return cond_ent
@@ -73,6 +74,55 @@ class EntropyUtils:
         '''
         return self.cal_info_entropy(y_labels, sample_weight) - \
                self.conditional_entropy(feature_x, y_labels, sample_weight)
+
+    def info_gain_rate(self, feature_x, y_labels, sample_weight=None):
+        '''
+        计算信息增益率
+        :param feature_x:
+        :param y_labels:
+        :param sample_weight:
+        :return:
+        '''
+        return 1.0*self.info_gain(feature_x, y_labels, sample_weight) / \
+               (1e-12+self.cal_info_entropy(feature_x, sample_weight))
+
+    def cal_gini(self, y_labels, sample_weight=None):
+        '''
+        计算当前特征或类别集合的基尼值
+        :param y_labels:
+        :param sample_weight:
+        :return:
+        '''
+        y = np.asarray(y_labels)
+        sample_weight = self._set_sample_weight(sample_weight, len(y))
+        y_values = np.unique(y)
+        gini_val = 1.0
+        for val in y_values:
+            p_k = 1.0 * len(y[y == val]) / len(y_values) * np.mean(sample_weight[y == val])
+            gini_val -= p_k ** 2
+        return gini_val
+
+    def conditional_gini(self, feature_x, y_label, sample_weight=None):
+        '''
+        计算条件基尼指数
+        :param feature_x:
+        :param y_label:
+        :param sample_weight:
+        :return:
+        '''
+        x, y = np.asarray(feature_x), np.asarray(y_label)
+        sample_weight = self._set_sample_weight(sample_weight, len(y))
+        cond_gini = self.cal_gini(y_labels=y_label, sample_weight=sample_weight)
+        for x_val in np.unique(x):
+            x_idx = np.where(x_val == x)  # 每个特征取值的样本索引集合
+            sub_x, sub_y = x[x_idx], y[x_idx]
+            sub_sample_weight = sample_weight[x_idx]
+            p_k = 1.0 * len(sub_y) / len(y)
+            cond_gini += p_k * self.cal_gini(sub_y, sub_sample_weight)
+        return cond_gini
+
+    def gini_gain(self, feature_x, y_labels, sample_weight=None):
+        return self.cal_gini(y_labels, sample_weight) - self.conditional_gini(feature_x, y_labels, sample_weight)
 
 
 if __name__ == '__main__':

@@ -7,10 +7,20 @@
 # @Comment :
 import pandas as pd
 from machinelearn.decision_tree_04.entropy_utils import EntropyUtils
-data=pd.read_csv('../../data/watermelon.csv').iloc[:,1:]
-y=data.iloc[:,-1]
-feature_names=data.columns[:-1]
-print('0'*100)
-ent_obj=EntropyUtils()
+
+data = pd.read_csv('../../data/watermelon.csv').iloc[:, 1:]
+y = data.iloc[:, -1]
+feature_names = data.columns[:-1]
+print(feature_names)
+print('0' * 100)
+ent_obj = EntropyUtils()
 for feat in feature_names:
-    print(feat,":",ent_obj.info_gain(data.loc[:,feat],y))
+    print(feat, ":", ent_obj.info_gain(data.loc[:, feat], y))
+
+print('=' * 100)
+for feat in feature_names:
+    print(feat, ":", ent_obj.info_gain_rate(data.loc[:, feat], y))
+
+print('=' * 100)
+for feat in feature_names:
+    print(feat, ":", ent_obj.gini_gain(data.loc[:, feat], y))
