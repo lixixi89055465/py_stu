@@ -77,8 +77,9 @@ print('2'*100)
 print(support)
 print('3'*100)
 print(np.sum(support))# 总样本量
-
-
+print('4'*100)
+accuracy=np.sum(np.diag(cm))/np.sum(cm)# 精度
+print(accuracy)
 
 
 
