@@ -6,8 +6,8 @@
 # @Software: PyCharm 
 # @Comment :
 import pandas as pd
-from machinelearn.decision_tree_04.entropy_utils import EntropyUtils
-from machinelearn.decision_tree_04.data_bin_wrapper import DataBinWrapper
+from machinelearn.decision_tree_04.utils.entropy_utils import EntropyUtils
+from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
 data = pd.read_csv('../../data/watermelon.csv').iloc[:, 1:]
 y = data.iloc[:, -1]
 feature_names = data.columns[:-1]

@@ -42,14 +42,17 @@ class DataBinWrapper:
                 p_val = np.percentile(x_sorted, p)
                 self.XrangeMap[idx].append(p_val)
             self.XrangeMap[idx]=sorted(list(set(self.XrangeMap[idx])))
-    def transform(self,x_samples):
+    def transform(self,x_samples,XrangeMap=None):
         '''
         根据已存在的箱，把数据分成max_bins类
         :param x_samples: 样本(二维数组n*k),或一个特征属性的数据（二维数组n*1)
         :return:
         '''
         if x_samples.ndim==1:
-            return np.asarray(np.digitize(x_samples,self.XrangeMap[0])).reshape(-1)
+            if XrangeMap is not None:
+                return np.asarray(np.digitize(x_samples,XrangeMap)).reshape(-1)
+            else:
+                return np.asarray(np.digitize(x_samples,self.XrangeMap[0])).reshape(-1)
         else:
             return np.asarray([np.digitize(x_samples[:,i],self.XrangeMap[i]) for i in range(x_samples.shape[1])]).T
 
