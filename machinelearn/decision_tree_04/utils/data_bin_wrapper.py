@@ -50,7 +50,7 @@ class DataBinWrapper:
         '''
         if x_samples.ndim==1:
             if XrangeMap is not None:
-                return np.asarray(np.digitize(x_samples,XrangeMap)).reshape(-1)
+                return np.asarray(np.digitize(x_samples,XrangeMap[0])).reshape(-1)
             else:
                 return np.asarray(np.digitize(x_samples,self.XrangeMap[0])).reshape(-1)
         else:

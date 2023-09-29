@@ -98,7 +98,7 @@ class EntropyUtils:
         y_values = np.unique(y)
         gini_val = 1.0
         for val in y_values:
-            p_k = 1.0 * len(y[y == val]) / len(y_values) * np.mean(sample_weight[y == val])
+            p_k = 1.0 * len(y[y == val]) / len(y) * np.mean(sample_weight[y == val])
             gini_val -= p_k ** 2
         return gini_val
 
@@ -112,7 +112,8 @@ class EntropyUtils:
         '''
         x, y = np.asarray(feature_x), np.asarray(y_label)
         sample_weight = self._set_sample_weight(sample_weight, len(y))
-        cond_gini = self.cal_gini(y_labels=y_label, sample_weight=sample_weight)
+        # cond_gini = self.cal_gini(y_labels=y_label, sample_weight=sample_weight)
+        cond_gini = 0.0
         for x_val in np.unique(x):
             x_idx = np.where(x_val == x)  # 每个特征取值的样本索引集合
             sub_x, sub_y = x[x_idx], y[x_idx]
@@ -122,7 +123,8 @@ class EntropyUtils:
         return cond_gini
 
     def gini_gain(self, feature_x, y_labels, sample_weight=None):
-        return self.cal_gini(y_labels, sample_weight) - self.conditional_gini(feature_x, y_labels, sample_weight)
+        return self.cal_gini(y_labels, sample_weight) - \
+            self.conditional_gini(feature_x, y_labels, sample_weight)
 
 
 if __name__ == '__main__':

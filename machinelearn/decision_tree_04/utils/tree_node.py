@@ -31,8 +31,8 @@ class TreeNode_C:
         self.n_sample = n_samples
         self.target_dist = target_dict
         self.weight_dict = weight_dict
-        self.left_child_None = left_child_Node
-        self.right_child_None = right_child_Node
+        self.left_child_node = left_child_Node
+        self.right_child_node = right_child_Node
 
     def level_order(self):
         '''
