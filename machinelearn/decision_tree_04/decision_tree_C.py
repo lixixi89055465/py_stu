@@ -209,3 +209,49 @@ class DecisionTreeClassifier:
         '''
         x_test = np.asarray(x_test)  # 避免传递DataFrame,list....
         return np.argmax(self.predict_proba(x_test), axis=1)
+
+    def _prune_node(self, cur_node: TreeNode_C, alpha):
+        '''
+        递归剪枝，针对决策树中的内部节点，自底向上，逐个考察
+        @param cur_node: 当前递归的决策树的内部节点
+        @param alpha:
+        @return:
+        '''
+        # 若左子树存在，递归左子树进行剪枝
+        if cur_node.left_child_node:
+            self._prune_node(cur_node.left_child_node,alpha)
+        # 若右子树存在，递归右子树进行剪枝
+        if cur_node.right_child_node:
+            self._prune_node(cur_node.right_child_node,alpha)
+        if cur_node.left_child_node is not None or cur_node.right_child_node is not None:
+            for child_node in [cur_node.left_child_node,cur_node.right_child_node]:
+                if child_node is None:
+                    # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
+                    continue
+                if child_node.left_child_node is not None and child_node.left_child_node is not None:
+                    return
+            # 计算剪枝前的损失值，2表示当前节点包含两个叶子节点
+            pre_prune_value=2*alpha
+            for child_node in [cur_node.left_child_node,cur_node.right_child_node]:
+                # 计算左右叶子节点的经验熵
+                if child_node is None:
+                    # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
+                    continue
+                for key,value in child_node.target_dist.items():# 对每个叶子节点的类别分布
+                    pre_prune_value+=-1*child_node.n_samples*value*np.log(value)*\
+                        child_node.weight_dist.get(key,1.0)
+
+
+
+
+
+
+
+    def prune(self, alpha=0.01):
+        '''
+        决策树后剪枝算法（李航）C(T)+alpha*|T|
+        @param alpha:  剪纸阈值，权衡莫ing对训练数据的拟合成都与模型的复杂度
+        @return:
+        '''
+        self._prune_node(self.root_node, alpha)
+        return self.root_node
