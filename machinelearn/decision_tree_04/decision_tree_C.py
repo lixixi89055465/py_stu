@@ -46,28 +46,28 @@ class DecisionTreeClassifier:
         self.dbw_XrangeMap = {}  # 存储训练样本连续特征分箱的段点
         self.class_values = None  # 样本的类别取值
 
-    def _data_bin_wrapper(self,x_samples):
+    def _data_bin_wrapper(self, x_samples):
         '''
         针对特征的连续的特征属性索引dbw_feature_idx,分别进行分箱,
         考虑测试样本与训练样本使用同一个XrangeMap
         @param X_samples: 样本：即可是训练样本,也可以是测试样本
         @return:
         '''
-        self.dbw_feature_idx=np.asarray(self.dbw_feature_idx)
-        x_sample_prop=[]# 分箱之后的数据
+        self.dbw_feature_idx = np.asarray(self.dbw_feature_idx)
+        x_sample_prop = []  # 分箱之后的数据
         if not self.dbw_XrangeMap:
             # 为空，即创建决策树前所做的分箱操作
             for i in range(x_samples.shape[1]):
-                if i in self.dbw_feature_idx:# 说明当前特征是连续数值
-                    self.dbw.fit(x_samples[:,i])
-                    self.dbw_XrangeMap[i]=self.dbw.XrangeMap
-                    x_sample_prop.append(self.dbw.transform(x_samples[:,i]))
+                if i in self.dbw_feature_idx:  # 说明当前特征是连续数值
+                    self.dbw.fit(x_samples[:, i])
+                    self.dbw_XrangeMap[i] = self.dbw.XrangeMap
+                    x_sample_prop.append(self.dbw.transform(x_samples[:, i]))
                 else:
-                    x_sample_prop.append(x_samples[:,i])
+                    x_sample_prop.append(x_samples[:, i])
         else:
             for i in range(x_samples.shape[1]):
                 if i in self.dbw_feature_idx:  # 说明当前特征是连续数值
-                    x_sample_prop.append(self.dbw.transform(x_samples[:, i],self.dbw_XrangeMap[i]))
+                    x_sample_prop.append(self.dbw.transform(x_samples[:, i], self.dbw_XrangeMap[i]))
                 else:
                     x_sample_prop.append(x_samples[:, i])
         return np.asarray(x_sample_prop).T
@@ -112,8 +112,8 @@ class DecisionTreeClassifier:
             target_dist[label] = len(y_train[y_train == label]) / n_samples
             weight_dist[label] = np.mean(sample_weight[y_train == label])
         cur_node.target_dist = target_dist
-        cur_node.weight_dict = weight_dist
-        cur_node.n_sample = n_samples
+        cur_node.weight_dist = weight_dist
+        cur_node.n_samples = n_samples
         # 判断停止的条件
         if len(target_dist) <= 1:  # 剩余样本仅包括一个类别，无需划分
             return
@@ -178,7 +178,7 @@ class DecisionTreeClassifier:
             # 叶子节点 :类别，包含有类别分布
             class_p = np.zeros(len(self.class_values))  # 测试样本类别概率
             for i, c in enumerate(self.class_values):
-                class_p[i] = cur_node.target_dist.get(c, 0) * cur_node.weight_dict.get(c, 1.0)
+                class_p[i] = cur_node.target_dist.get(c, 0) * cur_node.weight_dist.get(c, 1.0)
             class_p /= np.sum(class_p)  # 归一化
             return class_p
 
@@ -219,31 +219,36 @@ class DecisionTreeClassifier:
         '''
         # 若左子树存在，递归左子树进行剪枝
         if cur_node.left_child_node:
-            self._prune_node(cur_node.left_child_node,alpha)
+            self._prune_node(cur_node.left_child_node, alpha)
         # 若右子树存在，递归右子树进行剪枝
         if cur_node.right_child_node:
-            self._prune_node(cur_node.right_child_node,alpha)
+            self._prune_node(cur_node.right_child_node, alpha)
         if cur_node.left_child_node is not None or cur_node.right_child_node is not None:
-            for child_node in [cur_node.left_child_node,cur_node.right_child_node]:
+            for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
                 if child_node is None:
                     # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
                     continue
-                if child_node.left_child_node is not None and child_node.left_child_node is not None:
+                if child_node.left_child_node is not None or child_node.right_child_node is not None:
                     return
             # 计算剪枝前的损失值，2表示当前节点包含两个叶子节点
-            pre_prune_value=2*alpha
-            for child_node in [cur_node.left_child_node,cur_node.right_child_node]:
+            pre_prune_value = 2 * alpha
+            for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
                 # 计算左右叶子节点的经验熵
+                # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
                 if child_node is None:
-                    # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
                     continue
-                for key,value in child_node.target_dist.items():# 对每个叶子节点的类别分布
-                    pre_prune_value+=-1*child_node.n_samples*value*np.log(value)*\
-                        child_node.weight_dist.get(key,1.0)
-
-
-
-
+                for key, value in child_node.target_dist.items():  # 对每个叶子节点的类别分布
+                    pre_prune_value += -1 * child_node.n_samples * value *\
+                                       np.log(value) * child_node.weight_dist.get(key, 1.0)
+            # 计算剪枝后的损失值，当前节点既是叶子节点，
+            after_prune_value = alpha
+            for key, value in cur_node.target_dist.items():
+                after_prune_value += -1 * cur_node.n_samples * value * np.log(value) * \
+                                     cur_node.weight_dist.get(key, 1.0)
+            if after_prune_value <= pre_prune_value:
+                cur_node.left_child_node = None
+                cur_node.right_child_node = None
+                cur_node.feature_idx,cur_node.feature_val=None,None
 
 
 
