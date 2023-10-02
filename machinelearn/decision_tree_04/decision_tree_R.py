@@ -6,6 +6,7 @@
 # @File    : decision_tree_C.py
 # @Description :
 import numpy as np
+import sklearn.metrics as metrics
 from machinelearn.decision_tree_04.utils.square_error_utils import SquareErrorUtils
 from machinelearn.decision_tree_04.utils.tree_node_R import TreeNode_R
 from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
@@ -163,3 +164,70 @@ class DecisionTreeRegression:
         for i in range(x_test.shape[0]):
             y_pred.append(self._search_tree_predict(self.root_node, x_test[i]))
         return np.asarray(y_pred)
+
+    def cal_mse_r2(self, y_test, y_pred):
+        '''
+        模型预测的均方误差MSE 和判决系数r2
+        :return:
+        '''
+        y_test, y_pred = np.asarray(y_test), np.asarray(y_pred)
+        mse = ((y_test - y_pred) ** 2).mean()  # 均方误差
+        r2 = 1 - ((y_pred - y_test) ** 2).sum() / ((y_test - y_test.mean()) ** 2).sum()
+        return mse, r2
+
+    def _prune_node(self, cur_node: TreeNode_R, alpha):
+        '''
+        递归剪枝，针对决策树中的内部节点，自底向上，逐个考察
+        @param cur_node: 当前递归的决策树的内部节点
+        @param alpha:
+        @return:
+        '''
+        # 若左子树存在，递归左子树进行剪枝
+        if cur_node.left_child_node:
+            self._prune_node(cur_node.left_child_node, alpha)
+        # 若右子树存在，递归右子树进行剪枝
+        if cur_node.right_child_node:
+            self._prune_node(cur_node.right_child_node, alpha)
+        if cur_node.left_child_node is not None or cur_node.right_child_node is not None:
+            for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
+                if child_node is None:
+                    # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
+                    continue
+                if child_node.left_child_node is not None or child_node.right_child_node is not None:
+                    return
+            # 计算剪枝前的损失值(平方误差)，2表示当前节点包含两个叶子节点
+            pre_prune_value = 2 * alpha
+            # for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
+            #     # 计算左右叶子节点的经验熵
+            #     # 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
+            #     if child_node is None:
+            #         continue
+            # for key, value in child_node.target_dist.items():  # 对每个叶子节点的类别分布
+            #     pre_prune_value += -1 * child_node.n_samples * value *\
+            #                        np.log(value) * child_node.weight_dist.get(key, 1.0)
+            if cur_node and cur_node.left_child_node is not None:
+                pre_prune_value += (
+                    0.0 if cur_node.left_child_node.square_error is None else cur_node.left_child_node.square_error)
+            if cur_node and cur_node.right_child_node is not None:
+                pre_prune_value += (
+                    0.0 if cur_node.right_child_node.square_error is None else cur_node.right_child_node.square_error)
+            # 计算剪枝后的损失值，当前节点既是叶子节点，
+            after_prune_value = alpha + cur_node.square_error
+            # after_prune_value = alpha
+            # for key, value in cur_node.target_dist.items():
+            #     after_prune_value += -1 * cur_node.n_samples * value * np.log(value) * \
+            #                          cur_node.weight_dist.get(key, 1.0)
+            if after_prune_value <= pre_prune_value:  # 剪枝操作
+                cur_node.left_child_node = None
+                cur_node.right_child_node = None
+                cur_node.feature_idx, cur_node.feature_val = None, None
+                cur_node.square_error = None
+
+    def prune(self, alpha=0.01):
+        '''
+        决策树后剪枝算法（李航）C(T)+alpha*|T|
+        @param alpha:  剪纸阈值，权衡莫ing对训练数据的拟合成都与模型的复杂度
+        @return:
+        '''
+        self._prune_node(self.root_node, alpha)
+        return self.root_node
