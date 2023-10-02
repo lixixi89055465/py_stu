@@ -9,6 +9,7 @@ from machinelearn.knn_05.distUtils import DistanceUtils
 from machinelearn.knn_05.kdtree_node import KDTreeNode
 import numpy as np
 import heapq
+from collections import Counter  # 集合中的计数功能
 
 
 class KNearestNeighborKDTree:
@@ -44,7 +45,7 @@ class KNearestNeighborKDTree:
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
         self.k_dimension = x_train.shape[1]  # 特征维度
         idx_array = np.arange(x_train.shape[0])  # 训练样本的索引编号
-        self._build_kd_tree(x_train, y_train, idx_array, 0)
+        self.kdt_root = self._build_kd_tree(x_train, y_train, idx_array, 0)
         if self.view_kdt:
             self.draw_kd_tree()  # 可视化kd树
 
@@ -70,7 +71,7 @@ class KNearestNeighborKDTree:
 
         # 递归调用
         left_child = self._build_kd_tree(left_instances, left_labels, left_idx, depth + 1)
-        right_child = self._build_kd_tree(right_instances, right_labels, left_idx, depth + 1)
+        right_child = self._build_kd_tree(right_instances, right_labels, right_idx, depth + 1)
         kdt_new_node = KDTreeNode(median_node, y_train[median_idx], idx_array[median_idx],
                                   split_dimension, left_child, right_child, depth)
         return kdt_new_node
@@ -91,7 +92,15 @@ class KNearestNeighborKDTree:
             for i in range(x_test.shape[0]):
                 self.k_neighbors = []
                 self._search_kd_tree(self.kdt_root, x_test[i])
-                print(self.k_neighbors)
+                y_test_labels = []
+                # 取每个近邻样本的类别标签
+                for k in range(self.k):
+                    y_test_labels.append(self.k_neighbors[k]['label'])
+                # 按分类规则，（多数表决法)
+                counter = Counter(y_test_labels)
+                idx = np.argmax(list(counter.values()))
+                y_test_hat.append(list(counter.keys())[idx])
+        return np.asarray(y_test_hat)
 
     def draw_kd_tree(self):
         '''
@@ -115,7 +124,7 @@ class KNearestNeighborKDTree:
         # 1.如果不够k个样本，继续递归
         # 2.如果搜索了k个样本，但是k个样本未必是最近邻的。
         # 当前计算的实例点的距离小于k个样本的最大距离，则递归，大于最大距离，没必要递归
-        if (len(self.k_neighbors) < self.k) or (distance < self.k_neighbors[-1]):
+        if (len(self.k_neighbors) < self.k) or (distance < self.k_neighbors[-1]['distance']):
             self._search_kd_tree(kd_tree.left_child, x_test)  # 递归左子树
             self._search_kd_tree(kd_tree.right_child, x_test)  # 递归右子树
             # 在整个搜索路径上的kd树的节点，存储在self.k_neighbors中，包含三个值
