@@ -19,13 +19,13 @@ class SVMClassifier:
     '''
 
     def __init__(self, C=1.0, gamma=1.0, degree=3, coef0=1.0, alpha_tol=1e-3, \
-                 kernel='', kkt_tol=1e-3, max_epochs=100):
+                 kernel=None, kkt_tol=1e-3, max_epochs=100):
         self.C = C  # 软间隔硬间隔的参数，硬间隔：适当增大C的值，软间隔：减少C值，允许部分样本不满足的约束条件
         self.gamma = gamma  # 径向基函数/高斯和函数超参数
         self.degree = degree  # 多项式函数的阶次
         self.coef0 = coef0  # 多项式和函数的常数项
         self.kernel = kernel  # 选择的和函数
-        if self.kernel is None or self.kernel.lower() == 'linear':
+        if self.kernel is None or self.kernel == '' or self.kernel.lower() == 'linear':
             self.kernel_func = kernel_func.linear()
         elif self.kernel.lower() == 'poly':
             self.kernel_func = kernel_func.poly(degree, coef0)  # self.
@@ -268,5 +268,51 @@ class SVMClassifier:
         plt.ylabel('The Mean of Cross Entropy Loss ', fontdict={'fontsize': 12})
         plt.title('The SVM Loss Curve of Cross Entropy')
         plt.grid(ls=':')
+        if is_show:
+            plt.show()
+
+    def plt_svm(self, X, y, is_show=True, is_margin=False):
+        '''
+        可视化支持向量机模型:分类边界、样本、间隔、支持向量
+        :param X:
+        :param y:
+        :param is_show:
+        :return:
+        '''
+        X, y = np.asarray(X), np.asarray(y)
+        if is_show:
+            plt.figure(figsize=(7, 5))
+        if X.shape[1] != 2:
+            print('Warning : 仅限于两个特征的可视化...')
+            return
+        x_min, x_max = X[:, 0].min() - 1, X[:, 1].max() + 1
+        y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+        xi, yi = np.meshgrid(np.linspace(x_min, x_max, 100), np.linspace(y_min, y_max, 100))
+        zi = self.predict(np.c_[xi.ravel(), yi.ravel()])
+        zi = zi.reshape(xi.shape)  # 等值线的x,y和z的维度必须一致
+        plt.contourf(xi, yi, zi, cmap='winter', alpha=0.3)
+        # 可视化正例，负例样本
+        positive, negative = X[y == 1.0], X[y == 0.0]
+        plt.plot(positive[:, 0], positive[:, 1], '*', label="Positivee Samples")
+        plt.plot(negative[:, 0], negative[:, 1], 'x', label="Negative Samples")
+
+        # 可视化支持向量
+        if len(self.support_vectors) != 0:
+            plt.scatter(self.support_vectors_x[:, 0], self.support_vectors_x[:, 1], \
+                        s=80, c='none', edgecolors='k', label='Support Vectors')
+        if is_margin and (self.kernel is None or self.kernel.lower() == 'linear'):
+            w, b = self.get_params()
+            xi_ = np.linspace(x_min, x_max, 100)
+            yi_ = -(w[0] * xi_ + b) / w[1]
+            margin = 1 / w[1]
+            plt.plot(xi_, yi_, 'r-', lw=1.5, label="Decision Boundary")
+            plt.plot(xi_, yi_ + margin, 'k:', lw=1.5, label="Maximum Margin")
+            plt.plot(xi_, yi_ - margin, 'k:')
+        plt.title("Support Vector machine Decision Bundary", fontdict={'fontsize': 14})
+        plt.xlabel('X1', fontdict={'fontsize': 12})
+        plt.ylabel('X2', fontdict={'fontsize': 12})
+        plt.legend(frameon=False)
+        plt.axis([x_min, x_max, y_min, y_max])
+
         if is_show:
             plt.show()
