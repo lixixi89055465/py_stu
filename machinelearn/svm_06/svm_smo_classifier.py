@@ -9,6 +9,7 @@ from machinelearn.svm_06 import kernel_func
 import numpy as np
 import copy
 import random
+import matplotlib.pyplot as plt
 
 
 class SVMClassifier:
@@ -79,18 +80,20 @@ class SVMClassifier:
                         self.kernel_func(x, self.support_vectors_x[i])
             return wt_x + self.b
 
-    def _meet_kkt(self, x_i, y_i, alpha_i):
+    def _meet_kkt(self, w, b, x_i, y_i, alpha_i):
         '''
         判断当前需要优化的alpha是否满足 kkt条件
-        :param x_i: 已选择的样本
-        :param y_i: 已选择的目标
-        :param alpha_i: 需要优化的alpha
+        :param w: 当前训练模型的权重系数
+        :param b: 当前训练模型的偏置项
+        :param x_i: 已选择的第i个样本
+        :param y_i: 已选择的第j个样本
+        :param alpha_i: 已选择的第i个松弛变量
         :return:  bool:满足 True,不满足 False
         '''
         if alpha_i < self.C:
             return y_i * self.decision_func(x_i) >= 1 - self.kkt_tol
         else:
-            return y_i * self.decision_func(x_i) <= 1 - self.kkt_tol
+            return y_i * self.decision_func(x_i) <= 1 + self.kkt_tol
 
     def _select_best_j(self, best_i):
         '''
@@ -166,30 +169,34 @@ class SVMClassifier:
         for epoch in range(self.max_epochs):
             if_all_match_kkt_condition = True  # 表示所有样本都满足kkt条件
             # 1.选择一对需要优化的alpha_i 和 alpha_j
-            for i in range(n_sample):  # 外层循环
-                x_i, y_i = x_train[i], y[i]  # 当前选择的第1个需要优化的alpha所对应的索引
+            for i in range(len(self.alpha)):  # 外层循环
+                x_i, y_i = x_train[i, :], y[i]  # 当前选择的第1个需要优化的alpha所对应的索引
                 alpha_i_old, err_i_old = self.alpha[i], self.E[i]  # 取当前为更新的alpha和误差
-                if not self._meet_kkt(x_i, y_i, alpha_i_old):  # 不满足 kkt条件
+                if not self._meet_kkt(self.w, self.b, x_i, y_i, alpha_i_old):  # 不满足 kkt条件
+                    if_all_match_kkt_condition = False  # 表示存在需要优化的变量
                     j = self._select_best_j(i)  # 基于alpha_i 选额alpha_j
                     alpha_j_old, err_j_old = self.alpha[j], self.E[j]  # 当前第2个
-                    x_j, y_j = x_train[j], y[j]  # 第2个需要优化的alpha和误差
+                    x_j, y_j = x_train[j, :], y[j]  # 第2个需要优化的alpha和误差
                     # 2.基于已经选择的alpha_i和alpha_j，对alpha,b,E和w进行更新
                     # 首先获取未修建的第2个需要更新的alpha值，并对其进行修剪
                     k_ii, k_jj, k_ij = self.kernel_func(x_i, x_i), \
                                        self.kernel_func(x_j, x_j), \
                                        self.kernel_func(x_i, x_j)
 
-                    eta = k_ij + k_jj - 2 * k_ij
-                    if eta < 1e-3:  # 避免分母国小，表似乎选择更新的两个样本比较接进行
+                    eta = k_ii + k_jj - 2 * k_ij
+                    if np.abs(eta) < 1e-3:  # 避免分母国小，表似乎选择更新的两个样本比较接进行
                         continue
-                    alpha_j_unc = alpha_j_old + y_j * (err_i_old - err_j_old) / eta  # 未修建的alpha_j
+                    alpha_j_unc = alpha_j_old - y_j * (err_j_old - err_i_old) / eta  # 未修建的alpha_j
                     # 修建alpha_j使得满足 0<alpha_j<C
                     alpha_j_new = self._clip_alpha_j(y_i, y_j, alpha_j_unc, alpha_i_old, alpha_j_old)
+
                     # 3.通过修建后的alpha_j_new 更新alpha_i
-                    alpha_i_new = alpha_i_old + y_i * y_j * (alpha_j_old - alpha_j_new)
+                    alpha_j_delta = alpha_j_new - alpha_j_old
+                    alpha_i_new = alpha_i_old - y_i * y_j * alpha_j_delta
                     self.alpha[i], self.alpha[j] = alpha_i_new, alpha_j_new  # 更新回存
+
                     # 4.更新模型系数w和b.
-                    alpha_i_delta, alpha_j_delta = alpha_i_new - alpha_i_old, alpha_j_new - alpha_j_old
+                    alpha_i_delta = alpha_i_new - alpha_i_old
                     # w的更新仅与已更新的一对alpha有关
                     self.w = self.w + alpha_i_delta * y_i * x_i + alpha_j_delta * y_j * x_j
                     b_i_delta = -self.E[i] - y_i * k_ii * alpha_i_delta - y_j * k_ij * alpha_j_delta
@@ -200,15 +207,13 @@ class SVMClassifier:
                         self.b += b_j_delta
                     else:
                         self.b += (b_i_delta + b_j_delta) / 2
-                    # 5.更新误差E
+                    # 5.更新误差E,计算损失
+                    self._update_error(x_train, y_train, y)
+                    # 6.更新支持向量有关的信息，即重新选择
                     self.support_vectors = np.where(self.alpha > self.alpha_tol)[0]
                     self.support_vectors_x = x_train[self.support_vectors, :]
                     self.support_vectors_y = y[self.support_vectors]
                     self.support_vectors_alpha = self.alpha[self.support_vectors]
-
-                    # 6.更新误差E,计算损失
-                    self._update_error(x_train, y_train, y)
-
             if if_all_match_kkt_condition:  # 没有需要优化的alpha,则提取停机
                 break
 
@@ -250,3 +255,18 @@ class SVMClassifier:
         x[x > 30.0] = 30.0  # 避免下溢，0.00000000000065
         x[x < -50.0] = -50.0  # 避免上溢 ,1.9287e-22
         return 1 / (1 + np.exp(-x))
+
+    def plt_loss_curve(self, is_show=True):
+        '''
+        可视化交叉熵损失曲线
+        :return:
+        '''
+        if is_show:
+            plt.figure(figsize=(7, 5))
+        plt.plot(self.cross_entropy_loss, 'k-', lw=1)
+        plt.xlabel('Training Epochs ', fontdict={'fontsize': 12})
+        plt.ylabel('The Mean of Cross Entropy Loss ', fontdict={'fontsize': 12})
+        plt.title('The SVM Loss Curve of Cross Entropy')
+        plt.grid(ls=':')
+        if is_show:
+            plt.show()
