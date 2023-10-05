@@ -285,7 +285,7 @@ class SVMClassifier:
         if X.shape[1] != 2:
             print('Warning : 仅限于两个特征的可视化...')
             return
-        x_min, x_max = X[:, 0].min() - 1, X[:, 1].max() + 1
+        x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
         y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
         xi, yi = np.meshgrid(np.linspace(x_min, x_max, 100), np.linspace(y_min, y_max, 100))
         zi = self.predict(np.c_[xi.ravel(), yi.ravel()])
