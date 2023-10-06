@@ -16,7 +16,7 @@ X, y = make_classification(n_samples=200, n_features=2, n_classes=2, n_informati
                            n_redundant=0, n_repeated=0, n_clusters_per_class=1,
                            class_sep=1.5, random_state=42)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0, shuffle=y)
-svm = SVMClassifier(C=100)
+svm = SVMClassifier(C=1000)
 svm.fit(X_train, y_train)
 y_test_pred = svm.predict(X_test)
 print(classification_report(y_test, y_test_pred))

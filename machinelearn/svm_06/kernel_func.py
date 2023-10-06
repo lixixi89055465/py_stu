@@ -32,3 +32,18 @@ def poly(degree=3, coef=1.0):
         return np.power(np.dot(x_i, x_j) + coef,degree)
 
     return _poly
+
+def rbf(gamma=1.0):
+    '''
+    高斯核函数
+    :param gamma: 超参数
+    :return:
+    '''
+    def _rbf(x_i,x_j):
+        x_i,x_j=np.asarray(x_i),np.asarray(x_j)
+        if x_i.ndim<=1:
+            return np.exp(-np.dot(x_i-x_j,x_i-x_j))/(2*gamma**2)
+        else:
+            return np.exp(-np.multiply(x_i-x_j,x_i-x_j).sum(axis=1)/(2*gamma**2))
+
+    return _rbf

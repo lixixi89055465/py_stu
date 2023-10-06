@@ -16,6 +16,7 @@ class SVMClassifier:
     '''
     支持向量机二分类算法：硬间隔，软间隔，核函数，可做线性可分、非线性可分。SMO算法
     1.训练样本的目标值仅限定编码为{0,1},SVM在fit时，把0类别重编码为-1
+
     '''
 
     def __init__(self, C=1.0, gamma=1.0, degree=3, coef0=1.0, alpha_tol=1e-3, \
@@ -29,9 +30,8 @@ class SVMClassifier:
             self.kernel_func = kernel_func.linear()
         elif self.kernel.lower() == 'poly':
             self.kernel_func = kernel_func.poly(degree, coef0)  # self.
-            pass
         elif self.kernel.lower() == 'rbf':
-            pass
+            self.kernel_func=kernel_func.rbf(self.gamma)
         else:
             print("仅限linear、poly或rbf,值为None 默认为linear线性和函数 ...")
             self.kernel_func = kernel_func.linear()
@@ -57,6 +57,7 @@ class SVMClassifier:
         self.w, self.b = np.zeros(n_features), 0.0  # 模型系数初始化为0值
         self.alpha = np.zeros(n_samples)  # 松弛变量
         self.E = self.decision_func(x_train) - y_train  # 初始化误差，所有样本类别取反
+        # self.E = np.dot(self.w,x_train.T)+self.b - y_train# 初始化误差E
 
     def decision_func(self, x):
         '''
@@ -78,9 +79,9 @@ class SVMClassifier:
                 # 公式 : w^T * x = sum( alpha_i * y_i * k(xi , x))
                 wt_x += self.support_vectors_alpha[i] * self.support_vectors_y[i] * \
                         self.kernel_func(x, self.support_vectors_x[i])
-            return wt_x + self.b
+        return wt_x + self.b
 
-    def _meet_kkt(self, w, b, x_i, y_i, alpha_i):
+    def _meet_kkt(self, w, b, x_i, y_i, alpha_i,sample_weight_i):
         '''
         判断当前需要优化的alpha是否满足 kkt条件
         :param w: 当前训练模型的权重系数
@@ -90,7 +91,7 @@ class SVMClassifier:
         :param alpha_i: 已选择的第i个松弛变量
         :return:  bool:满足 True,不满足 False
         '''
-        if alpha_i < self.C:
+        if alpha_i < self.C*sample_weight_i:
             return y_i * self.decision_func(x_i) >= 1 - self.kkt_tol
         else:
             return y_i * self.decision_func(x_i) <= 1 + self.kkt_tol
@@ -111,7 +112,7 @@ class SVMClassifier:
             best_j = random.choice(seq)  # 随机选择
         return best_j
 
-    def _clip_alpha_j(self, y_i, y_j, alpha_j_unc, alpha_i_old, alpha_j_old):
+    def _clip_alpha_j(self, y_i, y_j, alpha_j_unc, alpha_i_old, alpha_j_old, sample_weight_j):
         '''
         修剪第2个更新的alpha值
         :param y_i: 当前选择的第1个y目标值
@@ -121,12 +122,13 @@ class SVMClassifier:
         :param alpha_j_old: 当前选额的第2个未更新的alpha值
         :return:
         '''
+        C= self.C * sample_weight_j
         if y_i == y_j:
-            inf = max(0, alpha_i_old + alpha_j_old - self.C)  # L
-            sup = max(self.C, alpha_i_old + alpha_j_old)  # H
+            inf = max(0, alpha_i_old + alpha_j_old - C)  # L
+            sup = max(C, alpha_i_old + alpha_j_old)  # H
         else:
             inf = max(0, alpha_j_old - alpha_i_old)  # L
-            sup = min(self.C, self.C + alpha_j_old - alpha_i_old)  # H
+            sup = min(C, C + alpha_j_old - alpha_i_old)  # H
         if alpha_j_unc < inf:
             alpha_j_new = inf
         elif alpha_j_unc > sup:
@@ -149,7 +151,7 @@ class SVMClassifier:
                  (1 - y_train).T.dot(np.log(1 - self.sigmoid(y_predict))))
         self.cross_entropy_loss.append(loss / len(y))  # 平均交叉熵损失
 
-    def fit(self, x_train, y_train):
+    def fit(self, x_train, y_train, sample_weight=None):
         '''
         SVM 的训练：
         1.按照启发式方法选择一对需要优化的alpha
@@ -159,20 +161,22 @@ class SVMClassifier:
         :return:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
+        if sample_weight is None:
+            sample_weight=np.ones_like(y_train, dtype=np.float)
         class_values = np.sort(np.unique(y_train))  # 类别的不同取值
         if class_values[0] != 0 or class_values[1] != 1:
             raise ValueError("仅限二分类，类别编码为{0,1}...")
         y = copy.deepcopy(y_train)
         y[y == 0] = -1  # svm类别仅限定为(-1,1)
         self.init_params(x_train, y)  # 参数的初始化
-        n_sample = x_train.shape[0]  # 样本量
+        n_samples = x_train.shape[0]  # 样本量
         for epoch in range(self.max_epochs):
             if_all_match_kkt_condition = True  # 表示所有样本都满足kkt条件
             # 1.选择一对需要优化的alpha_i 和 alpha_j
-            for i in range(len(self.alpha)):  # 外层循环
+            for i in range(n_samples):  # 外层循环
                 x_i, y_i = x_train[i, :], y[i]  # 当前选择的第1个需要优化的alpha所对应的索引
                 alpha_i_old, err_i_old = self.alpha[i], self.E[i]  # 取当前为更新的alpha和误差
-                if not self._meet_kkt(self.w, self.b, x_i, y_i, alpha_i_old):  # 不满足 kkt条件
+                if not self._meet_kkt(self.w, self.b, x_i, y_i, alpha_i_old, sample_weight[i]):  # 不满足 kkt条件
                     if_all_match_kkt_condition = False  # 表示存在需要优化的变量
                     j = self._select_best_j(i)  # 基于alpha_i 选额alpha_j
                     alpha_j_old, err_j_old = self.alpha[j], self.E[j]  # 当前第2个
@@ -188,34 +192,36 @@ class SVMClassifier:
                         continue
                     alpha_j_unc = alpha_j_old - y_j * (err_j_old - err_i_old) / eta  # 未修建的alpha_j
                     # 修建alpha_j使得满足 0<alpha_j<C
-                    alpha_j_new = self._clip_alpha_j(y_i, y_j, alpha_j_unc, alpha_i_old, alpha_j_old)
+                    alpha_j_new = self._clip_alpha_j(y_i, y_j, alpha_j_unc, alpha_i_old, alpha_j_old,sample_weight[j])
 
                     # 3.通过修建后的alpha_j_new 更新alpha_i
-                    alpha_j_delta = alpha_j_new - alpha_j_old
-                    alpha_i_new = alpha_i_old - y_i * y_j * alpha_j_delta
+                    alpha_i_new = alpha_i_old + y_i * y_j * (alpha_j_old-alpha_j_new)
                     self.alpha[i], self.alpha[j] = alpha_i_new, alpha_j_new  # 更新回存
 
                     # 4.更新模型系数w和b.
-                    alpha_i_delta = alpha_i_new - alpha_i_old
+                    alpha_i_delta,alpha_j_delta = alpha_i_new - alpha_i_old,alpha_j_new - alpha_j_old
+
                     # w的更新仅与已更新的一对alpha有关
                     self.w = self.w + alpha_i_delta * y_i * x_i + alpha_j_delta * y_j * x_j
                     b_i_delta = -self.E[i] - y_i * k_ii * alpha_i_delta - y_j * k_ij * alpha_j_delta
                     b_j_delta = -self.E[j] - y_i * k_ij * alpha_i_delta - y_j * k_jj * alpha_j_delta
-                    if 0 < alpha_i_new < self.C:
+                    if 0 < alpha_i_new < self.C*sample_weight[i]:
                         self.b += b_i_delta
-                    elif 0 < alpha_j_new < self.C:
+                    elif 0 < alpha_j_new < self.C*sample_weight[j] :
                         self.b += b_j_delta
                     else:
                         self.b += (b_i_delta + b_j_delta) / 2
-                    # 5.更新误差E,计算损失
-                    self._update_error(x_train, y_train, y)
-                    # 6.更新支持向量有关的信息，即重新选择
+                    # 5.更新支持向量有关的信息，即重新选择
                     self.support_vectors = np.where(self.alpha > self.alpha_tol)[0]
                     self.support_vectors_x = x_train[self.support_vectors, :]
                     self.support_vectors_y = y[self.support_vectors]
                     self.support_vectors_alpha = self.alpha[self.support_vectors]
+                    # 6.更新误差E,计算损失
+                    self._update_error(x_train, y_train, y)
             if if_all_match_kkt_condition:  # 没有需要优化的alpha,则提取停机
                 break
+
+
 
     def get_params(self):
         '''
