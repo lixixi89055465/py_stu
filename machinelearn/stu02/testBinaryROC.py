@@ -2,7 +2,7 @@
 # @Time    : 2023/10/7 17:23
 # @Author  : nanji
 # @Site    : 
-# @File    : testROC.py
+# @File    : testBinaryROC.py
 # @Software: PyCharm 
 # @Comment :  3. 性能度量——ROC与AUC+二分类
 import pandas as pd
@@ -40,25 +40,37 @@ y_score['lda'] = lda_model.decision_function(X_test)
 
 from sklearn.ensemble import AdaBoostClassifier
 
-abc_model=AdaBoostClassifier().fit(X_train,y_train)
-y_score['abc']=abc_model.decision_function(X_test)
+abc_model = AdaBoostClassifier().fit(X_train, y_train)
+y_score['abc'] = abc_model.decision_function(X_test)
 
 from sklearn.metrics import roc_curve
-fpr,tpr,threshold,ks_max,best_thr=dict(),dict(),dict(),dict(),dict()
-for key in y_score.keys():
-    # 计算真正率和假正 率
-    fpr[key],tpr[key],threshold[key]=roc_curve(y_test,y_score[key])
-    # 计算ks和最佳阈值
-    KS_max=tpr[key]-fpr[key]# 差值向量
-    ind=np.argmax(KS_max)
-    best_thr[key]=threshold[key][ind]
-    print(ind)
 
-import matplotlib.pyplot  as plt
-for i,key in enumerate(y_score.keys()):
-    plt.plot(fpr[key],tpr[key],lw=2)
+fpr, tpr, threshold, ks_max, best_thr = dict(), dict(), dict(), dict(), dict()
+for key in y_score.keys():
+    # 计算真正率、假正率、对应阈值
+    fpr[key], tpr[key], threshold[key] = roc_curve(y_test, y_score[key])
+    # 计算KS 和最佳阈值
+    KS_max = fpr[key] - tpr[key]  # 差值向量
+    ind = np.argmax(ks_max)  # 最大KS 值
+    best_thr[key] = threshold[key][ind]  # 最佳阈值
+
+import matplotlib.pyplot as plt
+
+from sklearn.metrics import auc
+
+plt.figure(figsize=(8, 6))
+
+line = ['r-*', 'b-o', 'g-+', 'c-x']
+for i, key in enumerate(y_score.keys()):
+    plt.plot(fpr[key], tpr[key], ls=line[i], lw=2, label=key + ' AUC=%0.2f' % (auc(fpr[key], tpr[key])))
+plt.plot([0, 1], [0, 1], color='navy', lw=1, ls='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.grid()
+plt.xlabel('False positive rate ', fontsize=12)
+plt.ylabel('True positive rate ', fontsize=12)
+plt.title("binary classification of ROC and AUC ", fontsize=14)
+plt.legend(loc='lower right', fontsize=12)
 plt.show()
 
-
-
-
+plt.show()
