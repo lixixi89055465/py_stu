@@ -174,12 +174,39 @@ class ModelPerformanceMetrics:
             roc_array = np.array([np.mean(fpr, axis=1), np.mean(tpr, axis=1)]).T
         return roc_array
 
-    def cost_metrics_curve(self, cost_value):
+    def cost_metrics_curve(self, cost_vals):
         '''
         代价曲线，各坐标点的计算
-        :param cost_value:
+        :param cost_vals:
         :return:
         '''
-        cost_array = np.zeros((self.n_samples, 2))  # 存储正利率代价和归一化代价
-        # if self.n_class==2:# 二分类
-        #     idx=
+        cost_array = np.zeros((self.n_samples, 2))  # 存储假正例率代价和归一化代价
+        if self.n_class == 2:  # 二分类
+            idx = self.__sort_positive__(self.y_prob[:, 0])  # 降序排序
+            y_prob = self.y_prob[idx, 0]  # 降序排序，取第一列即可
+            y_true = self.y_true[idx]  # 真值按照排序索引进行重排
+            # # 针对每个测试样本得分，作为阈值，预测类别，并分别计算个指标值
+            cost01, cost10 = cost_vals[0], cost_vals[1]
+            # 针对每个测试样本的得分，作为阈值，预测类别，并分别计算各指标值
+            for i in range(self.n_samples):
+                tp, fn, tn, fp = self.__cal_sub_metrics__(y_true, i + 1)  # 计算指标
+                # 计算假正利率FPR,和真正利率 TPR
+                p_cost = y_prob[i] * cost01 / (y_prob[i] * cost01 + (1 - y_prob[i]) * cost10)
+                fpr, tpr = fp / (fp + tn), tp / (tp + fn)
+                fnr = 1 - tpr
+                cost_norm = fnr * y_prob[i] + fpr * (1 - y_prob[i])
+                cost_array[i,:]=p_cost,cost_norm
+        else:
+            fpr = np.zeros((self.n_samples, self.n_class))
+            tpr = np.zeros((self.n_samples, self.n_class))
+            for k in range(self.n_class):
+                idx = self.__sort_positive__(self.y_prob[:, k])
+                y_true_k = self.y_prob[:, k]
+                y_true = y_true_k[idx]  # 真值按照排序索引进行重排
+                # 针对每个测试样本得分，作为阈值，预测类别，并分别计算各指标值
+                for i in range(self.n_samples):
+                    tp, fn, tn, fp = self.__cal_sub_metrics__(y_true, i + 1)  # 计算指标
+                    fpr[i, k], tpr[i, k] = fp / (fp + tn), tp / (tp + fn)
+            # 宏假正利率FPR 和宏真正利率TPR
+            roc_array = np.array([np.mean(fpr, axis=1), np.mean(tpr, axis=1)]).T
+        return roc_array
