@@ -54,7 +54,8 @@ class DataBinWrapper:
             else:
                 return np.asarray(np.digitize(x_samples,self.XrangeMap[0])).reshape(-1)
         else:
-            return np.asarray([np.digitize(x_samples[:,i],self.XrangeMap[i]) for i in range(x_samples.shape[1])]).T
+            return np.asarray([np.digitize(x_samples[:,i],self.XrangeMap[i])
+                               for i in range(x_samples.shape[1])]).T
 
 
 
