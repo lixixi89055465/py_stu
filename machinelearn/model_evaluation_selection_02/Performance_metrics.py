@@ -64,7 +64,7 @@ class ModelPerformanceMetrics:
         self.cal_confusion_matrix()
         precision = np.diag(self.cm) / np.sum(self.cm, axis=0)  # 查准率
         recall = np.diag(self.cm) / np.sum(self.cm, axis=1)  # 查全率
-        f1_score = 2 * precision * recall / (precision + recall+1e-8)
+        f1_score = 2 * precision * recall / (precision + recall + 1e-8)
         support = np.sum(self.cm, axis=1)  # 各个类别的支持样本量
         support_all = np.sum(support)  # 总的样本量
         p_m, r_m = precision.mean(), recall.mean()
@@ -139,14 +139,14 @@ class ModelPerformanceMetrics:
             idx = self.__sort_postive__(self.y_prob[:, 0])
             y_true = self.y_true[idx]  # 真值类别标签按照排序索引进行排序
             # 针对每个样本，把预测概率作为阈值，计算各指标
-            n_nums, p_nums = len(y_true[y_true == 1]), len(y_true[y_true == 0]) # 真实类别中，反例与正例的样本量
-            tp, fn, tn, fp = self.__call_sub_metrics__(y_true,1)
+            n_nums, p_nums = len(y_true[y_true == 1]), len(y_true[y_true == 0])  # 真实类别中，反例与正例的样本量
+            tp, fn, tn, fp = self.__call_sub_metrics__(y_true, 1)
             roc_array[0, :] = fp / (tp + fp), tp / (tp + fn)
             for i in range(self.n_samples):
-                if y_true[i]==1:
-                    roc_array[i,:]=roc_array[i-1,0]+1/n_nums,roc_array[i-1,1]
+                if y_true[i] == 1:
+                    roc_array[i, :] = roc_array[i - 1, 0] + 1 / n_nums, roc_array[i - 1, 1]
                 else:
-                    roc_array[i,:]=roc_array[i-1,0],roc_array[i-1,1]+1/p_nums
+                    roc_array[i, :] = roc_array[i - 1, 0], roc_array[i - 1, 1] + 1 / p_nums
         else:  # 多分类
             fpr = np.zeros((self.n_samples, self.n_class))  # 假正例率
             tpr = np.zeros((self.n_samples, self.n_class))  # 真正例率
@@ -158,7 +158,7 @@ class ModelPerformanceMetrics:
                 for i in range(self.n_samples):
                     tp, fn, tn, fp = self.__call_sub_metrics__(y_true, i + 1)
                     fpr[i, k] = tp / (tp + fp)  # 假正例率
-                    tpr[i, k] = tp / (tp + fn) # 真正例率
+                    tpr[i, k] = tp / (tp + fn)  # 真正例率
             # 宏查准率与宏查全率
             roc_array = np.array([np.mean(tpr, axis=1), np.mean(fpr, axis=1)]).T
         return roc_array
@@ -171,7 +171,8 @@ class ModelPerformanceMetrics:
         fpr_fnr_array = self.roc_metrics_curve()  # 获取假正例和正真例率
         fpr_fnr_array[:, 1] = 1 - fpr_fnr_array[:, 1]  # 计算假反例率
         return fpr_fnr_array
-    def plt_cost_curve(self,fnr_fpr_vals,alpha,class_i=0):
+
+    def plt_cost_curve(self, fnr_fpr_vals, alpha, class_i=0):
         '''
         可视化代价曲线
         :param fnr_fpr_vals: 假反利率和假正利率二维数组
@@ -180,30 +181,29 @@ class ModelPerformanceMetrics:
         :return:
         '''
         # plt.figure(figsize=(7,5))
-        fpr_s,fnr_s=fnr_fpr_vals[:,0],fnr_fpr_vals[:,1]#获取假正例率和假反利率
-        cost01,cost10=1,alpha
-        if self.n_class==2:
-            class_i=0 # 二分类，默认取第一列
-        if 0<=class_i<self.n_class:
-            p=np.sort(self.y_prob[:,class_i])
+        fpr_s, fnr_s = fnr_fpr_vals[:, 0], fnr_fpr_vals[:, 1]  # 获取假正例率和假反利率
+        cost01, cost10 = 1, alpha
+        if self.n_class == 2:
+            class_i = 0  # 二分类，默认取第一列
+        if 0 <= class_i < self.n_class:
+            p = np.sort(self.y_prob[:, class_i])
         else:
-            p=np.sort(self.y_prob[:,0])# 不满足条件，默认第一个类别
-        positive_cost=p*cost01/(p*cost01+(1-p)*cost10)
-        for fpr,fnr in zip(fpr_s,fnr_s):
+            p = np.sort(self.y_prob[:, 0])  # 不满足条件，默认第一个类别
+        positive_cost = p * cost01 / (p * cost01 + (1 - p) * cost10)
+        for fpr, fnr in zip(fpr_s, fnr_s):
             # cost_norm=fnr*positive_cost+(1-positive_cost)*fpr
             # plt.plot(positive_cost,cost_norm,'b-',lw=0.5)
-            plt.plot([0,1],[fpr,fnr],'b-',lw=0.5)
+            plt.plot([0, 1], [fpr, fnr], 'b-', lw=0.5)
         # 查找公共边界，计算期望总体代价
-        public_cost=np.outer(fnr_s,positive_cost)+np.outer(fpr_s,(1-positive_cost))
-        public_cost_min=public_cost.min(axis=0)
-        plt.plot(positive_cost,public_cost_min,'r--',lw=1) # 公共边界
-        plt.fill_between(positive_cost,0,public_cost_min,facecolor='g',alpha=0.5)
+        public_cost = np.outer(fnr_s, positive_cost) + np.outer(fpr_s, (1 - positive_cost))
+        public_cost_min = public_cost.min(axis=0)
+        plt.plot(positive_cost, public_cost_min, 'r--', lw=1)  # 公共边界
+        plt.fill_between(positive_cost, 0, public_cost_min, facecolor='g', alpha=0.5)
 
-
-        cost_area=self.__cal_etc__(positive_cost,public_cost_min)
-        plt.xlabel('Positive Probability cost',fontdict={'fontsize':12})
-        plt.ylabel('Normalized Cost',fontdict={'fontsize':12})
-        plt.title('Nequal Cost Curve and Expected Total Cost=%.8f'%cost_area)
+        cost_area = self.__cal_etc__(positive_cost, public_cost_min)
+        plt.xlabel('Positive Probability cost', fontdict={'fontsize': 12})
+        plt.ylabel('Normalized Cost', fontdict={'fontsize': 12})
+        plt.title('Nequal Cost Curve and Expected Total Cost=%.8f' % cost_area)
         plt.show()
 
     @staticmethod
@@ -216,13 +216,12 @@ class ModelPerformanceMetrics:
         return (roc_val[1:, 0] - roc_val[:-1, 0]).dot(roc_val[:-1, 1] - roc_val[1:, 1]) / 2
 
     @staticmethod
-    def __cal_etc__(p_cost,cost_norm):
+    def __cal_etc__(p_cost, cost_norm):
         '''
         计算期望总体代价，即代价曲线公共下线所围城的面积
         :return:
         '''
-        return (p_cost[1:]-p_cost[:-1]).dot((cost_norm[:-1]+cost_norm[1:])/2)
-
+        return (p_cost[1:] - p_cost[:-1]).dot((cost_norm[:-1] + cost_norm[1:]) / 2)
 
     def plt_roc_curve(self, roc_val, label=None, is_show=None):
         '''
