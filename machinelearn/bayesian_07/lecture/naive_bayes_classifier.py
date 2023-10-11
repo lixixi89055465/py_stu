@@ -32,6 +32,32 @@ class NaiveBayesClassifier:
         self.class_values_num = dict()  # 目标集中每个类别的样本量:Dc
         self.feature_values_num = dict()
 
+    def _data_bin_wrapper(self, x_samples):
+        '''
+        针对特征的连续的特征属性索引dbw_idx,分别进行分箱,
+        考虑测试样本与训练样本使用同一个XrangeMap
+        @param X_samples: 样本：即可是训练样本,也可以是测试样本
+        @return:
+        '''
+        self.feature_R_idx = np.asarray(self.feature_R_idx)
+        x_sample_prop = []  # 分箱之后的数据
+        if not self.dbw_XrangeMap:
+            # 为空，即创建决策树前所做的分箱操作
+            for i in range(x_samples.shape[1]):
+                if i in self.feature_R_idx:  # 说明当前特征是连续数值
+                    self.dbw.fit(x_samples[:, i])
+                    self.dbw_XrangeMap[i] = self.dbw.XrangeMap
+                    x_sample_prop.append(self.dbw.transform(x_samples[:, i]))
+                else:
+                    x_sample_prop.append(x_samples[:, i])
+        else:
+            for i in range(x_samples.shape[1]):
+                if i in self.feature_R_idx:  # 说明当前特征是连续数值
+                    x_sample_prop.append(self.dbw.transform(x_samples[:, i], self.dbw_XrangeMap[i]))
+                else:
+                    x_sample_prop.append(x_samples[:, i])
+        return np.asarray(x_sample_prop).T
+
     def fit(self, x_train, y_train):
         '''
         朴素贝叶斯分类起训练,将朴素贝叶斯分类起设计的所有概率估值事先计算好存储起来
@@ -75,9 +101,20 @@ class NaiveBayesClassifier:
         :param y_train:
         :return:
         '''
-        self.dbw.fit(x_train)
-        self.dbw.transform(x_train)
-        pass
+        x_train, y_train = np.asarray(x_train), np.asarray(y_train)
+        if self.is_feature_all_R:  # 全部是连续
+            self.dbw.fit(x_train)
+            x_train = self.dbw.transform(x_train)
+        elif self.feature_R_idx is not None:
+            x_train = self._data_bin_wrapper(x_train)
+        for c in self.class_values:
+            class_x = x_train[c == y_train]  # 获取对应羸惫的样本
+            feature_counter = dict()  # 每个离散变量特征中特定值出现的频次
+            # 连续特征变量村u,sigma
+            for i in range(x_train.shape[1]):
+                feature_counter[i] = cc.Counter(class_x[:, i])
+            self.classified_feature_prob[c] = feature_counter
+        print(self.classified_feature_prob)
 
     def _gaussian_fit(self, x_train, y_train):
         '''
@@ -93,8 +130,9 @@ class NaiveBayesClassifier:
             for i in range(x_train.shape[1]):
                 if self.feature_R_idx is not None and (i in self.feature_R_idx):  # 连续特征
                     # 极大似然估计均值和方差
-                    mu, sigma = norm.fit(x_train[:, i])
+                    mu, sigma = norm.fit(np.asarray(x_train[:, i], dtype=np.float))
                     feature_counter[i] = {'mu': mu, 'sigma': sigma}
                 else:  # 离散特征
                     feature_counter[i] = cc.Counter(class_x[:, i])
             self.classified_feature_prob[c] = feature_counter
+        print(self.classified_feature_prob)
