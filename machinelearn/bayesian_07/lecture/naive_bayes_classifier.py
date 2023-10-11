@@ -136,3 +136,23 @@ class NaiveBayesClassifier:
                     feature_counter[i] = cc.Counter(class_x[:, i])
             self.classified_feature_prob[c] = feature_counter
         print(self.classified_feature_prob)
+
+    def naive_bayes_classifier(self, x_test):
+        '''
+        预测测试样本所属类别的概率
+        :return:测试类别集
+        '''
+        x_test = np.asarray(x_test)
+        if self.is_binned:
+            return self._binned_predict_proba(x_test)
+        else:
+            return self._gaussian_predict_proba(x_test)
+
+    def _binned_predict_proba(self, x_test):
+        '''
+
+        :param x_test:
+        :return:
+        '''
+        pass
+
