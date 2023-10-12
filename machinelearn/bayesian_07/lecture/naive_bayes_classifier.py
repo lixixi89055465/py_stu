@@ -20,6 +20,8 @@ class NaiveBayesClassifier:
     def __init__(self, is_binned=False, is_feature_all_R=False, \
                  feature_R_idx=None, max_bins=10):
         self.is_binned = is_binned  # 连续特征变量数据是否进行分箱操作，离散化
+        self.is_feature_all_R = False
+        self.dbw_XrangeMap = None
         if is_binned:
             self.is_feature_all_R = is_feature_all_R  # 是否所有特征变量都是连续树脂 bool
             self.max_bins = max_bins  # 最大分箱数
@@ -42,6 +44,8 @@ class NaiveBayesClassifier:
         self.feature_R_idx = np.asarray(self.feature_R_idx)
         x_sample_prop = []  # 分箱之后的数据
         if not self.dbw_XrangeMap:
+            self.dbw_XrangeMap=dict()
+            self.dbw=DataBinWrapper()
             # 为空，即创建决策树前所做的分箱操作
             for i in range(x_samples.shape[1]):
                 if i in self.feature_R_idx:  # 说明当前特征是连续数值
@@ -150,9 +154,91 @@ class NaiveBayesClassifier:
 
     def _binned_predict_proba(self, x_test):
         '''
-
-        :param x_test:
+        连续特征变量进行分箱离散化，预测
+        :param x_test: 测试样本集
         :return:
         '''
-        pass
+        if self.is_feature_all_R:
+            x_test = self.dbw.transform(x_test)
+        elif self.feature_R_idx is not None:
+            x_test = self._data_bin_wrapper(x_test)
+        # 存储测试样本所属各个类别的概率
+        y_test_hat = np.zeros((x_test.shape[0], self.n_class))
+        for i in range(x_test.shape[0]):
+            test_sample = x_test[i]  # 当前测试样本
+            y_hat = []  # 当前测试样本所属各个类别的概率
+            for c in self.class_values:
+                prob_ln = np.log(self.prior_prob[c])  # 当前类别的先验概率，取对数
+                # 当前类别下不同特征变量不同取值的频次， 构成字典
+                feature_frequency = self.classified_feature_prob[c]
+                for j in range(x_test.shape[1]):  # 针对每个特征变量
+                    value = test_sample[j]  # 当前测试样本的当前特征取值
+                    cur_feature_freq = feature_frequency[j]
+                    # 按照拉普拉斯修正方法计算
+                    prob_ln += np.log(cur_feature_freq.get(value, 0) + 1) / \
+                               (self.class_values_num[c] + self.feature_values_num[j])
+                y_hat.append(prob_ln)  # 输入第 c类别的概率
+            y_test_hat[i, :] = self.softmax_func(np.asarray(y_hat))  # 适合多分类，且归一化
+        return y_test_hat
 
+    @staticmethod
+    def softmax_func(x):
+        '''
+        softmax 函数 ，为避免上溢或下溢，对参数x做限制
+        :param x: batch_size * n_classes
+        :return: 1*n_classes
+        '''
+        exps = np.exp(x - np.max(x))  # 避免溢出，每个数减去其最大值
+        exp_sum = np.sum(exps)
+        return exps / exp_sum
+
+    def _gaussian_predict_proba(self, x_test):
+        '''
+        连续特征变量不进行分箱，直接按高斯分布估计
+        :param x_test:  # 测试样本集
+        :return:
+        '''
+        '''
+              连续特征变量进行分箱离散化，预测
+              :param x_test: 测试样本集
+              :return:
+              '''
+        if self.is_feature_all_R:
+            x_test = self.dbw.transform(x_test)
+        elif self.feature_R_idx is not None:
+            x_test = self._data_bin_wrapper(x_test)
+        # 存储测试样本所属各个类别的概率
+        y_test_hat = np.zeros((x_test.shape[0], self.n_class))
+        for i in range(x_test.shape[0]):
+            test_sample = x_test[i]  # 当前测试样本
+            y_hat = []  # 当前测试样本所属各个类别的概率
+            for c in self.class_values:
+                prob_ln = np.log(self.prior_prob[c])  # 当前类别的先验概率，取对数
+                # 当前类别下不同特征变量不同取值的频次， 构成字典
+                feature_frequency = self.classified_feature_prob[c]
+                for j in range(x_test.shape[1]):  # 针对每个特征变量
+                    value = test_sample[j]  # 当前样本的当前特征的取值
+                    if self.feature_R_idx is not None and (j in self.feature_R_idx):  # 连续特征
+                        # 取极大似然估计的均值和方差
+                        mu, sigma = feature_frequency[j].values()
+                        prob_ln += np.log(norm.pdf(value, mu, sigma)+1e-7)
+                    else:
+                        cur_feature_freq = feature_frequency[j]
+                        # 按照拉普拉斯修正方法计算
+                        prob_ln += np.log((cur_feature_freq.get(value, 0) + 1) / \
+                                          (self.class_values_num[c]) + self.feature_values_num[j])
+
+                y_hat.append(prob_ln)  # 输入第 c类别的概率
+            y_test_hat[i, :] = self.softmax_func(np.asarray(y_hat))  # 适合多分类，且归一化
+        return y_test_hat
+
+    def predict_proba(self, x_test):
+        '''
+        预测测试样本所属类别概率
+        :param X: 测试样本
+        :return:
+        '''
+        if self.is_binned:
+            return self._binned_predict_proba(x_test)
+        else:
+            return self._gaussian_predict_proba(x_test)

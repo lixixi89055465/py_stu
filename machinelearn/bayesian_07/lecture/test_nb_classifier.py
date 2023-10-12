@@ -12,6 +12,9 @@ from machinelearn.bayesian_07.lecture.naive_bayes_classifier import NaiveBayesCl
 
 wm = pd.read_csv("../datasets/watermelon.csv").dropna()
 X, y = np.asarray(wm.iloc[:, 1:-1]), np.asarray(wm.iloc[:, -1])
-nbc = NaiveBayesClassifier(is_binned=True, feature_R_idx=[6, 7])
-# nbc = NaiveBayesClassifier(is_binned=False, feature_R_idx=[6, 7])
+# nbc = NaiveBayesClassifier(is_binned=True, feature_R_idx=[6, 7])
+nbc = NaiveBayesClassifier(is_binned=False, feature_R_idx=[6, 7])
 nbc.fit(X, y)
+
+y_proba = nbc.predict_proba(X)
+print(y_proba)
