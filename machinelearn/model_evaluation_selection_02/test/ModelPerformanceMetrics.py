@@ -25,7 +25,7 @@ class ModelPerformanceMetrics:
         :param y_true:
         :param y_prob:
         '''
-        self.y_prob = np.asarray(y_prob, dtype=np.int)
+        self.y_prob = np.asarray(y_prob, dtype=np.float)
         self.y_true = np.asarray(y_true, dtype=np.int)
         self.n_samples, self.n_class = self.y_prob.shape
         if self.n_class > 2:
@@ -56,6 +56,7 @@ class ModelPerformanceMetrics:
                     confusion_matrix[idx, idx] += 1
                 else:
                     confusion_matrix[idx_true, idx] += 1
+        self.cm=confusion_matrix
         return confusion_matrix
 
     @staticmethod
@@ -115,13 +116,15 @@ class ModelPerformanceMetrics:
             recall = np.zeros((self.n_samples, self.n_class))
             for k in range(self.n_class):  # 计算每个列别的R，R，F1指标
                 idx = self.__sort_positive__(self.y_prob[:, k])  # 降序排序
-                y_true_k = self.y_true[idx]
+                y_true_k = self.y_true[:, k]  # 取第K 列，即第K个类别所有目标值
+                y_true = y_true_k[idx]  # 真值按照修改索引进行重排
+                # 针对每个测试样本呢得分，作为阈值，预测类别，并分别计算各目标值
                 for i in range(self.n_samples):
-                    tp, fn, tn, fp = self.__cal_sub_metrics__(y_true_k, i + 1)
+                    tp, fn, tn, fp = self.__cal_sub_metrics__(y_true, i + 1)
                     precision[i, k] = tp / (tp + fp)  # 查准率
                     recall[i, k] = tp / (tp + fn)  # 查全率
             # 宏查准率Precision和宏查全率Recall
-            pr_array = np.array([np.mean(recall), np.mean(precision, axis=1)]).T
+            pr_array = np.array([np.mean(recall, axis=1), np.mean(precision, axis=1)]).T
         return pr_array
 
     def __cal_sub_metrics__(self, y_true_sort, n):
@@ -140,9 +143,9 @@ class ModelPerformanceMetrics:
             fp = np.sum(y_true_sort) - tn  # 假正例
             fn = self.n_samples - tp - tn - fp  # 假反例
         else:
-            pre_label = np.r_[np.ones(n, dtype=int), np.zeros(n, dtype=int)]
-            tp = len(pre_label[pre_label == 1 & (pre_label == y_true_sort)])  # 真正例
-            tn = len(pre_label[pre_label == 0 & (pre_label == y_true_sort)])  # 真反例
+            pre_label = np.r_[np.ones(n, dtype=int), np.zeros(self.n_samples - n, dtype=int)]
+            tp = len(pre_label[(pre_label == 1) & (pre_label == y_true_sort)])  # 真正例
+            tn = len(pre_label[(pre_label == 0) & (pre_label == y_true_sort)])  # 真反例
             fn = np.sum(y_true_sort) - tp  # 假正例
             fp = self.n_samples - tp - tn - fn  # 假反例
         return tp, fn, tn, fp
@@ -157,16 +160,16 @@ class ModelPerformanceMetrics:
             idx = self.__sort_positive__(self.y_prob[:, 0])  # 降序排序
             y_true = self.y_true[idx]  # 真值按照排序索引进行重排
             # # 针对每个测试样本得分，作为阈值，预测类别，并分别计算个指标值
-            for k in range(self.n_samples):
-                tp, fn, tn, fp = self.__cal_sub_metrics__(y_true, k + 1)  # 计算指标
+            for i in range(self.n_samples):
+                tp, fn, tn, fp = self.__cal_sub_metrics__(y_true, i + 1)  # 计算指标
                 # 计算假正利率FPR,和真正利率 TPR
-                roc_array[k, :] = fp / (fp + tn), tp / (tp + fn)
+                roc_array[i, :] = fp / (fp + tn), tp / (tp + fn)
         else:  # 多分类
             fpr = np.zeros((self.n_samples, self.n_class))
             tpr = np.zeros((self.n_samples, self.n_class))
             for k in range(self.n_class):
                 idx = self.__sort_positive__(self.y_prob[:, k])
-                y_true_k = self.y_prob[:, k]
+                y_true_k = self.y_true[:, k]
                 y_true = y_true_k[idx]  # 真值按照排序索引进行重排
                 # 针对每个测试样本得分，作为阈值，预测类别，并分别计算各指标值
                 for i in range(self.n_samples):
@@ -215,7 +218,7 @@ class ModelPerformanceMetrics:
                     fnr = 1 - tpr  # 假反利率
                     cost_norm[i, k] = fnr * y_prob[i] + fpr * (1 - y_prob[i])  # 归一化代价
             # 宏假正利率FPR 和宏真正利率TPR
-            cost_array = np.array([np.mean(p_cost, axis=1), np.mean(cost_norm, axis=1)])
+            cost_array = np.array([np.mean(p_cost, axis=1), np.mean(cost_norm, axis=1)]).T
         return cost_array
 
     def plt_pr_value(self, pr_val, label=None, is_show=True):
@@ -251,6 +254,21 @@ class ModelPerformanceMetrics:
         :return:
         '''
         ap = self.__cal_auc(roc_val)
+        plt.plot(roc_val[0], roc_val[1], 'r--', lw=1)  # 公共边界
+        if is_show:
+            plt.figure(figsize=(7, 5))
+        if label:
+            plt.step(roc_val[:, 0], roc_val[:, 1], '-', lw=2, where='post', label=label + ', AP = %.3f' % ap)
+            plt.legend(frameon=False)
+            plt.title("Precision recall curve of test samples by different Model")
+        else:
+            plt.step(roc_val[:, 0], roc_val[:, 1], ls='-', lw=2, where='post')
+            plt.title('Precision-Recall curve of test AP = %.3f' % ap)
+        plt.xlabel('Recall ', fontdict={'fontsize': 12})
+        plt.ylabel('Precision ', fontdict={'fontsize': 12})
+        plt.grid(ls=':')
+        if is_show:
+            plt.show()
 
     def __cal_auc(self, roc_val):
         '''
@@ -311,3 +329,5 @@ class ModelPerformanceMetrics:
         '''
         return (p_cost[1:] - p_cost[:-1]).dot((cost_norm[:-1] + cost_norm[1:]) / 2)
 
+    def __cal_ap__(self, pr_val):
+        return np.dot(pr_val[1:, 0] - pr_val[:-1, 0], pr_val[1:, 1])
