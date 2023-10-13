@@ -44,8 +44,8 @@ class NaiveBayesClassifier:
         self.feature_R_idx = np.asarray(self.feature_R_idx)
         x_sample_prop = []  # 分箱之后的数据
         if not self.dbw_XrangeMap:
-            self.dbw_XrangeMap=dict()
-            self.dbw=DataBinWrapper()
+            self.dbw_XrangeMap = dict()
+            self.dbw = DataBinWrapper()
             # 为空，即创建决策树前所做的分箱操作
             for i in range(x_samples.shape[1]):
                 if i in self.feature_R_idx:  # 说明当前特征是连续数值
@@ -134,12 +134,11 @@ class NaiveBayesClassifier:
             for i in range(x_train.shape[1]):
                 if self.feature_R_idx is not None and (i in self.feature_R_idx):  # 连续特征
                     # 极大似然估计均值和方差
-                    mu, sigma = norm.fit(np.asarray(x_train[:, i], dtype=np.float))
+                    mu, sigma = norm.fit(np.asarray(class_x[:, i], dtype=np.float))
                     feature_counter[i] = {'mu': mu, 'sigma': sigma}
                 else:  # 离散特征
                     feature_counter[i] = cc.Counter(class_x[:, i])
             self.classified_feature_prob[c] = feature_counter
-        print(self.classified_feature_prob)
 
     def naive_bayes_classifier(self, x_test):
         '''
@@ -203,12 +202,12 @@ class NaiveBayesClassifier:
               :param x_test: 测试样本集
               :return:
               '''
-        if self.is_feature_all_R:
-            x_test = self.dbw.transform(x_test)
-        elif self.feature_R_idx is not None:
-            x_test = self._data_bin_wrapper(x_test)
+        # if self.is_feature_all_R:
+        #     x_test = self.dbw.transform(x_test)
+        # elif self.feature_R_idx is not None:
+        #     x_test = self._data_bin_wrapper(x_test)
         # 存储测试样本所属各个类别的概率
-        y_test_hat = np.zeros((x_test.shape[0], self.n_class))
+        y_test_pred = np.zeros((x_test.shape[0], self.n_class))
         for i in range(x_test.shape[0]):
             test_sample = x_test[i]  # 当前测试样本
             y_hat = []  # 当前测试样本所属各个类别的概率
@@ -221,7 +220,7 @@ class NaiveBayesClassifier:
                     if self.feature_R_idx is not None and (j in self.feature_R_idx):  # 连续特征
                         # 取极大似然估计的均值和方差
                         mu, sigma = feature_frequency[j].values()
-                        prob_ln += np.log(norm.pdf(value, mu, sigma)+1e-7)
+                        prob_ln += np.log(norm.pdf(value, mu, sigma) + 1e-7)
                     else:
                         cur_feature_freq = feature_frequency[j]
                         # 按照拉普拉斯修正方法计算
@@ -229,8 +228,16 @@ class NaiveBayesClassifier:
                                           (self.class_values_num[c]) + self.feature_values_num[j])
 
                 y_hat.append(prob_ln)  # 输入第 c类别的概率
-            y_test_hat[i, :] = self.softmax_func(np.asarray(y_hat))  # 适合多分类，且归一化
-        return y_test_hat
+            y_test_pred[i, :] = self.softmax_func(np.asarray(y_hat))  # 适合多分类，且归一化
+        return y_test_pred
+
+    def predict(self, x_test):
+        '''
+        预测测试样本的所有类别
+        :param x_test:
+        :return:
+        '''
+        return np.argmax(self.predict_proba(x_test), axis=1).reshape(-1)
 
     def predict_proba(self, x_test):
         '''
