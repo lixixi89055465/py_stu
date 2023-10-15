@@ -192,7 +192,7 @@ class LogisticRegression:
 
         return weight, bias
 
-    def predict_prob(self, x_test):
+    def predict_proba(self, x_test):
         '''
         预测测试样本的概率，第1列为y=0的概率，第2列是y=1的概率
         :param x_test: 测试样本，ndarray : n*k
@@ -214,7 +214,7 @@ class LogisticRegression:
         :param p: 概率阈值
         :return:
         '''
-        y_prob = self.predict_prob(x)
+        y_prob = self.predict_proba(x)
         # 布尔值转换为整数，true对应1,false 对应0
         return (y_prob[:, 1] > p).astype(int)
 
