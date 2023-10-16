@@ -81,8 +81,19 @@ class SAMMERClassifier:
             y_prob = self.base_estimator[i].predict_proba(x_test)
             np.clip(y_prob, np.finfo(y_prob.dtype).eps, None, out=y_prob)
             y_ln = np.log(y_prob)
-            C_x += (self.n_class - 1) * (y_ln - 1.0 / self.n_class * np.sum(y_ln, axis=1,keepdims=True))
-        return sel.soft
+            C_x += (self.n_class - 1) * (y_ln - 1.0 / self.n_class * np.sum(y_ln, axis=1, keepdims=True))
+        return self.softmax_func(C_x)
+
+    @staticmethod
+    def softmax_func(x):
+        '''
+        softmax 函数 ，为避免上溢或下溢，对参数x做限制
+        :param x: batch_size * n_classes
+        :return: 1*n_classes
+        '''
+        exps = np.exp(x - np.max(x))  # 避免溢出，每个数减去其最大值
+        exp_sum = np.sum(exps, axis=1, keepdims=True)
+        return exps / exp_sum
 
     def predict(self, x_test):
         '''
