@@ -34,7 +34,7 @@ class SAMMERClassifier:
             # 异质（不同种类型）的分类器
             self.n_estimators = len(self.base_estimator)
         self.estimator_weights = []  # 每个基学习器的权重系数
-        self.n_sample, self.n_class = None, None
+        self.n_samples, self.n_class = None, None
 
     def _target_encoding(self, y_train):
         '''
@@ -42,10 +42,10 @@ class SAMMERClassifier:
         :param y_train:  训练目标集
         :return:
         '''
-        self.n_sample, self.n_class = len(y_train), len(set(y_train))
+        self.n_samples, self.n_class = len(y_train), len(set(y_train))
         target = -1.0 / (self.n_class - 1) * \
-                 np.ones((self.n_sample, self.n_class))
-        for i in range(self.n_sample):
+                 np.ones((self.n_samples, self.n_class))
+        for i in range(self.n_samples):
             target[i, y_train[i]] = 1  # 对应该样本的类别所在编码中的列
         return target
 
@@ -58,16 +58,17 @@ class SAMMERClassifier:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
         target = self._target_encoding(y_train)  # 编码
-        sample_weights = np.ones(self.n_sample)  # 为适应自写的基学习器，设置样本均匀权重为1.0,样本权重
+        sample_weights = np.ones(self.n_samples)  # 为适应自写的基学习器，设置样本均匀权重为1.0,样本权重
         # 针对每一个学习器，根据带有权重分布的训练集训练基学习器，计算相关参数
         c = (self.n_class - 1) / self.n_class
         for idx in range(self.n_estimators):
             # 1. 使用只有权重分布Dm的训练数据集学习，并预测
             self.base_estimator[idx].fit(x_train, y_train, sample_weights)
             y_pred = self.base_estimator[idx].predict_proba(x_train)
+            np.clip(y_pred,np.finfo(y_pred.dtype).eps,None,out=y_pred)
             # 只关心分类错误的，如果分类错误，则为0，正确则为1
-            sample_weights *= np.exp(-c * target * np.log(y_pred))
-            sample_weights /= np.sum(sample_weights) * self.n_sample
+            sample_weights *= np.exp(-c * (target * np.log(y_pred)).sum(axis=1))
+            sample_weights /= np.sum(sample_weights) * self.n_samples
 
     def predict_proba(self, x_test):
         '''
@@ -101,4 +102,11 @@ class SAMMERClassifier:
         :param x_test:
         :return:
         '''
-        return np.argmax(self.predict_proba(x_test), axis=1)
+        x_test = np.array(x_test)
+        C_x = np.zeros((x_test.shape[0], self.n_class))
+        for i in range(self.n_estimators):
+            y_prob = self.base_estimator[i].predict_proba(x_test)
+            np.clip(y_prob, np.finfo(y_prob.dtype).eps, None, out=y_prob)
+            y_ln = np.log(y_prob)
+            C_x += (self.n_class - 1) * (y_ln - np.sum(y_ln, axis=1, keepdims=True) / self.n_class)
+        return np.argmax(C_x, axis=1)
