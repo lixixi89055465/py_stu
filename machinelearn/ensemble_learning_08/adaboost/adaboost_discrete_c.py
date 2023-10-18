@@ -2,7 +2,7 @@
 # @Time    : 2023/10/15 下午3:38
 # @Author  : nanji
 # @Site    : 
-# @File    : adaboost_c.py
+# @File    : adaboost_discrete_c.py
 # @Software: PyCharm 
 # @Comment :
 import numpy as np

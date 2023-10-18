@@ -10,7 +10,7 @@ from machinelearn.decision_tree_04.decision_tree_C \
 from machinelearn.ensemble_learning_08.adaboost.utils.plt_decision_function import plot_decision_function
 
 from sklearn.datasets import make_classification
-from machinelearn.ensemble_learning_08.adaboost.adaboost_c \
+from machinelearn.ensemble_learning_08.adaboost.adaboost_discrete_c \
     import AdaBoostClassifier
 from sklearn.metrics import classification_report
 from machinelearn.linear_model_03.logistic_regression.logistic_regression2class import LogisticRegression
