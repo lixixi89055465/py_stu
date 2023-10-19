@@ -75,7 +75,7 @@ class AdaBoostRegression:
             self.estimator_weights.append(alpha_rate)
             # 4. 更新下一轮的权重分布
             sample_weights *= np.power(alpha_rate, 1 - errors)
-            sample_weights /= np.sum(sample_weights) * n_samples
+            sample_weights = sample_weights / np.sum(sample_weights) * n_samples
         # 5.更新estimcator的权重系数，按照学习率
         for i in range(self.n_estimators):
             self.estimator_weights[i] *= np.power(self.learning_rate, i)
@@ -113,8 +113,26 @@ class AdaBoostRegression:
 
     def predict(self, x_test):
         '''
-        预测测试样本所属类别
-        :param x_test:
+        AdaBoost 回归算法预测，按照加权中位数以及加权平均两种结合策略
+        :param x_test: 测试样本集
         :return:
         '''
-        return np.argmax(self.predict_proba(x_test), axis=1)
+        self.estimator_weights = np.asarray(self.estimator_weights)
+        x_test = np.asarray(x_test)
+        if self.comb_strategy == 'weight_mean':  # 加权平均
+            self.estimator_weights /= np.sum(self.estimator_weights)
+            # n*T
+            y_hat_mat = np.array([self.estimator_weights[i] * self.base_estimator[i].predict(x_test)
+                                  for i in range(self.n_estimators)])
+            return np.sum(y_hat_mat, axis=0)
+        elif self.comb_strategy == 'weight_median':  # 加权中位数
+            # Ｔ个基学习器的预测结果构成一个二维数组（３０，１２７）－－＞　（127，30）
+            y_hat_mat = np.array([ self.base_estimator[i].predict(x_test)
+                                  for i in range(self.n_estimators)]).T
+            sorted_idx = np.argsort(y_hat_mat, axis=1)  # 二位数组
+            weight_cdf = np.cumsum(self.estimator_weights[sorted_idx], axis=1)
+            # 选择最小的t
+            median_or_above = weight_cdf >= 0.5 * weight_cdf[:, -1][:, np.newaxis]
+            median_idx = np.argmax(median_or_above, axis=1)  # 返回每个样本的t索引值
+            median_estimators = sorted_idx[np.arange(x_test.shape[0]), median_idx]
+            return y_hat_mat[np.arange(x_test.shape[0]), median_estimators]
