@@ -4,27 +4,27 @@
 # @Time    : 2023/10/21 10:41
 # @Author  : nanji
 # @File    : gradientboosting_r.py
-# @Description : https://www.bilibili.com/video/BV1Nb4y1s7nV/?p=74&spm_id_from=pageDriver&vd_source=50305204d8a1be81f31d861b12d4d5cf
-
+# @Description : https://www.bilibili.com/video/BV1Nb4y1s7nV/?p=76&spm_id_from=pageDriver&vd_source=50305204d8a1be81f31d861b12d4d5cf
 import numpy as np
 from machinelearn.decision_tree_04.decision_tree_R \
     import DecisionTreeRegression  # cart
 import copy
 
 
-class BoostTreeRegression:
+class GradientBoostRegression:
     '''
-    提升树回归算法：采用平方误差损失
+    梯度提升回归算法：采用误差损失: 五个，以损失函数在当前模型的负梯度近似为残差
+    1.假设回归决策树与mse构建的，针对不同的损失函数，计算不同的基尼指数划分标准
+    2.预测，集成，也根据不同的损失函数，预测叶子节点的输出
+
     '''
 
     def __init__(self, base_estimator=None, n_estimators=10, learning_rate=1.0,
-                 ):
+                 loss='ls', huber_threshold=0.1, quantile_threshold=0.5):
         '''
         :param base_estimator:  基学习器
         :param n_estimcators:  基学习器的个数 T
         :param learning_rate: 学习率，降低后续训练的基学习器的权重，避免过拟合
-        :param loss: 损失函数： linear,square,exp
-        :param comb_strategy:weight_median、weight_mean
         '''
         self.base_estimator = base_estimator
         self.n_estimators = n_estimators
@@ -39,6 +39,31 @@ class BoostTreeRegression:
         else:
             # 异质（不同种类型）的分类器
             self.n_estimators = len(self.base_estimator)
+        self.loss = loss  # 损失函数的类型
+        self.huber_threshold = huber_threshold  # 仅对huber损失有效
+        self.quantile_threshold = quantile_threshold  # 仅对分位数损失有效
+
+    def _cal_negative_gradient(self, y_true, y_pred):
+        '''
+        计算负梯度值
+        @param y_true: 真值
+        @param y_pred:  预测值
+        @return:
+        '''
+        if self.loss.lower() == 'ls':  # mse
+            return y_true - y_pred
+        elif self.loss.lower() == 'lae':  # MAE
+            return np.sign(y_true - y_pred)
+        elif self.loss.lower() == 'huber':  # 平滑平局绝对损失
+            return np.where(np.abs(y_true - y_pred) < self.huber_threshold, \
+                            y_true - y_pred, \
+                            self.huber_threshold * np.sign(y_true - y_pred))
+        elif self.loss.lower() == 'quantile':  # 分位数损失
+            return np.where(y_true > y_pred, self.quantile_threshold, self.quantile_threshold - 1)
+        elif self.loss.lower() == 'logcosh':  # 双曲余弦的对数的负梯度
+            return -np.tanh(y_pred - y_true)
+        else:
+            raise ValueError("仅限于ls、lae、huber、quantile和logcosh，选择有误...")
 
     def fit(self, x_train, y_train):
         '''
@@ -50,13 +75,13 @@ class BoostTreeRegression:
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
         self.base_estimator[0].fit(x_train, y_train)
         y_hat = self.base_estimator[0].predict(x_train)
-        y_residual = y_train - y_hat  # 残差，MSE的负梯度
+        y_residual = self._cal_negative_gradient(y_train,y_hat)# 负梯度
         # 2.从第2课树开始，每一次拟合上一轮的残差
         for idx in range(1, self.n_estimators):
             self.base_estimator[idx].fit(x_train, y_residual)  # 拟合残差
             # 累加第m-1棵树开始，每一次拟合上一轮的残差
             y_hat += self.base_estimator[idx].predict(x_train) * self.learning_rate
-            y_residual = y_train - y_hat  # 当前模型的残差
+            y_residual = self._cal_negative_gradient(y_train,y_hat)#负梯度
 
     def _cal_loss(self, y_true, y_hat):
         '''
@@ -87,7 +112,7 @@ class BoostTreeRegression:
         y_hat_prob = np.sum([self.base_estimator[i].predict_proba(x_test) * \
                              self.estimator_weights[i] for i in \
                              range(self.n_estimators)], axis=0)
-        return y_hat_prob / y_hat_prob.sum(axis=1, keepdims=True)
+        return y_hat_prob
 
     def predict(self, x_test):
         '''
