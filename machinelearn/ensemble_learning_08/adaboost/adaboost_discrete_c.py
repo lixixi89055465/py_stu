@@ -2,7 +2,7 @@
 # @Time    : 2023/10/15 下午3:38
 # @Author  : nanji
 # @Site    : 
-# @File    : adaboost_c.py
+# @File    : adaboost_discrete_c.py
 # @Software: PyCharm 
 # @Comment :
 import numpy as np
@@ -48,6 +48,7 @@ class AdaBoostClassifier:
         :return:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
+        n_samples, n_class = x_train.shape[0], len(set(y_train))  # 样本量，类别数
         n_samples = x_train.shape[0]  # 样本量
         sample_weights = np.ones(n_samples)  # 为适应自写的基学习器，设置样本均匀权重为1.0,样本权重
         # 针对每一个学习器，根据带有权重分布的训练集训练基学习器，计算相关参数
@@ -62,7 +63,7 @@ class AdaBoostClassifier:
                 self.estimator_weights.append(0)  # 当前分类器不起作用
                 continue
             # 3.计算基学习器的权重系数，考虑溢出
-            alpha_rate = 0.5 * np.log((1 - error_rate) / (error_rate + 1e-8))
+            alpha_rate = 0.5 * np.log((1 - error_rate) / (error_rate + 1e-8)) + np.log(n_class - 1)
             alpha_rate = min(10.0, alpha_rate)  # 避免权重系数过大
             self.estimator_weights.append(alpha_rate)
             # 4. 更新样本权重，为了适应多分类，yi*GM(xi)计算np.power(-1.0,1-y_hat_0)
@@ -93,4 +94,3 @@ class AdaBoostClassifier:
         :return:
         '''
         return np.argmax(self.predict_proba(x_test), axis=1)
-
