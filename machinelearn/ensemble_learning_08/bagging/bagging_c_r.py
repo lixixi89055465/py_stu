@@ -36,13 +36,12 @@ class BaggingClassifierRegression:
         # 如果不提供学习起，则默认按照深度为2的决策树作为集分类器
         if self.base_estimator is None:
             if self.task.lower() == 'c':
-                self.base_estimator = DecisionTreeClassifier()
-            elif self.task.lower() == 'r':
                 self.base_estimator = DecisionTreeRegression()
+            elif self.task.lower() == 'r':
+                self.base_estimator = DecisionTreeClassifier()
         if type(base_estimator) != list:
             # 同质（同种类型）的分类器
-            estimator=self.base_estimator
-            self.base_estimator = [copy.deepcopy(estimator) \
+            self.base_estimator = [copy.deepcopy(self.base_estimator) \
                                    for _ in range(self.n_estimators)]
         else:
             # 异质（不同种类型）的分类器
@@ -65,12 +64,12 @@ class BaggingClassifierRegression:
             # 1.又放回的随机重采样训练集
             indices = np.random.choice(n_sample, n_sample, replace=True)  # 采样样本呢缩影
             indices = np.unique(indices)
-            x_bootstrap, y_bootstrap = x_train[indices, :], y_train[indices]
+            x_bootstrap, y_bootstrap = x_train[indices], y_train[indices]
             # 2.基于采样数据，训练基学习器
             estimator.fit(x_bootstrap, y_bootstrap)
             # 3.存储每个基学习器未使用的样本索引
             n_indices = set(np.arange(n_sample)).difference(set(indices))
-            self.oob_indices.append(list(n_indices))
+            self.oob_indices.append(list(n_indices))  # 未参与训练的样本索引
         # 3.包外估计
         if self.OOB:
             if self.task.lower() == 'c':
@@ -110,10 +109,10 @@ class BaggingClassifierRegression:
             y_hat_i = []  # 当前样本再每个基学习器下的预测概率，个数未必等于 self.n_estimators
             for idx in range(self.n_estimators):  # 针对每个基学习器
                 if i in self.oob_indices[idx]:  # 如果该样本属于外包估计
-                    y_hat = self.base_estimator[idx].predict_proba(x_train[i, np.newaxis])
+                    y_hat = self.base_estimator[idx].predict(x_train[i, np.newaxis])
                     y_hat_i.append(y_hat[0])
             if y_hat_i:  # 非空，计算各基学习器预测类别概率的均值
-                self.y_oob_hat.append(np.mean(np.c_[y_hat_i], axis=0))
+                self.y_oob_hat.append(np.mean(y_hat_i))
                 y_true.append(y_train[i])  # 存储对应的真值
         self.y_oob_hat = np.asarray(self.y_oob_hat)
         self.oob_score = accuracy_score(y_true, np.argmax(self.y_oob_hat, axis=1))
