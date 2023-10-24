@@ -2,7 +2,7 @@
 # @Time    : 2023/10/23 17:51
 # @Author  : nanji
 # @Site    : 
-# @File    : TestLRCloseFormSol.py.py
+# @File    : TestLRCloseFormSol01.py.py
 # @Software: PyCharm 
 # @Comment : 
 from sklearn.datasets import load_boston

@@ -33,7 +33,7 @@ class LRCloseFormSol:
         '''
         if self.normalize:
             self.feature_mean = np.mean(x_train, axis=0)  # 均值
-            self.feature_std = np.std(x_train, axis=0) + 1e-8  # 方差
+            self.feature_std = np.std(x_train, axis=0)   # 方差
             x_train = (x_train - self.feature_mean) / self.feature_std  # 标准化
         if self.fit_intercept:
             x_train = np.c_[x_train, np.ones_like(y_train)]  # 添加一列1,即偏置项样本
@@ -63,7 +63,7 @@ class LRCloseFormSol:
             weight, bias = self.theta, np.array([0])
 
         if self.normalize:  # 标准化后的系数
-            weight = weight / self.feature_std.reshape(-1)
+            weight = weight / (self.feature_std.reshape(-1))
             bias = bias - weight.T.dot(self.feature_mean.reshape(-1))
         return np.r_[weight.reshape(-1), bias.reshape(-1)]
 
@@ -74,11 +74,11 @@ class LRCloseFormSol:
         :return:
         '''
         try:
-            self.n_sample, self.n_features = x_test.shape
+            self.n_sample, self.n_features = x_test.shape[0],x_test.shape[1]
         except IndexError:
             self.n_sample, self.n_features = x_test.shape[0], 1
         if self.normalize:
-            x_test = (x_test - self.feature_mean) / self.feature_std
+            x_test = (x_test - self.feature_mean) / (self.feature_std+1e-8)
         if self.fit_intercept:
             x_test = np.c_[x_test, np.ones(shape=(x_test.shape[0]))]
         return x_test.dot(self.theta)
