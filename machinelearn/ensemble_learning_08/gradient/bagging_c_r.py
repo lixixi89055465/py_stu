@@ -104,12 +104,6 @@ class BaggingClassifierRegression:
         :param y_train:
         :return:
         '''
-        '''
-               分类任务的包外估计
-               :param x_train:
-               :param y_train:
-               :return:
-               '''
         self.y_oob_hat, y_true = [], []
         for i in range(x_train.shape[0]):  # 针对每个训练氧泵
             y_hat_i = []  # 当前样本再每个基学习器下的预测概率，个数未必等于 self.n_estimators
@@ -123,8 +117,7 @@ class BaggingClassifierRegression:
         self.y_oob_hat = np.asarray(self.y_oob_hat)
         self.oob_score = accuracy_score(y_true, np.argmax(self.y_oob_hat, axis=1))
 
-
-def predict_proba(self, x_test):
+    def predict_proba(self, x_test):
         '''
         分类任务中测试样本所属类别的概率预测
         :param x_test:
