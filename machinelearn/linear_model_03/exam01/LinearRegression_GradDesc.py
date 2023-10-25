@@ -53,16 +53,18 @@ class LinearRegression_GradDesc:
         :param y_test:
         :return:
         '''
+        self.n_features=x_train.shape[1]
         if self.normalize:
             self.feature_mean = np.mean(x_train, axis=0)  # 样本均值
             self.feature_std = np.std(x_train, axis=0) + 1e-8  #
             x_train = (x_train - self.feature_mean) / self.feature_std
+        if self.fit_intercept:
+            x_train=np.c_[x_train,np.ones_like(y_train)]
         self.init_params(x_train.shape[1])
         self._fit_sgd(x_train, y_train, x_test, y_test)  # 梯度训练
 
     def predict(self, x_test):
         '''
-
         :param x_test:
         :return:
         '''
@@ -86,25 +88,25 @@ class LinearRegression_GradDesc:
         for i in range(self.epochs):
             self.alpha *= 0.95
             np.random.shuffle(train_sample)
-            for idx in range(train_sample // self.batch_size):
+            for idx in range(train_sample.shape[0] // self.batch_size):
                 batch_xy = train_sample[self.batch_size * idx:self.batch_size * (idx + 1)]
                 batch_x, batch_y = batch_xy[:, :-1], batch_xy[:, -1:]
                 delta = batch_x.T.dot(batch_x.dot(self.theta) - batch_y) / self.batch_size
                 self.theta = self.theta - self.alpha * delta
-            train_mse = ((x_train.dot(self.theta) - y_train) ** 2).mean()
+            train_mse = ((x_train.dot(self.theta).reshape(-1)- y_train.reshape(-1)) ** 2).mean()
             self.train_loss.append(train_mse)
             if x_test is not None and y_test is not None:
                 y_test_pred = self.predict(x_test)
-                test_mse = ((x_test.dot(self.theta) - y_test) ** 2).mean()
+                test_mse = ((y_test_pred.reshape(-1) - y_test) ** 2).mean()
                 if test_mse < best_mse:
                     best_mse = test_mse
                     best_theta = np.copy(self.theta)
                 self.test_loss.append(test_mse)
-        if best_theta is None:
+        if best_theta is not None:
             self.theta = np.copy(best_theta)
     def cal_mse_r2(self,y_pred,y_test):
-        self.mse=((y_pred.shape(-1,1)-y_pred)**2).mean()
-        self.r2=1-self.mse.sum()/((y_test.reshape(-1,1)-y_test.mean)**2).sum()
+        self.mse=((y_pred.reshape(-1)-y_test.reshape(-1))**2).mean()
+        self.r2=1-self.mse/((y_test.reshape(-1)-y_test.reshape(-1).mean())**2).sum()
         self.r2_adj=1-(1-self.r2)*(self.n_samples-1)/(self.n_samples-self.n_features-1)
         return self.mse,self.r2,self.r2_adj
 
@@ -136,6 +138,22 @@ class LinearRegression_GradDesc:
         plt.grid(ls=":")
         if is_show:
             plt.show()
+
+    def get_params(self):
+        return self.theta
+
+    def plt_loss_curve(self, is_show):
+        if is_show:
+            plt.figure(figsize=(7,5))
+        plt.plot(self.train_loss,label='Train loss')
+        if self.test_loss:
+            plt.plot(self.test_loss,label='Test loss')
+        plt.xlabel("Train times",fontdict={'fontsize':12})
+        plt.ylabel("Test times",fontdict={'fontsize':12})
+        plt.grid(ls=":")
+        if is_show:
+            plt.show()
+
 
 
 
