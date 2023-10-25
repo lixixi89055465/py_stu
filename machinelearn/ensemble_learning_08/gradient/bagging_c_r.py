@@ -116,7 +116,7 @@ class BaggingClassifierRegression:
                 self.y_oob_hat.append(np.mean(np.c_[y_hat_i], axis=0))
                 y_true.append(y_train[i])  # 存储对应的真值
         self.y_oob_hat = np.asarray(self.y_oob_hat)
-        self.oob_score = accuracy_score(y_true, np.argmax(self.y_oob_hat, axis=1))
+        self.oob_score = accuracy_score(y_true, np.argmax(self.y_oob_hat.reshape(-1)))
 
     def predict_proba(self, x_test):
         '''
