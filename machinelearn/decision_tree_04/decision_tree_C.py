@@ -21,7 +21,7 @@ class DecisionTreeClassifier:
     5.剪枝处理
     '''
 
-    def __init__(self, criterion='cart', is_feature_all_R=False,
+    def __init__(self, criterion='cart', is_feature_all_R=False, class_num=None,
                  dbw_feature_idx=None, max_depth=None, min_samples_split=2,
                  min_samples_leaf=1, min_impurity_decrease=0, max_bins=10, dbw_XrangeMap=None):
         self.utils = EntropyUtils()  # 结点划分类
@@ -44,7 +44,8 @@ class DecisionTreeClassifier:
         self.root_node: TreeNode_C() = None  # 分类决策树的根节点
         self.dbw = DataBinWrapper(max_bins=max_bins)  # 连续数据离散化对象
         self.dbw_XrangeMap = {}  # 存储训练样本连续特征分箱的段点
-        self.class_values = None  # 样本的类别取值
+        if class_num is not None:
+            self.class_values = np.arange(class_num)  # 样本的类别取值
 
     def _data_bin_wrapper(self, x_samples):
         '''
@@ -81,7 +82,8 @@ class DecisionTreeClassifier:
         @return:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
-        self.class_values = np.unique(y_train)  # 样本的类别取值
+        if self.class_values is None:
+            self.class_values = np.unique(y_train)  # 样本的类别取值
         n_sample, n_features = x_train.shape  # 训练样本的样本量和特征属性数目
         if sample_weight is None:
             sample_weight = np.asarray([1.0] * n_sample)
@@ -238,7 +240,7 @@ class DecisionTreeClassifier:
                 if child_node is None:
                     continue
                 for key, value in child_node.target_dist.items():  # 对每个叶子节点的类别分布
-                    pre_prune_value += -1 * child_node.n_samples * value *\
+                    pre_prune_value += -1 * child_node.n_samples * value * \
                                        np.log(value) * child_node.weight_dist.get(key, 1.0)
             # 计算剪枝后的损失值，当前节点既是叶子节点，
             after_prune_value = alpha
@@ -248,9 +250,7 @@ class DecisionTreeClassifier:
             if after_prune_value <= pre_prune_value:
                 cur_node.left_child_node = None
                 cur_node.right_child_node = None
-                cur_node.feature_idx,cur_node.feature_val=None,None
-
-
+                cur_node.feature_idx, cur_node.feature_val = None, None
 
     def prune(self, alpha=0.01):
         '''

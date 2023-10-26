@@ -22,10 +22,11 @@ from sklearn.metrics import classification_report
 iris = load_iris()
 X, y = iris.data, iris.target
 X = StandardScaler().fit_transform(X)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, shuffle=True, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(\
+    X, y, test_size=0.3, random_state=1, shuffle=True, stratify=y)
 
 base_es = DecisionTreeClassifier(max_bins=50, max_depth=10, is_feature_all_R=True)
-bagrc = BaggingClassifierRegression(base_estimator=base_es, n_estimators=20, task='c',OOB=True)
+bagrc = BaggingClassifierRegression(base_estimator=base_es, n_estimators=20, task='c', OOB=True)
 bagrc.fit(X_train, y_train)
 y_hat = bagrc.predict(x_test=X_test)
 print(classification_report(y_test, y_hat))
