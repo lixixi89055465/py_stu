@@ -22,7 +22,7 @@ class BaggingClassifierRegression:
     '''
 
     def __init__(self, base_estimator=None, n_estimators=10, \
-                 task='C', OOB=False):
+                 task='C', OOB=False, feature_importance=None):
         '''
         :param base_estimator:  基学习器
         :param n_estimcators:  基学习器的个数 T
@@ -50,6 +50,10 @@ class BaggingClassifierRegression:
         self.oob_indices = []  # 保存每次又放回采样未被使用的样本索引
         self.y_oob_hat = None  # 包括估计样本能预测值（回归）或预测类别概率（分类）
         self.oob_score = None  # 包括估计的评分，分类和回归
+        self.feature_importance = feature_importance
+        self.feature_importance_scores = None  # 特征变量的重要性评分
+        self.feature_sampling_indices=[]# 针对每个基学习器，存储特征变量抽样索引
+
 
     def fit(self, x_train, y_train):
         '''
@@ -59,15 +63,20 @@ class BaggingClassifierRegression:
         :return:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
-        n_sample = x_train.shape[0]  # 样本量
+        n_sample, n_features = x_train.shape  # 样本量
         for estimator in self.base_estimator:
             # 1.又放回的随机重采样训练集
             indices = np.random.choice(n_sample, n_sample, replace=True)  # 采样样本呢缩影
             indices = np.unique(indices)
             x_bootstrap, y_bootstrap = x_train[indices], y_train[indices]
-            # 2.基于采样数据，训练基学习器
+            # 2.对特征属性变量进行抽样
+            fb_num = int(self.feature_sampling_rate * n_features)  # 抽样特征数
+            feature_idx = np.random.choice(n_features, fb_num, replace=False)  # 不放回
+
+
+            # 3.基于采样数据，训练基学习器
             estimator.fit(x_bootstrap, y_bootstrap)
-            # 3.存储每个基学习器未使用的样本索引
+            # 存储每个基学习器未使用的样本索引
             n_indices = set(np.arange(n_sample)).difference(set(indices))
             self.oob_indices.append(list(n_indices))  # 未参与训练的样本索引
         # 3.包外估计
