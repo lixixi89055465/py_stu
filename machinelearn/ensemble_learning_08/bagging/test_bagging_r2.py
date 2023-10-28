@@ -25,7 +25,8 @@ X, y = boston.data, boston.target
 X = StandardScaler().fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-base_estimator = DecisionTreeRegression(max_bins=50, max_depth=8)
+# base_estimator = DecisionTreeRegression(max_bins=50, max_depth=8)
+base_estimator = DecisionTreeRegression(max_depth=8)
 
 # model = BaggingClassifierRegression( \
 #     base_estimator=base_estimator, n_estimators=20, task='r')

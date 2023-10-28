@@ -44,6 +44,7 @@ class DecisionTreeClassifier:
         self.root_node: TreeNode_C() = None  # 分类决策树的根节点
         self.dbw = DataBinWrapper(max_bins=max_bins)  # 连续数据离散化对象
         self.dbw_XrangeMap = {}  # 存储训练样本连续特征分箱的段点
+        self.class_num = class_num
         if class_num is not None:
             self.class_values = np.arange(class_num)  # 样本的类别取值
 
@@ -82,7 +83,7 @@ class DecisionTreeClassifier:
         @return:
         '''
         x_train, y_train = np.asarray(x_train), np.asarray(y_train)
-        if self.class_values is None:
+        if self.class_num is None:
             self.class_values = np.unique(y_train)  # 样本的类别取值
         n_sample, n_features = x_train.shape  # 训练样本的样本量和特征属性数目
         if sample_weight is None:
