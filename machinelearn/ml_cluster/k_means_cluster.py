@@ -8,6 +8,9 @@
 import numpy as np
 import pandas as pd
 from matplotlib.colors import ListedColormap
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+import seaborn as sns
 
 import matplotlib.pyplot as plt
 
@@ -49,16 +52,19 @@ class KMeansCluster:
         按照k-means++方法，初始化簇中心向量
         :return:
         '''
-        random_j = np.random.choice(self.m, 1)  # 随机选择一个簇中心作为样本索引
-        self.cluster_centers[0] = self.X[random_j]
+        sample_j = np.random.choice(self.m, 1)  # 随机选择一个簇中心作为样本索引
+        self.cluster_centers[0] = self.X[sample_j]
+        select_center_vec = [sample_j]  # 以选择的簇中心样本索引存储，防止在被宣导
         while len(self.cluster_centers) < self.k:
             sample_j, max_dist = None, 0
             for j in range(self.m):
                 for key in self.cluster_centers.keys():
                     # 计算当前样本距离每个簇中心的距离
                     dist = self.distance_fun(self.cluster_centers[key], self.X[j])
-                    if dist > max_dist and j != sample_j:
+                    if dist > max_dist and j not in select_center_vec:
                         sample_j, max_dist = j, dist
+            select_center_vec.append(sample_j)
+
             self.cluster_centers[len(self.cluster_centers)] = self.X[sample_j]
         print('k-means++算法，初始化簇中心向量为：')
         for key in self.cluster_centers.keys():
@@ -82,11 +88,13 @@ class KMeansCluster:
                         best_k, min_dist = idx, dist  # 取最近的距离
                 cluster[best_k].append(j)
             # 更新簇中心均值向量
-            eps = 0  # 簇中心更新前的簇中心距离，累加和
+            eps = 0  # 更新卡后的中心点的差距
             for c_idx in cluster.keys():
-                vec_center = np.mean(X[cluster[c_idx]], axis=0)  # 各簇中心均值向量
-                eps += self.distance_fun(vec_center, self.cluster_centers[c_idx])
-                self.cluster_centers[c_idx] = vec_center  # 更新
+                vec_k = np.mean(self.X[cluster[c_idx]], axis=0)
+                # 各簇内距离之和
+                eps += self.distance_fun(vec_k, self.cluster_centers[idx])
+                self.cluster_centers[c_idx] = vec_k  # 更新簇中心
+
             # 簇中心更新过程的输出
             print('iter', epoch + 1, ':', '簇中心与簇内样本索引：')
             for key in cluster.keys():
@@ -126,19 +134,23 @@ class KMeansCluster:
         t2 = np.linspace(x2_min, x2_max, 50)
         x1, x2 = np.meshgrid(t1, t2)  # 生成网络采样点50*50
         x_show = np.stack((x1.flat, x2.flat), axis=1)  # 测试点2500*2
-        cm_light = ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
-        cm_dark = ListedColormap(['darkgreen', 'darkred', 'darkblue'])
+        # cm_light = ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
+        # cm_dark = ListedColormap(['darkgreen', 'darkred', 'darkblue'])
+        cm_light = ListedColormap(['g', 'r', 'b', 'm', 'c'])
+        cm_dark = ListedColormap(['g', 'r', 'b', 'm', 'c'])
 
         y_show_hat = self.predict(x_show)
         y_show_hat = y_show_hat.reshape(x1.shape)
 
         plt.figure(facecolor='w')
-        plt.pcolormesh(x1, x2, y_show_hat, shading='auto', cmap=cm_light)
+        plt.pcolormesh(x1, x2, y_show_hat, shading='auto', cmap=cm_light, alpha=0.3)
+        # plt.scatter(self.X[:, 0], self.X[:, 1], c=self.predict(self.X).ravel(), \
+        #             edgecolors='k', s=20, cmap=cm_dark)  # 全部数据
         plt.scatter(self.X[:, 0], self.X[:, 1], c=self.predict(self.X).ravel(), \
-                    edgecolors='k', s=20, cmap=cm_dark)  # 全部数据
+                    s=20, cmap=cm_dark)  # 全部数据
         for key in self.cluster_centers.keys():
-            center=self.cluster_centers[key]
-            plt.scatter(center[0],center[1],c='k',marker='p',s=100)
+            center = self.cluster_centers[key]
+            plt.scatter(center[0], center[1], c='k', marker='p', s=100)
 
         plt.xlabel('X1', fontsize=11)
         plt.ylabel('X2', fontsize=11)
@@ -151,12 +163,42 @@ class KMeansCluster:
 
 
 if __name__ == '__main__':
-    X = pd.read_csv('../data/watermelon4.0.csv').values
+    # X = pd.read_csv('../data/watermelon4.0.csv').values
+    # kmc = KMeansCluster(X, k=3, tol=1e-8)
+    # kmc.select_cluster_center()
+    # kmc.fit_kmeans()
+    # labels = kmc.predict(X)
+    # print(labels)
+    # for key in kmc.cluster_centers.keys():
+    #     print('簇' + str(key + 1), kmc.cluster_centers[key])
+    # kmc.plt_clasify()
+    ###############################################
+    # centers = np.array([
+    #     [0.2, 2.3], [-1.5, 2.3], [-2.8, 1.8], [-2.8, 2.8], [-2.8, 1.3]
+    # ])
+    # std = np.array([0.4, 0.3, 0.1, 0.1, 0.1])
+    # X, _ = make_blobs(n_samples=2000, n_features=2, centers=centers, cluster_std=std, random_state=7)
+    #
+    # kmc = KMeansCluster(X, k=5, tol=1e-8)
+    # kmc.select_cluster_center()
+    # kmc.fit_kmeans()
+    # labels = kmc.predict(X)
+    # print(labels)
+    # for key in kmc.cluster_centers.keys():
+    #     print('簇' + str(key + 1), kmc.cluster_centers[key])
+    # kmc.plt_clasify()
+    ###############################################
+    X = pd.read_csv('../data/consumption_data.csv').values
+    X = StandardScaler().fit_transform(X)
     kmc = KMeansCluster(X, k=3, tol=1e-8)
     kmc.select_cluster_center()
     kmc.fit_kmeans()
     labels = kmc.predict(X)
-    print(labels)
     for key in kmc.cluster_centers.keys():
         print('簇' + str(key + 1), kmc.cluster_centers[key])
-    kmc.plt_clasify()
+    # kmc.plt_clasify()
+    #  可视化核密度估计
+    for f in range(X.shape[1]):# f表示特征
+        # for c in range()
+        pass
+    sns.kdeplot()
