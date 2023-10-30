@@ -189,16 +189,36 @@ if __name__ == '__main__':
     # kmc.plt_clasify()
     ###############################################
     X = pd.read_csv('../data/consumption_data.csv').values
-    X = StandardScaler().fit_transform(X)
-    kmc = KMeansCluster(X, k=3, tol=1e-8)
+    X_scaler = StandardScaler().fit_transform(X)
+    cluster_k = 3
+    kmc = KMeansCluster(X_scaler, k=3, tol=1e-8)
     kmc.select_cluster_center()
     kmc.fit_kmeans()
-    labels = kmc.predict(X)
+    labels = kmc.predict(X_scaler)
     for key in kmc.cluster_centers.keys():
         print('簇' + str(key + 1), kmc.cluster_centers[key])
     # kmc.plt_clasify()
     #  可视化核密度估计
-    for f in range(X.shape[1]):# f表示特征
-        # for c in range()
-        pass
-    sns.kdeplot()
+    title = ['R index', 'F index', 'M index']
+    plt.figure(figsize=(7, 10))
+    for f in range(X.shape[1]):  # f表示特征
+        plt.subplot(311 + f)
+        for c in range(cluster_k):  # c表示簇索引
+            sns.kdeplot(X[labels == c][:, f])
+        plt.grid()
+        plt.title(title[f])
+    plt.show()
+    # Sklearn.kmeans
+    from sklearn.cluster import KMeans
+
+    skm = KMeans(n_clusters=cluster_k).fit(X)
+    print(skm.cluster_centers_)
+    title = ['SR index', 'SF index', 'SM index']
+    plt.figure(figsize=(7, 10))
+    for f in range(X.shape[1]):  # f表示特征
+        plt.subplot(311 + f)
+        for c in range(cluster_k):  # c 表示簇索引
+            sns.kdeplot(X[skm.labels_ == c][:, f])
+        plt.grid()
+        plt.title(title[f])
+    plt.show()
