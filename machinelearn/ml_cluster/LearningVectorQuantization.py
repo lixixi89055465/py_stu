@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
 
 
 class LearningVectorQuantizationClustering:
@@ -80,7 +81,7 @@ class LearningVectorQuantizationClustering:
                                                      - self.eta * (vec - self.cluster_centers_[bst_cid])
             # 终止条件
             for key in self.cluster_centers_.keys():
-                eps += self.distance_fun(cluster_center_old[key] , self.cluster_centers_[key])
+                eps += self.distance_fun(cluster_center_old[key], self.cluster_centers_[key])
             eps /= len(self.cluster_centers_)
             if eps < self.tol:
                 break
@@ -90,7 +91,7 @@ class LearningVectorQuantizationClustering:
     def predict(self, X):
         cluster_labels = []
         for i in range(self.m):
-            best_k, min_dist = np.infty
+            best_k, min_dist = None, np.infty
             for idx in range(len(self.cluster_centers_)):
                 dist = self.distance_fun(self.cluster_centers_[idx], X[i])
                 if dist < min_dist:
@@ -105,5 +106,20 @@ if __name__ == '__main__':
     y = LabelEncoder().fit_transform(y)
     lvq = LearningVectorQuantizationClustering(X, y, eta=0.05, tol=1e-3)
     lvq.fit_LVQ(X, y)
+    title=data.columns[:-1]
     cluster_ind = lvq.predict(X)
     print(classification_report(y, cluster_ind))
+    plt.figure(figsize=(7, 5))
+    marker = 'osp<>'
+    for i in range(len(np.unique(cluster_ind))):
+        cluster = X[cluster_ind == i]
+        plt.plot(cluster[:, 2], cluster[:, 3], marker=marker[i], label=lvq.class_label[i])
+        center = lvq.cluster_centers_[i]
+        plt.plot(center[0], center[1], 'kH')
+    plt.xlabel('X1')
+    plt.ylabel('X2')
+    plt.title('Learning Vector Quantization Clustering')
+    plt.grid()
+    plt.legend()
+    plt.show()
+
