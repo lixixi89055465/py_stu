@@ -97,7 +97,7 @@ class LearningVectorQuantizationClustering:
                 if dist < min_dist:
                     best_k, min_dist = idx, dist
             cluster_labels.append(best_k)
-        return cluster_labels
+        return np.asarray(cluster_labels)
 
 
 if __name__ == '__main__':
@@ -106,20 +106,20 @@ if __name__ == '__main__':
     y = LabelEncoder().fit_transform(y)
     lvq = LearningVectorQuantizationClustering(X, y, eta=0.05, tol=1e-3)
     lvq.fit_LVQ(X, y)
-    title=data.columns[:-1]
+    title = data.columns[:-1]
     cluster_ind = lvq.predict(X)
     print(classification_report(y, cluster_ind))
     plt.figure(figsize=(7, 5))
     marker = 'osp<>'
+    label_y = np.unique(data.iloc[:, -1])
     for i in range(len(np.unique(cluster_ind))):
         cluster = X[cluster_ind == i]
-        plt.plot(cluster[:, 2], cluster[:, 3], marker=marker[i], label=lvq.class_label[i])
+        plt.plot(cluster[:, 2], cluster[:, 3], marker[i], label=label_y[i])
         center = lvq.cluster_centers_[i]
-        plt.plot(center[0], center[1], 'kH')
+        plt.plot(center[2], center[3], 'kH')
     plt.xlabel('X1')
     plt.ylabel('X2')
     plt.title('Learning Vector Quantization Clustering')
     plt.grid()
     plt.legend()
     plt.show()
-
