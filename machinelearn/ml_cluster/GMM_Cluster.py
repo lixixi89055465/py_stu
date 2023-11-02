@@ -28,11 +28,18 @@ class GaussianMixtureCluster:
     def gaussian_nd(self, X, mu, sigma):
         '''
         高维高斯分布
-        :param X:
-        :param mu:
-        :param sigma:
+        :param X: 样本数据 m*n
+        :param mu: 1*n
+        :param sigma: n*n
         :return:
         '''
-        left_part = 1.0 / (np.pow(2 * np.pi, X.shape[1] / 2).dot(np.sqrt(np.abs(sigma))))
+        left_part = 1.0 / (np.pow(2 * np.pi, X.shape[1] / 2) * np.sqrt(np.linalg.det(sigma)))
         right_part = np.exp(np.sum(-.5 * (X - mu).dot(np.linalg.inv(sigma)) * (X - mu), axis=1))
-        pass
+        return left_part * right_part
+
+    def fit_gmm(self, X):
+        '''
+        高斯混合聚类核心算法，实质就是根据后验概率gamma不断更新alpha、均值、协方差
+        :param X:
+        :return:
+        '''
