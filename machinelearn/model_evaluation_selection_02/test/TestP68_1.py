@@ -29,7 +29,7 @@ plt.figure(figsize=(14, 5))
 for model in models:
     m_obj = eval(model)()
     m_obj.fit(X_train, y_train)
-    y_test_prob = m_obj.predict_proba(X_test)
+    y_test_prob = m_obj.cal_gamma(X_test)
     pm = ModelPerformanceMetrics(y_test, y_test_prob)
     plt.subplot(121)
     pr = pm.precision_recall_curve()

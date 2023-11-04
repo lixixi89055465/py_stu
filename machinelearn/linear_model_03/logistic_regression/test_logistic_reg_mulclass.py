@@ -29,7 +29,7 @@ plt.figure(figsize=(12, 8))  # 可视化，四个子图
 plt.subplot(221)
 lgmc.plt_cross_entropy_loss(is_show=False)  # 交叉熵损失下降曲线
 y_test_pred = lgmc.predict(X_test)
-y_test_prob = lgmc.predict_proba(X_test)  # 预测概率
+y_test_prob = lgmc.cal_gamma(X_test)  # 预测概率
 feature_names = iris.feature_names
 
 for fn, theta in zip(feature_names, lgmc.get_params()[0]):

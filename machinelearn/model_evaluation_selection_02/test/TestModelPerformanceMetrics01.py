@@ -31,7 +31,7 @@ plt.figure(figsize=(13, 5))
 for model in models:
     model_obj = eval(model)()
     model_obj.fit(X_train, y_train)
-    y_test_prob = model_obj.predict_proba(X_test)  # 测试样本的预测概率
+    y_test_prob = model_obj.cal_gamma(X_test)  # 测试样本的预测概率
     # print(y_test_prob)
     y_test_lab = model_obj.predict(X_test)  # 预测类别
     # print('sklearn:\n', confusion_matrix(y_test, y_test_lab))

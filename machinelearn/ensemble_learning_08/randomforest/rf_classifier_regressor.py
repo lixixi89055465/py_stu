@@ -160,7 +160,7 @@ class RandomForestClassifierRegressor:
             for idx in range(self.n_estimators):  # 针对每个基学习器
                 if i in self.oob_indices[idx]:  # 如果该样本属于外包估计
                     x_sample = x_train[i, self.feature_sampling_indices[idx]]
-                    y_hat = self.base_estimator[idx].predict_proba(x_sample.reshape(1, -1))
+                    y_hat = self.base_estimator[idx].cal_gamma(x_sample.reshape(1, -1))
                     y_hat_i.append(y_hat[0])
             if y_hat_i:  # 非空，计算各基学习器预测类别概率的均值
                 self.y_oob_hat.append(np.mean(np.c_[y_hat_i], axis=0))
@@ -201,7 +201,7 @@ class RandomForestClassifierRegressor:
         y_test_hat = []  # 用于存储测试样本所属类别概率
         for idx, estimator in enumerate(self.base_estimator):
             x_test_bootstrap = x_test[:, self.feature_sampling_indices[idx]]
-            y_test_hat.append(estimator.predict_proba(x_test_bootstrap))
+            y_test_hat.append(estimator.cal_gamma(x_test_bootstrap))
         return np.mean(y_test_hat, axis=0)
 
     def predict(self, x_test):

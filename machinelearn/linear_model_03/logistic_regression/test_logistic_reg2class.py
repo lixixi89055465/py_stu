@@ -28,7 +28,7 @@ for i,w in enumerate(theta[0]):
 
 print( 'theta:',theta[1])
 print('='*100)
-y_test_prob=lg_lr.predict_proba(X_test)# 预测概率
+y_test_prob=lg_lr.cal_gamma(X_test)# 预测概率
 y_test_labels=lg_lr.predict(X_test)
 
 pm=ModelPerformanceMetrics(y_test,y_test_prob) # 模型性能度量
