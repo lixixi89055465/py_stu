@@ -7,6 +7,10 @@
 # @Comment :
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler
 
 
 class GaussianMixtureCluster:
@@ -73,8 +77,7 @@ class GaussianMixtureCluster:
         :param X:
         :return:
         '''
-        gamma = np.array([self.gaussian_nd(X, mu, sigma) * alpha \
-                          for alpha, mu, sigma in self.params]).T
+        gamma = self.cal_gamma(X)
         log_loss = np.sum(np.log(np.sum(gamma, axis=1))) / X.shape[0]
         gamma = gamma / np.sum(gamma, axis=1, keepdims=True)
         return gamma, log_loss
@@ -99,16 +102,78 @@ class GaussianMixtureCluster:
         gamma = gamma / np.sum(gamma, axis=1, keepdims=True)
         return gamma
 
-    def predict(self):
+    def predict(self, X):
         return np.argmax(self.predict_proba(X), axis=1)
+
+    def plt_contourf(self):
+        plt.figure(figsize=(8, 6))
+        x1 = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
+        x2 = np.linspace(X[:, 1].min(), X[:, 1].max(), 100)
+        X1, X2 = np.meshgrid(x1, x2)  # 100*100
+        X_ = np.c_[X1.reshape(-1, 1), X2.reshape(-1, 1)]
+        Z = self.predict_sample_generate_proba(X_)  # 10000*1
+        # 绘制等高线
+        C = plt.contour(X1, X2, Z.reshape(X1.shape), levels=6, linestyles='--')
+        plt.clabel(C, inline=True, fontsize=10)  # 标记等高线值
+        labels = self.predict()  # 每个样本所属的高斯分布簇标记
+        markers = 'os<>p*h'
+        for label in np.unique(labels):
+            cluster = X[label == labels]
+            plt.scatter(cluster[:, 0], cluster[:, 1], marker=markers[label])
+        plt.title('Gaussian Mixture Cluster of EM Algorithm', fontdict={'fontsize': 14})
+        plt.xlabel('Feature 1 ', fontdict={'fontsize': 12})
+        plt.ylabel('Feature 2 ', fontdict={'fontsize': 12})
+        plt.grid(ls=':')
+        plt.legend()
+        plt.show()
+
+    def predict_sample_generate_proba(self, X):
+        '''
+        样本的生成概率
+        :param X:
+        :return:
+        '''
+        gamma = self.cal_gamma(X)
+        return np.sum(gamma, axis=1)
 
 
 if __name__ == '__main__':
-    X = pd.read_csv('../data/watermelon4.0.csv').values
-    gmm = GaussianMixtureCluster()
+    # X, _ = make_blobs(400, centers=4, cluster_std=0.6, random_state=0)
+    # gmm = GaussianMixtureCluster(n_components=4, tol=1e-10)
+    # gmm.fit_gmm(X)
+    # gmm.plt_contourf()
+    # for i in range(len(gmm.params)):
+    #     print("alpha:", gmm.params[i][0])
+    #     print("mu:", gmm.params[i][1])
+    #     print("sigma:", [gmm.params[i][2][0], gmm.params[i][2][1]])
+    ##############################################
+    # X = pd.read_csv('../data/watermelon4.0.csv').values
+    # gmm = GaussianMixtureCluster()
+    # gmm.fit_gmm(X)
+    # print('0' * 100)
+    # gmm.plt_contourf()
+    # print('1' * 100)
+    # for i in range(len(gmm.params)):
+    #     print("alpha:", gmm.params[i][0])
+    #     print("mu:", gmm.params[i][1])
+    #     print("sigma:", [gmm.params[i][2][0], gmm.params[i][2][1]])
+    ##############################################
+    X = pd.read_csv('../data/consumption_data.csv')
+    X = StandardScaler().fit_transform(X)
+    gmm = GaussianMixtureCluster(n_components=3, tol=1e-10)
     gmm.fit_gmm(X)
-    print('0' * 100)
-    print(gmm.predict_proba(X))
+    labels = gmm.predict(X)
+    # gmm.plt_contourf()
+    # 可视化核密度估计
+    title = ['R index ', 'F index', 'M index']
+    plt.figure(figsize=(7, 10))
+    for f in range(X.shape[1]):
+        plt.subplot(311 + f)
+        for c in range(gmm.n_compoents):  # c表示簇索引
+            sns.kdeplot(X[labels == c][:, f])
+        plt.grid()
+        plt.title(title[f])
+    plt.show()
     print('1' * 100)
     for i in range(len(gmm.params)):
         print("alpha:", gmm.params[i][0])
