@@ -149,7 +149,7 @@ if __name__ == '__main__':
     dbs = DensityClustering_DBSCAN(X, epsilon=0.85, min_pts=5)
     # dbs = DBSCAN(eps=0.85, min_samples=5).fit(X)
     dbs.fit_dbscan()
-    labels=dbs.predict()
+    labels = dbs.predict()
     # labels = dbs.labels_
     title = ['R index', 'F index', 'M index']
     plt.figure(figsize=(7, 10))
@@ -160,4 +160,5 @@ if __name__ == '__main__':
             sns.kdeplot(X[labels == c][:, f])
         plt.grid()
         plt.title(title[f])
+    plt.savefig('b.png')
     plt.show()
