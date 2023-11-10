@@ -9,7 +9,9 @@ wiki*
 zh.jian.wiki.seg-1.3g.txt
 *_big.csv
 __pycache__*
-data
 mnist
 MNIST
 checkpoint
+machinelearn/bias+correction+of+numerical+prediction+model+temperature+forecast.zip
+
+*.csv
