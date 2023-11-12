@@ -9,8 +9,20 @@
 import os
 import torch
 
-a = 2
-X = torch.arange(24).reshape(2, 3, 4)
-print(a + X)
-print('1' * 100)
-print((a * X).shape)
+
+def f(a):
+    b = a * 2
+    while b.norm() < 1000:
+        b = b * 2
+    if b.sum() > 0:
+        c = b
+    else:
+        c = 100 * b
+    return c
+
+
+a = torch.randn(size=(), requires_grad=True)
+d = f(a)
+d.backward()
+print(a.grad == d / a)
+print(a.grad)
