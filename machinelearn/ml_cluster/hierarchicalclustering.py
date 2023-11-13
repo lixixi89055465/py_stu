@@ -10,6 +10,7 @@ import numpy as np
 from sklearn.datasets import make_blobs
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
+import seaborn as sns
 
 
 class HierarchicalClustering_AGNES:
@@ -148,7 +149,7 @@ if __name__ == '__main__':
     # hc.fit_agnes()
     #############################################
     # centers = np.array([[0.2, 2.3], [-1, 2.3], [-3, 2], [-2, 2.8], [1, 3]])
-    # std = np.array([0.3, 0.2, 0.1, 0.1, 0.1])
+    # std = np.array([0.3, 0.2, 0.15, 0.15, 0.2])
     # X, _ = make_blobs(n_samples=500, n_features=2, \
     #                   centers=centers, cluster_std=std, random_state=7)
     # hc = HierarchicalClustering_AGNES(X, k=5, dist_samples='euclidean')
@@ -172,20 +173,18 @@ if __name__ == '__main__':
     ######################################
     X = pd.read_csv('../data/consumption_data.csv')
     X = StandardScaler().fit_transform(X)
-    hc = HierarchicalClustering_AGNES(X, k=5, dist_samples='mahalanobis')
+    hc = HierarchicalClustering_AGNES(X, k=3, dist_cluster='complete_linkage')
     hc.fit_agnes()
     labels = hc.predict()
-    print(labels)
-    print('=' * 100)
-    plt.figure(figsize=(7, 5))
-    markers = 'osp<>*'
-    for i in range(len(np.unique(labels))):
-        cluster = X[labels == i]
-        plt.plot(cluster[:, 0], cluster[:, 1], markers[i], label='cluster' + str(i + 1))
-    plt.xlabel('Feature 1 ', fontdict={'fontsize': 12})
-    plt.ylabel('Feature 2 ', fontdict={'fontsize': 12})
-    plt.title('HierarchicalClustering_AGNES Clustering of DBSCAN Algorithm')
-    plt.legend()
-    plt.grid(ls=':')
-    plt.savefig('4.png')
+
+    title = ['R index', 'F index', 'M index']
+    plt.figure(figsize=(7, 10))
+    cluster_k = np.unique(labels)
+    for f in range(X.shape[1]):
+        plt.subplot(311 + f)
+        for c in cluster_k:
+            sns.kdeplot(X[labels == c][:, f])
+        plt.grid()
+        plt.title(title[f])
+    plt.savefig('hierarchicalclustering.py.png')
     plt.show()
