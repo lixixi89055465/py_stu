@@ -237,6 +237,7 @@ if __name__ == '__main__':
     pm = ModelPerformanceMetrics(y_test, y_test_pred)  # 模型性能度量
     print(pm.cal_classification_report())
 
+    pr_values = pm.precision_recall_curve()
     plt.subplot(222)
     pr_values = pm.precision_recall_curve()
     pm.plt_pr_curve(pr_values, is_show=False)
