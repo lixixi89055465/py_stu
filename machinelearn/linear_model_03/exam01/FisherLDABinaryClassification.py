@@ -29,13 +29,13 @@ class FisherLDABinaryClassification:
         self.Sw = np.zeros((x_train.shape[1], x_train.shape[1]))  # 初始化总类内离散度矩阵
         for label in class_label:
             class_samples = x_train[y_train == label]  # 布尔索引，提取类别样本子集
-            self.mu_[label] = np.mean(class_samples, axis=0, dtype=np.float)
+            self.mu_[label] = np.mean(class_samples, axis=0, dtype=float)
             sample_size.append(len(class_samples))  # 类内样本量
             self.Sw_i[label] = (class_samples - self.mu_[label]).T \
                 .dot(class_samples - self.mu_[label])  # 计算类内离散度矩阵 class_size*class*size
             self.Sw = self.Sw + self.Sw_i[label]  # 总类内离散度矩阵
         # 2.计算投影方向，按奇异值分解的方法以及最佳投影方向公式
-        self.Sw = np.array(self.Sw, dtype=np.float)
+        self.Sw = np.array(self.Sw, dtype=float)
         u, sigma, v = np.linalg.svd(self.Sw)  # 奇异值分解
         inv_sw = v * np.linalg.inv(np.diag(sigma)) * u.T  # 求Sw的逆矩阵
         self.weight = inv_sw.dot(self.mu_[0] - self.mu_[1])  # 投影方向
