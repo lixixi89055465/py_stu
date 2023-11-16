@@ -9,7 +9,7 @@ import torch
 import torchvision
 from torch.utils import data
 from torchvision import transforms
-# from d2l import torch as d2l
+from d2l import torch as d2l
 import matplotlib.pyplot as plt
 import time
 
@@ -17,12 +17,12 @@ import time
 # 通过ToTensor示例将图像数据从PIL 类型变成32位浮点数格式
 # 并除以255使得所有像素的数值均在0到1至今
 trans = transforms.ToTensor()
-mnist_train = torchvision.datasets.FashionMNIST(root='./data/', \
+mnist_train = torchvision.datasets.FashionMNIST(root='./data', \
                                                 train=True, \
                                                 transform=trans, \
                                                 download=True
                                                 )
-minist_test = torchvision.datasets.FashionMNIST(root='./data/', \
+minist_test = torchvision.datasets.FashionMNIST(root='./data', \
                                                 train=False, \
                                                 transform=trans, \
                                                 download=True)
@@ -186,7 +186,7 @@ class Accumulator:
     '''在n个变量上累加 '''
 
     def __init__(self, n):
-        self.data[0.0] * n
+        self.data = [0.0] * n
 
     def add(self, *args):
         self.data = [a + float(b) for a, b in zip(self.data, args)]
@@ -197,4 +197,55 @@ class Accumulator:
     def __getitem__(self, idx):
         return self.data[idx]
 
+
 evaluate_accuracy(net, test_iter)
+
+
+def loss(y_hat, y):
+    return -torch.log(y_hat[range(len(y)), torch.tensor(y)])
+
+
+def train_epoch_ch3(net, train_iter, test_iter, updater):
+    if isinstance(net, torch.nn.Module):
+        net.train()
+    metric = Accumulator(3)
+    for x, y in train_iter:
+        y_hat = net(x)
+        l = loss(y_hat, y)
+        if isinstance(updater, torch.optim.Optimizer):
+            updater.zero_grad()
+            l.backward()
+            updater.step()
+            metric.add(
+                (float(l) * len(y),
+                 accuracy(y_hat, y),
+                 y.size().numel()),
+            )
+        else:
+            l.sum().backward()
+            updater(X.shape[0])
+            metric.add(float(l.sum()), accuracy(y_hat, y), \
+                       y.size().numel())
+    return metric[0] / metric[2], metric[1] / metric[2]
+
+
+def train_ch3(net, train_iter, test_iter, loss, num_epochs, updater):
+    animator = d2l.Animator(x_label='epoch', xlim=[1, num_epochs], \
+                            ylim=[0.3, 0.9], \
+                            legend=['train loss', 'train acc', 'test acc'])
+    for epoch in range(num_epochs):
+        train_metrics = train_epoch_ch3(net, train_iter, loss, updater)
+        test_acc = evaluate_accuracy(net, test_iter)
+        animator.add(epoch + 1, train_metrics + (test_acc))
+    train_loss, train_acc = train_metrics
+    return train_loss, train_acc
+
+
+lr = 0.1
+
+
+def updater(batch_size):
+    return d2l.sgd([W, b], lr, batch_size)
+num_epochs=10
+
+train_ch3(net,train_iter,test_iter,loss,num_epochs,updater)
