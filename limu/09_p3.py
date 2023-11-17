@@ -202,7 +202,7 @@ evaluate_accuracy(net, test_iter)
 
 
 def loss(y_hat, y):
-    return -torch.log(y_hat[range(len(y)), torch.tensor(y)])
+    return -torch.log(y_hat[range(len(y_hat)), y])
 
 
 def train_epoch_ch3(net, train_iter, test_iter, updater):
@@ -230,14 +230,17 @@ def train_epoch_ch3(net, train_iter, test_iter, updater):
 
 
 def train_ch3(net, train_iter, test_iter, loss, num_epochs, updater):
-    animator = d2l.Animator(x_label='epoch', xlim=[1, num_epochs], \
+    animator = d2l.Animator(xlabel='epoch', xlim=[1, num_epochs], \
                             ylim=[0.3, 0.9], \
                             legend=['train loss', 'train acc', 'test acc'])
     for epoch in range(num_epochs):
         train_metrics = train_epoch_ch3(net, train_iter, loss, updater)
         test_acc = evaluate_accuracy(net, test_iter)
-        animator.add(epoch + 1, train_metrics + (test_acc))
+        animator.add(epoch + 1, train_metrics + (test_acc,))
+
     train_loss, train_acc = train_metrics
+    print('train_acc:')
+    print(train_acc)
     return train_loss, train_acc
 
 
@@ -246,6 +249,28 @@ lr = 0.1
 
 def updater(batch_size):
     return d2l.sgd([W, b], lr, batch_size)
-num_epochs=10
 
-train_ch3(net,train_iter,test_iter,loss,num_epochs,updater)
+
+num_epochs = 10
+
+train_ch3(net, train_iter, test_iter, loss, num_epochs, updater)
+
+
+def predict_ch3(net, test_iter, n=6):
+    '''
+    预测标签（定义见3章）
+    :param net:
+    :param test_iter:
+    :param n:
+    :return:
+    '''
+    for X, y in test_iter:
+        break
+    trues = d2l.get_fashion_mnist_labels(y)
+    preds = d2l.get_fashion_mnist_labels(net(X).argmax(axis=1))
+    titles = [true + '\n' + pred for true, pred in zip(trues, preds)]
+    d2l.show_images(
+        X[0:n].reshape((n, 28, 28)), 1, n, titles=titles[0:n])
+
+
+predict_ch3(net, test_iter)
