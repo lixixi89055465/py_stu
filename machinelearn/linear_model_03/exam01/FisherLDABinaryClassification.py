@@ -23,24 +23,22 @@ class FisherLDABinaryClassification:
         x_train, y_train = np.asarray(X_train), np.asarray(y_train)
         class_label = np.sort(np.unique(y_train))
         if len(class_label) != 2:
-            raise ValueError("仅限于二分类且线性可分数据集...")
-        # 1.按照类别分类样本，计算各类别均值向量、类内离散度矩阵，总类内离散度矩阵
-        sample_size = []  # 存储各类别样本量大小
-        self.Sw = np.zeros((x_train.shape[1], x_train.shape[1]))  # 初始化总类内离散度矩阵
+            raise ValueError("仅限于二分类且线性可分数据集 ...")
+        sample_size = []
+        self.Sw = np.zeros((x_train.shape[1], x_train.shape[1]))
         for label in class_label:
-            class_samples = x_train[y_train == label]  # 布尔索引，提取类别样本子集
+            class_samples = x_train[y_train == label]
             self.mu_[label] = np.mean(class_samples, axis=0, dtype=float)
-            sample_size.append(len(class_samples))  # 类内样本量
-            self.Sw_i[label] = (class_samples - self.mu_[label]).T \
-                .dot(class_samples - self.mu_[label])  # 计算类内离散度矩阵 class_size*class*size
-            self.Sw = self.Sw + self.Sw_i[label]  # 总类内离散度矩阵
-        # 2.计算投影方向，按奇异值分解的方法以及最佳投影方向公式
-        self.Sw = np.array(self.Sw, dtype=float)
+            sample_size.append(len(class_samples))
+            self.Sw_i[label] = (class_samples - self.mu_[label]).T.dot(class_samples - self.mu_[label])
+            self.Sw = self.Sw + self.Sw_i[label]
+        # 2.计算投影方向，按奇异值分解的方法以及最佳投影方向公司
+        self.Sw = np.array(self.Sw, dtype=np.float32)
         u, sigma, v = np.linalg.svd(self.Sw)  # 奇异值分解
-        inv_sw = v * np.linalg.inv(np.diag(sigma)) * u.T  # 求Sw的逆矩阵
+        inv_sw = v * np.linalg.inv(np.diag(sigma)) * u.T
         self.weight = inv_sw.dot(self.mu_[0] - self.mu_[1])  # 投影方向
-        # 3.j计算阈值 w0
-        self.w0 = -(sample_size[0] * self.weight.dot(self.mu_[0]) +
+        # 3.计算阈值
+        self.w0 = -(sample_size[0] * self.weight.dot(self.mu_[0]) + \
                     sample_size[1] * self.weight.dot(self.mu_[1])) / np.sum(sample_size)
 
     def predict(self, x_test):
@@ -53,8 +51,9 @@ class FisherLDABinaryClassification:
         # 针对测试样本，计算判别函数值：投影值+ 阈值
         y_pred = self.weight.dot(x_test.T) + self.w0
         y_test_labels = np.zeros(x_test.shape[0])  # 存储测试样本的列别
-        y_test_labels[y_pred < 0] = 1  # 小于阈值的为负类
+        y_test_labels[y_pred < 0] = 1# 小于阈值的为负类
         return y_test_labels
+
 
 
 import numpy as np
