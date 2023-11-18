@@ -202,7 +202,7 @@ evaluate_accuracy(net, test_iter)
 
 
 def loss(y_hat, y):
-    return -torch.log(y_hat[range(len(y)), torch.tensor(y)])
+    return -torch.log(y_hat[range(len(y_hat)), y])
 
 
 def train_epoch_ch3(net, train_iter, test_iter, updater):
@@ -230,13 +230,13 @@ def train_epoch_ch3(net, train_iter, test_iter, updater):
 
 
 def train_ch3(net, train_iter, test_iter, loss, num_epochs, updater):
-    animator = d2l.Animator(x_label='epoch', xlim=[1, num_epochs], \
+    animator = d2l.Animator(xlabel='epoch', xlim=[1, num_epochs], \
                             ylim=[0.3, 0.9], \
                             legend=['train loss', 'train acc', 'test acc'])
     for epoch in range(num_epochs):
         train_metrics = train_epoch_ch3(net, train_iter, loss, updater)
         test_acc = evaluate_accuracy(net, test_iter)
-        animator.add(epoch + 1, train_metrics + (test_acc))
+        animator.add(epoch + 1, train_metrics + (test_acc,))
     train_loss, train_acc = train_metrics
     return train_loss, train_acc
 
