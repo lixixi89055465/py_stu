@@ -1,5 +1,7 @@
+from sklearn.datasets import make_classification
 import numpy as np
 import scipy as sp
+from sklearn.preprocessing import StandardScaler
 
 
 class LDAMultic_DimReduction:
@@ -78,8 +80,78 @@ from sklearn.datasets import load_iris, load_wine
 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-irir = load_iris()
-X, y = irir.data, irir.target
-lda_dr = LDAMultic_DimReduction(n_components=2)
-X_new = lda_dr.fit_transform(X, y)
+# irir = load_iris()
+# X, y = irir.data, irir.target
+# lda_dr = LDAMultic_DimReduction(n_components=2)
+# X_new = lda_dr.fit_transform(X, y)
+# print(lda_dr.variance_explained())
+# # 可视化
+# plt.figure(figsize=(7, 10))
+# plt.subplot(211)
+# plt.scatter(X_new[:, 0], X_new[:, 1], marker='o', c=y)
+# plt.xlabel('PC1', fontdict={'fontsize': 12})
+# plt.ylabel('PC2', fontdict={'fontsize': 12})
+# plt.grid(ls=':')
+# plt.title('Linear Discriminant Analysis Dimension Reduction ', fontdict={'fontsize': 12})
+# # 采用sklearn自带库函数测试
+# lda = LinearDiscriminantAnalysis(n_components=2)
+# lda.fit(X, y)
+# x_lda = lda.transform(X)
+# plt.subplot(212)
+# plt.scatter(x_lda[:, 0], x_lda[:, 1], marker='s', c=y)
+# plt.xlabel('PC1', fontdict={'fontsize': 12})
+# plt.ylabel('PC2', fontdict={'fontsize': 12})
+# plt.grid(ls=':')
+# plt.title('LDA(Sklearn) Dimension Reduction', fontdict={'fontsize': 14})
+# plt.show()
+
+X, y = make_classification(n_samples=2000, n_features=20, n_classes=5, \
+                           n_informative=3, n_redundant=0, n_repeated=0, \
+                           n_clusters_per_class=1, class_sep=2, random_state=42)
+X = StandardScaler().fit_transform(X)
+lda_dr = LDAMultic_DimReduction(n_components=3)
+X_new = lda_dr.fit_transform(X,y)
 print(lda_dr.variance_explained())
+print('0' * 100)
+
+plt.figure(figsize=(14, 10))
+plt.subplot(221)
+plt.scatter(X_new[:, 0], X_new[:, 1], marker='o', c=y)
+plt.xlabel('PC1', fontdict={'fontsize': 12})
+plt.ylabel('PC2', fontdict={'fontsize': 12})
+plt.grid(ls=':')
+plt.title('LInear Discriminant Analysis Dimension Reduction', fontdict={'fontsize': 12})
+
+plt.subplot(222)
+plt.scatter(X_new[:, 1], X_new[:, 2], marker='o', c=y)
+plt.xlabel('PC2', fontdict={'fontsize': 12})
+plt.ylabel('PC3', fontdict={'fontsize': 12})
+plt.grid(ls=':')
+plt.title("Linear Discriminant Analysis Dimension Reduction")
+
+# lda = LinearDiscriminantAnalysis(n_components=3)
+# lda.fit(X, y)
+# x_lda = lda.transform(X)
+# plt.subplot(223)
+# plt.scatter(x_lda[:, 0], x_lda[:, 1], marker='s', c=y)
+# plt.xlabel('PC1', fontdict={'fontsize': 12})
+# plt.ylabel('PC2', fontdict={'fontsize': 12})
+# plt.grid(ls=':')
+# plt.title('LDA(Sklearn) Dimension Reduction', fontdict={'fontsize': 12})
+
+
+X,y = make_classification(n_samples=2000, n_features=20, n_informative=3, n_redundant=0, \
+                        n_repeated=0, n_classes=5, n_clusters_per_class=1, class_sep=2, )
+lda = LinearDiscriminantAnalysis(n_components=3)
+lda.fit(X, y)
+X_new = lda.transform(X)
+plt.subplot(223)
+plt.scatter(X_new[:, 0], X_new[:, 1], marker='s', c=y)
+plt.xlabel('PC1', fontdict={'fontsize': 12})
+plt.ylabel('PC2', fontdict={'fontsize': 12})
+plt.grid(ls=':')
+plt.title('LDA Dimension Reduction', fontdict={'fontsize': 12})
+plt.subplot(224)
+x_lda = lda.transform(X)
+plt.scatter(x_lda[:, 1], x_lda[:, 2], marker='s', c=y)
+plt.show()
