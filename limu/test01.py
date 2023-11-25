@@ -9,20 +9,7 @@
 import os
 import torch
 
+X = torch.ones((3, 2))
 
-def f(a):
-    b = a * 2
-    while b.norm() < 1000:
-        b = b * 2
-    if b.sum() > 0:
-        c = b
-    else:
-        c = 100 * b
-    return c
-
-
-a = torch.randn(size=(), requires_grad=True)
-d = f(a)
-d.backward()
-print(a.grad == d / a)
-print(a.grad)
+dropout = 0.5
+print((torch.randn(X.shape) > dropout).float())
