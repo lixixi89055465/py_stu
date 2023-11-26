@@ -21,3 +21,19 @@ def pool2d(X, pool_size, mode='max'):
                 Y[i, j] = X[i:i + p_h, j:j + p_w].mean()
     return Y
 
+
+X = torch.tensor([[0., 1., 2.], [3., 4., 5.], [6., 7., 8.]])
+print(X.shape)
+print(X)
+print(pool2d(X, (2, 2,)))
+
+print('0' * 100)
+print(pool2d(X, (2, 2,), 'avg'))
+
+X = torch.arange(16, dtype=torch.float32).reshape((1, 1, 4, 4))
+print('1' * 100)
+print(X)
+
+print('2' * 100)
+pool2d = nn.MaxPool2d(3)
+print(pool2d(X))
