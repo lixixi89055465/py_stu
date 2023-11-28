@@ -1,6 +1,7 @@
 import numpy as np
 from machinelearn.decision_tree_04.exam01.TreeUtils import TreeUtils
 from machinelearn.decision_tree_04.exam01.Entropy_Utils import Entropy_Utils
+from time import time
 
 
 class ID3_DecisionTree:
@@ -14,8 +15,9 @@ class ID3_DecisionTree:
         self.min_info_gain = min_info_gain  # 最小信息增益阈值
         self.class_nums = None  # 类别数目
         self.feature_names = feature_names  # 特征属性名称
-        self.cal_info_gain = Entropy_Utils.info_gain()  # 计算信息增益函数
+        self.cal_info_gain = Entropy_Utils().info_gain  # 计算信息增益函数
         self.y_labels_dict = {}  # 样本类别字典
+        self.y_label_index = {}
 
     def fit(self, x_train, y_train):
         '''
@@ -27,6 +29,7 @@ class ID3_DecisionTree:
         # 类别标签编码
         for i, label in enumerate(list(set(y_train))):
             self.y_labels_dict[i] = label  # 以label为值，相应位置索引为键
+            self.y_label_index[label] = i
         feature_idx = list(range(x_train.shape[1]))  # 特征索引列表
         tree = self._build_tree(x_train, y_train, feature_idx)
         return tree
@@ -44,10 +47,12 @@ class ID3_DecisionTree:
             print('类别', label_unique[0])
             return TreeUtils(self.LEAF, cls=label_unique[0])
         class_lab_nums = []
-        for lab in label_unique:
+        for i, lab in enumerate(label_unique):
             class_lab_nums.append([lab, len(y_train[y_train == lab])])
+
         # 各类别所包含的样本量中的最大值所对应的类别索引
         class_idx = max(class_lab_nums, key=lambda x: x[1])
+
         # 特征集为空，投票法，取样本呢量最大所对应的类被
         if len(feature_idx) == 0:  # 叶子节点
             print('类别:', self.y_labels_dict[class_idx])
@@ -63,7 +68,7 @@ class ID3_DecisionTree:
                 best_feature_idx, best_gain = idx, feature_gain
         # 信息增益不足以划分节点 ，标记为叶子界定啊
         if best_gain < self.min_info_gain:  # 叶子节点
-            print('类别;', self.y_labels_dict[class_idx])
+            print('类别;', class_idx[0])
             return TreeUtils(self.LEAF, cls=class_idx)
         tree = TreeUtils(self.INTERNAL, best_feature=best_feature_idx)  # 构造决策树内部节点
         print('-' * 100)
@@ -77,7 +82,7 @@ class ID3_DecisionTree:
         for f_val in best_feature_unique_value:
             print(f'当特征{self.feature_names[best_feature_idx]},值为{f_val}时 ')
             sub_train_set = x_train[x_train[:, best_feature_idx] == f_val]
-            sub_train_label = y_train[x_train[:, best_feature_idx == f_val]]
+            sub_train_label = y_train[x_train[:, best_feature_idx] == f_val]
             sub_tree = self._build_tree(sub_train_set, sub_train_label, sub_feature_idx)
             tree.add_tree(f_val, sub_tree)
         return tree
@@ -100,3 +105,50 @@ class ID3_DecisionTree:
             else:
                 y_test_pred.append(len(values))  # 可能为none
         return np.asarray(y_test_list), np.array(y_test_pred)
+
+
+print('start read data...')
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+time_1 = time()
+raw_data = pd.read_csv('../../data/nursery.csv').dropna()
+feature_names = raw_data.columns
+X_sample_data = np.asarray(raw_data.iloc[:, :-1])
+y_target = np.asarray(raw_data.iloc[:, -1])
+y_target=LabelEncoder().fit_transform(y_target)
+
+# raw_data = pd.read_csv('../../data/watermelon.csv')
+# data = raw_data.values
+# feature_names = raw_data.columns[1:]
+# X_sample_data, y_target = data[:, 1:-3], data[:, -1]  # 特征样本数据，目标值
+
+epsilon = 1e-5
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(X_sample_data, y_target, train_size=0.7, \
+                     random_state=0, stratify=y_target)
+
+time_2 = time()
+print(f'read data cost {time_2 - time_1}')
+# 通过ID3 算法生产决策树
+id3 = ID3_DecisionTree(epsilon, feature_names)
+print('=' * 100)
+print('start training ')
+tree = id3.fit(X_train, y_train)
+time_3 = time()
+print(f'training cost {time_3 - time_2} seconds ')
+print('=' * 100)
+print('start predicting ')
+y_test, y_test_pred = id3.predict(X_test, y_test, tree)
+time_4 = time()
+
+print(f'predicting cost {time_4 - time_3} seconds ')
+from sklearn.metrics import accuracy_score
+
+score = accuracy_score(y_test, y_test_pred)
+print(f'The accuracy score is {score} \n')
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, y_test_pred))
