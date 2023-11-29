@@ -43,6 +43,6 @@ for layer in net:
 
 batch_size = 128
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=224)
-lr, num_epochs = 0.01, 1
+lr, num_epochs = 0.01, 10
 d2l.train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
 plt.savefig('1.png')
