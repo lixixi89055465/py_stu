@@ -2,6 +2,7 @@ from machinelearn.decision_tree_04.exam01.Entropy_Utils import Entropy_Utils
 from machinelearn.decision_tree_04.exam01.TreeNode import TreeNode
 from machinelearn.decision_tree_04.exam01.DataBinWrapper import DataBinWrapper
 import numpy as np
+import time
 
 
 class DecisionTreeClassifier:
@@ -81,3 +82,58 @@ class DecisionTreeClassifier:
             x_train = self.dbw.transform(x_train)
         elif self.dbw_idx is not None:
             x_train = self._data_preprocess(x_train)
+        # 递归构建树
+        time_start = time.time()
+        self._build_tree(1, self.root_node, x_train, y_train, sample_weight)
+
+    def _build_tree(self, cur_depth, cur_node: TreeNode, x_train, y_train, sample_weight):
+        '''
+        递归进行特征选择 ,构建树
+        :param param:
+        :param root_node:
+        :param x_train:
+        :param y_train:
+        :param sample_weight:
+        :return:
+        '''
+        n_samples, n_features = x_train.shape
+        target_dist, weight_dist = {}, {}
+        class_labels = np.unique(y_train)
+        for label in class_labels:
+            target_dist[label] = len(y_train[y_train == label]) / n_samples
+            weight_dist[label] = np.mean(sample_weight[y_train == label])
+        cur_node.target_dist = target_dist  # 类别分布
+        cur_node.weight_dist = weight_dist  # 权重分布
+        cur_node.n_samples = n_samples  # 样本量
+        # 判断停止切分的条件
+        if len(target_dist) <= 1:
+            return
+            # 达到树的最大深度
+        if self.max_depth is not None and cur_depth > self.max_depth:
+            return
+            # 寻找最佳的特征以及取值
+        best_idx, best_index_val, best_criterion_val = None, None, 0
+        for k in range(n_features):
+            for f_val in set(x_train[:, k]):
+                # 计算当前特征的划分标准，当前特征的不同取值，只要是不区分不同值即可，此处简化为0,1标记
+                feat_k_values = (x_train[:, k] == f_val).astype(int)
+                # 根据不同的划分标准，即 ID3，C4.5,CART
+                criterion_val = self.criterion_func(feat_k_values, y_train, sample_weight)
+                if criterion_val > best_criterion_val:
+                    best_criterion_val = criterion_val  # 最佳划分标准
+                    best_idx, best_index_val = k, f_val  # 当前最佳特征索引和最佳的特征取值
+                if best_idx is None:#
+                    return
+                if best_criterion_val<=self.min_impurity_decrease:
+                    return
+                cur_node.feature_idx=best_idx
+                cur_node.feature_val=best_index_val
+                cur_node.criterion_val=best_criterion_val
+                selected_x=x_train[:,best_idx]
+                left_index=np.where(selected_x==best_index_val)
+                if len(left_index[0])>=self.min_samples_leaf:
+                    left_child_node=TreeNode()
+                    cur_node.left_child_node=left_child_node
+                    self._build_tree()
+
+
