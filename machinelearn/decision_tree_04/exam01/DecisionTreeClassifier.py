@@ -42,23 +42,26 @@ class DecisionTreeClassifier:
         :return:
         '''
         self.dbw_idx = np.asarray(self.dbw_idx)
-        x_sample_prep = []  #
+        x_sample_pred = []
         if not self.dbw_XrangeMap:
-            for i in range(x_samples.shape[1]):
+            for i in range(x_samples.shape[0]):
                 if i in self.dbw_idx:
+                    print('对特征索引为%d 的样本进行分享处理' % i)
                     self.dbw.fit(x_samples[:, i])
+                    print('分箱点为：', self.dbw.XrangeMap)
+                    print('-' * 100)
                     self.dbw_XrangeMap[i] = self.dbw.XrangeMap
-                    x_sample_prep.append(self.dbw.transform(x_samples[:, i]))
+                    x_sample_pred.append(self.dbw.fit(x_samples[:, i]))
                 else:
-                    x_sample_prep.append(x_samples[:, i])
+                    x_sample_pred.append(x_samples[:, i])
         else:
             for i in range(x_samples.shape[1]):
                 if i in self.dbw_idx:
-                    x_sample_prep.append(self.dbw.transform(x_samples[:, i],
+                    x_sample_pred.append(self.dbw.transform(x_samples[:, i], \
                                                             self.dbw_XrangeMap[i]))
                 else:
-                    x_sample_prep.append(x_samples[:, i])
-        return np.asarray(x_sample_prep).T
+                    x_sample_pred.append(x_samples[:, i])
+        return np.asarray(x_sample_pred).T
 
     def fit(self, x_train, y_train, sample_weight=None):
         '''
@@ -68,23 +71,25 @@ class DecisionTreeClassifier:
         :param sample_weight:
         :return:
         '''
-        print('决策树模型递归构建 ...')
+        print('决策树模型递归构建 starting...')
         if y_train.dtype == 'object':
-            raise ValueError('类别标签必须是数值型，请先编码..')
+            raise ValueError('类别标签必须是数值型，请先编码...')
         n_samples, self.n_features = x_train.shape
-        if sample_weight is None:
+        if not sample_weight:
             sample_weight = np.asarray([1.0] * n_samples)
         if len(sample_weight) != n_samples:
-            raise Exception('sample_weight size error:', len(sample_weight))
+            raise Exception('sample weight size error:', len(sample_weight))
         self.root_node = TreeNode()  # 构建空的根节点
-        if self.is_feature_R:  # 如果所有的数据都是连续
+        if self.is_feature_R:
             self.dbw.fit(x_train)
             x_train = self.dbw.transform(x_train)
-        elif self.dbw_idx is not None:
+        elif self.dbw_idx:
             x_train = self._data_preprocess(x_train)
-        # 递归构建树
+        # 递归时间
         time_start = time.time()
         self._build_tree(1, self.root_node, x_train, y_train, sample_weight)
+        time_end = time.time()
+        print('决策树模型递归构建完成，耗时：%f second' % (time_end - time_start))
 
     def _build_tree(self, cur_depth, cur_node: TreeNode, x_train, y_train, sample_weight):
         '''
@@ -101,39 +106,63 @@ class DecisionTreeClassifier:
         class_labels = np.unique(y_train)
         for label in class_labels:
             target_dist[label] = len(y_train[y_train == label]) / n_samples
-            weight_dist[label] = np.mean(sample_weight[y_train == label])
+            weight_dist[label] = np.mean(weight_dist[y_train == label])
         cur_node.target_dist = target_dist  # 类别分布
         cur_node.weight_dist = weight_dist  # 权重分布
         cur_node.n_samples = n_samples  # 样本量
-        # 判断停止切分的条件
         if len(target_dist) <= 1:
             return
-            # 达到树的最大深度
+        if n_samples < self.min_samples_split:
+            return
         if self.max_depth is not None and cur_depth > self.max_depth:
             return
             # 寻找最佳的特征以及取值
         best_idx, best_index_val, best_criterion_val = None, None, 0
-        for k in range(n_features):
-            for f_val in set(x_train[:, k]):
-                # 计算当前特征的划分标准，当前特征的不同取值，只要是不区分不同值即可，此处简化为0,1标记
-                feat_k_values = (x_train[:, k] == f_val).astype(int)
-                # 根据不同的划分标准，即 ID3，C4.5,CART
-                criterion_val = self.criterion_func(feat_k_values, y_train, sample_weight)
-                if criterion_val > best_criterion_val:
-                    best_criterion_val = criterion_val  # 最佳划分标准
-                    best_idx, best_index_val = k, f_val  # 当前最佳特征索引和最佳的特征取值
-                if best_idx is None:#
-                    return
-                if best_criterion_val<=self.min_impurity_decrease:
-                    return
-                cur_node.feature_idx=best_idx
-                cur_node.feature_val=best_index_val
-                cur_node.criterion_val=best_criterion_val
-                selected_x=x_train[:,best_idx]
-                left_index=np.where(selected_x==best_index_val)
-                if len(left_index[0])>=self.min_samples_leaf:
-                    left_child_node=TreeNode()
-                    cur_node.left_child_node=left_child_node
-                    self._build_tree()
 
+    def predict(self, x_test):
+        '''
+        预测样本 所属类别，预测类别概率为二维数组
+        :param x_test:
+        :return:
+        '''
+        return np.argmax(self.predict_probability(x_test), axis=1)
 
+    def predict_probability(self, x_test, root_node=None):
+        '''
+        预测测试样本的概率分布
+        :param x_test:
+        :param root_node:
+        :return:
+        '''
+        if self.is_feature_R:
+            x_test = self.dbw.transform(x_test)
+        elif self.dbw_idx is not None:
+            x_test = self._data_preprocess(x_test)
+        time_start = time.time()
+        prob_dist = []
+        class_num = len(self.root_node.target_dist)
+        for i in range(x_test.shape[0]):
+            prob_dist.append(self._search_node(self.root_node, x_test[i], class_num))
+        time_end = time.time()
+        print('对测试样本进行预测（即从根节点到叶子节点搜索），耗时:%f second' % \
+              (time_end - time_start))
+        return np.asarray(prob_dist)
+
+    def _search_node(self, cur_node, x_test, class_num):
+        '''
+        检索叶子节点的结果，用于预测，即在根节点到叶子节点的一条路径上搜索
+        :param cur_node:  当前决策树根节点
+        :param x_test:  每个测试样本
+        :param class_num:  类别数
+        :return:
+        '''
+        if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
+            return self._search_node(cur_node.left_child_node, x_test, class_num)
+        elif cur_node.right_child_node and x_test[cur_node.feature_idx] != cur_node.feature_val:
+            return self._search_node(cur_node.right_child_node, x_test, class_num)
+        else:
+            class_p = np.zeros(class_num)
+            for c in range(class_num):
+                class_p[c] = cur_node.target_dist.get(c, 0) * cur_node.weight_dist.get(c, 1.0)
+            class_p /= np.sum(class_p)
+            return class_p
