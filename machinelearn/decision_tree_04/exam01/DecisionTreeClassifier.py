@@ -130,7 +130,7 @@ class DecisionTreeClassifier:
                     best_idx, best_index_val = k, f_val
         if not best_idx:
             return
-        if best_index_val <= self.min_impurity_decrease:
+        if best_criterion_val <= self.min_impurity_decrease:
             return
         cur_node.feature_idx = best_idx
         cur_node.feature_val = best_index_val
@@ -232,6 +232,7 @@ print('1' * 100)
 nursery = pd.read_csv('../../data/nursery.csv').dropna()
 X = np.asarray(nursery.iloc[:, :-1])
 y = np.asarray(nursery.iloc[:, -1])
+y = LabelEncoder().fit_transform(y)
 
 X_train, X_test, y_train, y_test = \
     train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)

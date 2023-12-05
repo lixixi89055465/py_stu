@@ -15,3 +15,10 @@ print(dummies)
 dummies = dummies.rename(columns={'gender_女':'female','gender_男':'male'})
 print('3'*100)
 print(dummies)
+print('4'*100)
+print(df['gender'].values)
+b=df['gender'].values
+from sklearn.preprocessing import OneHotEncoder
+encoder=OneHotEncoder(sparse=False).fit_transform(b.reshape(-1,1) )
+print('5'*100)
+print(encoder)

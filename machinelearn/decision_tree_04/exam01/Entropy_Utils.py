@@ -90,7 +90,7 @@ class Entropy_Utils:
         :return:
         '''
         x, y = np.asarray(feature_x), np.asarray(y_labels)
-        sample_weight = self._set_sample_weight(sample_weight)
+        sample_weight = self._set_sample_weight(sample_weight,len(y_labels))
         cond_gini = .0  # 计算条件 gini系数
         for x_val in np.unique(x):
             x_idx = np.where(x_val == x)
