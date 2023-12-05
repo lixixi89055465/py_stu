@@ -128,7 +128,7 @@ def train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs,
 
 
 batch_size, devices, net = 256, d2l.try_all_gpus(), d2l.resnet18(10, 3)
-
+ong
 
 def init_weight(m):
     if type(m) in [nn.Linear, nn.Conv2d]:
