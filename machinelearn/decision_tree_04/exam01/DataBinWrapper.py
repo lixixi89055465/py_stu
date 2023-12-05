@@ -26,23 +26,25 @@ class DataBinWrapper:
         else:
             return np.asarray([np.digitize(x[:, i], self.XrangeMap[i]) for i in range(x.shape[1])]).T
 
-    def transform(self, x, XrangeMap):
-        return np.asarray([np.digitize(x, XrangeMap)]).reshape(-1)
+    # def transform(self, x, XrangeMap):
+    #     return np.asarray([np.digitize(x, XrangeMap)]).reshape(-1)
 
 
-bins = DataBinWrapper(max_bins=3)
-x = np.arange(30)
-np.random.shuffle(x)
-x = x.reshape(10, 3)
+if __name__ == '__main__':
+    bins = DataBinWrapper(max_bins=3)
+    x = np.arange(30)
+    np.random.shuffle(x)
+    x = x.reshape(10, 3)
 
-bins.fit(x)
-print('0' * 100)
-indexA = bins.transform(x)
-print(indexA[:, 0])
-print('1' * 100)
-print(x)
-print('2' * 100)
-print(x[indexA[:, 0]])
+    bins.fit(x)
+    print('0' * 100)
+    indexA = bins.transform(x)
+    print(indexA[:, 0])
+    print('1' * 100)
+    print(x)
+    print('2' * 100)
+    print(x[indexA[:, 0]])
+    print('3' * 100)
+    print(indexA)
 
-print('3' * 100)
-print(indexA)
+

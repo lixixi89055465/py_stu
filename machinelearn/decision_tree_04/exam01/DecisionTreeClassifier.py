@@ -2,6 +2,7 @@ from machinelearn.decision_tree_04.exam01.Entropy_Utils import Entropy_Utils
 from machinelearn.decision_tree_04.exam01.TreeNode import TreeNode
 from machinelearn.decision_tree_04.exam01.DataBinWrapper import DataBinWrapper
 import numpy as np
+import pandas as pd
 import time
 
 
@@ -10,7 +11,7 @@ class DecisionTreeClassifier:
     决策树分类算法：包括ID3、C4.5和CART树，后剪技处理，针对连续特征数据，进行分箱处理
     '''
 
-    def __init__(self, criterion='CART', is_feature_R=False, dbw_idx=None, \
+    def __init__(self, criterion='CART', is_feature_R=False, class_num=None, dbw_idx=None, \
                  max_depth=None, min_samples_split=2, min_samples_leaf=1, \
                  min_impurity_decrease=0, max_bins=10):
         self.utils = Entropy_Utils()  # 各种节点划分指标的计算
@@ -34,6 +35,9 @@ class DecisionTreeClassifier:
         self.dbw = DataBinWrapper(max_bins=max_bins)  # 数据分箱处理，针对连续特征数据
         self.n_features = None  # 样本特征数
         self.prune_nums = 0  # 剪枝处理考察的节点数
+        self.class_values = np.unique(y_train)
+        if class_num is not None:
+            self.class_values = np.arange(class_num)
 
     def _data_preprocess(self, x_samples):
         '''
@@ -101,23 +105,50 @@ class DecisionTreeClassifier:
         :param sample_weight:
         :return:
         '''
-        n_samples, n_features = x_train.shape
+        n_samples, n_feature = x_train.shape
         target_dist, weight_dist = {}, {}
         class_labels = np.unique(y_train)
         for label in class_labels:
             target_dist[label] = len(y_train[y_train == label]) / n_samples
-            weight_dist[label] = np.mean(weight_dist[y_train == label])
-        cur_node.target_dist = target_dist  # 类别分布
-        cur_node.weight_dist = weight_dist  # 权重分布
-        cur_node.n_samples = n_samples  # 样本量
+            weight_dist[label] = np.mean(sample_weight[y_train == label])
+        cur_node.target_dist = target_dist
+        cur_node.weight_dist = weight_dist
+        cur_node.n_samples = n_samples
         if len(target_dist) <= 1:
             return
         if n_samples < self.min_samples_split:
             return
-        if self.max_depth is not None and cur_depth > self.max_depth:
+        if self.max_depth and cur_depth > self.max_depth:
             return
-            # 寻找最佳的特征以及取值
         best_idx, best_index_val, best_criterion_val = None, None, 0
+        for k in range(n_feature):
+            for f_val in set(x_train[:, k]):
+                feat_k_values = (x_train[:, k] == f_val).astype(int)
+                criterion_val = self.criterion_func(feat_k_values, y_train, sample_weight)
+                if criterion_val > best_criterion_val:
+                    best_criterion_val = criterion_val
+                    best_idx, best_index_val = k, f_val
+        if not best_idx:
+            return
+        if best_index_val <= self.min_impurity_decrease:
+            return
+        cur_node.feature_idx = best_idx
+        cur_node.feature_val = best_index_val
+        cur_node.criterion_val = best_criterion_val
+        selected_x = x_train[:, best_idx]
+
+        left_index = np.where(selected_x == best_index_val)
+        if len(left_index[0]) >= self.min_samples_leaf:
+            left_child_node = TreeNode()
+            cur_node.left_child_node = left_child_node
+            self._build_tree(cur_depth + 1, left_child_node, x_train[left_index], \
+                             y_train[left_index], sample_weight[left_index])
+        right_index = np.where(selected_x != best_index_val)
+        if len(right_index[0]) >= self.min_samples_leaf:
+            right_child_node = TreeNode()
+            cur_node.right_child_node = right_child_node
+            self._build_tree(cur_depth + 1, right_child_node, x_train[right_index], \
+                             y_train[right_index], sample_weight[right_index])
 
     def predict(self, x_test):
         '''
@@ -125,30 +156,29 @@ class DecisionTreeClassifier:
         :param x_test:
         :return:
         '''
-        return np.argmax(self.predict_probability(x_test), axis=1)
+        return np.argmax(self.predict_proba(x_test), axis=1)
 
-    def predict_probability(self, x_test, root_node=None):
+    def predict_proba(self, x_test):
         '''
         预测测试样本的概率分布
         :param x_test:
         :param root_node:
         :return:
         '''
+        x_test = np.asarray(x_test)
         if self.is_feature_R:
-            x_test = self.dbw.transform(x_test)
+            if self.dbw_XrangeMap is not None:
+                x_test = self.dbw.transform(x_test)
+            else:
+                raise ValueError('请先创建决策树........')
         elif self.dbw_idx is not None:
             x_test = self._data_preprocess(x_test)
-        time_start = time.time()
         prob_dist = []
-        class_num = len(self.root_node.target_dist)
         for i in range(x_test.shape[0]):
-            prob_dist.append(self._search_node(self.root_node, x_test[i], class_num))
-        time_end = time.time()
-        print('对测试样本进行预测（即从根节点到叶子节点搜索），耗时:%f second' % \
-              (time_end - time_start))
+            prob_dist.append(self._search_tree_predict(self.root_node, x_test[i]))
         return np.asarray(prob_dist)
 
-    def _search_node(self, cur_node, x_test, class_num):
+    def _search_tree_predict(self, cur_node: TreeNode, x_test):
         '''
         检索叶子节点的结果，用于预测，即在根节点到叶子节点的一条路径上搜索
         :param cur_node:  当前决策树根节点
@@ -157,12 +187,56 @@ class DecisionTreeClassifier:
         :return:
         '''
         if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
-            return self._search_node(cur_node.left_child_node, x_test, class_num)
+            return self._search_tree_predict(cur_node.left_child_node, x_test)
         elif cur_node.right_child_node and x_test[cur_node.feature_idx] != cur_node.feature_val:
-            return self._search_node(cur_node.right_child_node, x_test, class_num)
+            return self._search_tree_predict(cur_node.right_child_node, x_test)
         else:
-            class_p = np.zeros(class_num)
-            for c in range(class_num):
+            class_p = np.zeros(len(self.class_values))
+            for c in range(len(self.class_values)):
                 class_p[c] = cur_node.target_dist.get(c, 0) * cur_node.weight_dist.get(c, 1.0)
             class_p /= np.sum(class_p)
             return class_p
+
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+
+bc_data = load_breast_cancer()
+feature_names = bc_data.feature_names
+X, y = bc_data.data, bc_data.target
+
+
+def target_encoding(y):
+    y_dict={}
+    y_unique=np.unique(y)
+    for i,k in enumerate(y_unique):
+        y_dict[k]=i
+    n_samples, n_class = len(y), len(y_unique)
+    target = -1 / (n_class - 1) * np.ones((n_samples, n_class))
+    for i in range(n_samples):
+        target[i, y_dict[y[i]]] = 1
+    return target,y_dict
+
+
+# y_labels_dict = target_encoding(y)
+# print(y_labels_dict)
+# X_train, X_test, y_train, y_test = \
+#     train_test_split(X, y, test_size=0.3, random_state=2, stratify=y, )
+# tree = DecisionTreeClassifier(is_feature_R=True, max_bins=10, criterion='c45', max_depth=10,)
+# tree.fit(X_train, y_train)
+# y_test_pred = tree.predict(X_test)
+# print(classification_report(y_test, y_test_pred))
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder
+print('1' * 100)
+nursery = pd.read_csv('../../data/nursery.csv').dropna()
+X = np.asarray(nursery.iloc[:, :-1])
+y = np.asarray(nursery.iloc[:, -1])
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, test_size=0.3, random_state=0, stratify=y)
+tree = DecisionTreeClassifier(criterion='cart', max_depth=10, max_bins=10, \
+                              min_samples_split=20, min_samples_leaf=5)
+tree.fit(X_train, y_train)
+y_test_pred = tree.predict(X_test)
+print(classification_report(y_test, y_test_pred))
