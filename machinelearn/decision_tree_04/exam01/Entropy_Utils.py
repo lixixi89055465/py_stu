@@ -138,8 +138,8 @@ class Entropy_Utils:
 
     def _set_sample_weight(self, sample_weight, x_num):
         if sample_weight is None:
-            self.sample_weight = np.ones((x_num))
-        return self.sample_weight
+            sample_weight = np.ones((x_num))
+        return sample_weight
 
 
 
