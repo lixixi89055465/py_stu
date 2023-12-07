@@ -111,4 +111,35 @@ class Entropy_Utils:
                  self.conditional_gini(feature_x, y_labels, sample_weight)
         return g_gain
 
+    def square_error(self, y, sample_weight):
+        y = np.asarray(y)
+        return np.sum((y - np.mean(y)) ** 2 * sample_weight)
+
+    def cond_square_error(self, x, y, sample_weight):
+        x, y = np.asarray(x), np.asarray(y)
+        error = .0
+        for x_v in set(x):
+            x_index = np.where(x_v == x)
+            new_y = y[x_index]
+            new_sample = y[x_index]
+            error += self.square_error(new_y, new_sample)
+        return error
+
+    def square_error_gain(self, x, y, sample_weight=None):
+        '''
+
+		:param x:
+		:param y:
+		:param sample_weight:
+		:return:
+		'''
+        sample_weight = self._set_sample_weight(sample_weight, len(x))
+        return self.square_error(y, sample_weight) - self.cond_square_error(x, y, sample_weight)
+
+    def _set_sample_weight(self, sample_weight, x_num):
+        if sample_weight is None:
+            self.sample_weight = np.ones((x_num))
+        return self.sample_weight
+
+
 
