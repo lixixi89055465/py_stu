@@ -50,7 +50,7 @@ def load_dataset(batch_size, img_size):
 	])
 
 	# Read the data set
-	root_folder = "./data"
+	root_folder = "../data"
 	train_csv = pd.read_csv("../data/train.csv")
 	test_csv = pd.read_csv("../data/test.csv")
 
@@ -68,82 +68,91 @@ def load_dataset(batch_size, img_size):
 	test_size = len(full_dataset) - train_size
 	train_dataset, test_dataset = torch.utils.data.random_split(full_dataset, [train_size, test_size])
 	# dataloader
-	train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True,num_workers=8,pin_memory=True)
-	test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True,num_workers=4,pin_memory=True)
+	train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8, pin_memory=True)
+	test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
 	dataloaders = {'train': train_dataloader, 'test': test_dataloader}
 
 	print(f"train size:{train_size},test size:{test_size}")
 	print(full_dataset.classes)
 	return dataloaders, full_dataset.classes, predict_dataset
 
+
 import matplotlib.pyplot as plt
-def display_data(dataloader,class_names):
-    # Get a batch of images and labels from the dataloader
-    images, labels = next(iter(dataloader["train"]))
-    # Display the first 5 images
-    fig, axes = plt.subplots(1, 5, figsize=(15, 3))
-    for i in range(5):
-        axes[i].imshow(images[i].permute(1, 2, 0))# change the dimension order from (C, H, W) to (H, W, C),
-        axes[i].set_title(class_names[labels[i]])
-        axes[i].axis('off')
-    plt.show()
+
+
+def display_data(dataloader, class_names):
+	# Get a batch of images and labels from the dataloader
+	images, labels = next(iter(dataloader["train"]))
+	# Display the first 5 images
+	fig, axes = plt.subplots(1, 5, figsize=(15, 3))
+	for i in range(5):
+		axes[i].imshow(images[i].permute(1, 2, 0))  # change the dimension order from (C, H, W) to (H, W, C),
+		axes[i].set_title(class_names[labels[i]])
+		axes[i].axis('off')
+	plt.show()
+
 
 import torch
 from torch import nn
 from torch.nn import functional as F
 
-class Residual(nn.Module):# Basic Residual for ResNet
-    def __init__(self, input_channels, num_channels,
-                 use_1x1conv=False, strides=1):
-        super().__init__()
-        self.conv1 = nn.Conv2d(input_channels, num_channels,
-                               kernel_size=3, padding=1, stride=strides)
-        self.conv2 = nn.Conv2d(num_channels, num_channels,
-                               kernel_size=3, padding=1)
-        if use_1x1conv:
-            self.conv3 = nn.Conv2d(input_channels, num_channels,
-                                   kernel_size=1, stride=strides)
-        else:
-            self.conv3 = None
-        self.bn1 = nn.BatchNorm2d(num_channels)
-        self.bn2 = nn.BatchNorm2d(num_channels)
 
-    def forward(self, X):
-        Y = F.relu(self.bn1(self.conv1(X)))
-        Y = self.bn2(self.conv2(Y))
-        if self.conv3:
-            X = self.conv3(X)
-        Y += X  #residual
-        return F.relu(Y)
+class Residual(nn.Module):  # Basic Residual for ResNet
+	def __init__(self, input_channels, num_channels,
+				 use_1x1conv=False, strides=1):
+		super().__init__()
+		self.conv1 = nn.Conv2d(input_channels, num_channels,
+							   kernel_size=3, padding=1, stride=strides)
+		self.conv2 = nn.Conv2d(num_channels, num_channels,
+							   kernel_size=3, padding=1)
+		if use_1x1conv:
+			self.conv3 = nn.Conv2d(input_channels, num_channels,
+								   kernel_size=1, stride=strides)
+		else:
+			self.conv3 = None
+		self.bn1 = nn.BatchNorm2d(num_channels)
+		self.bn2 = nn.BatchNorm2d(num_channels)
+
+	def forward(self, X):
+		Y = F.relu(self.bn1(self.conv1(X)))
+		Y = self.bn2(self.conv2(Y))
+		if self.conv3:
+			X = self.conv3(X)
+		Y += X  # residual
+		return F.relu(Y)
+
 
 def resnet_block(input_channels, num_channels, num_residuals,
-                 first_block=False):
-    block = []
-    for i in range(num_residuals):
-        if i == 0 and not first_block:
-            block.append(Residual(input_channels, num_channels,
-                                use_1x1conv=True, strides=2))
-        else:
-            block.append(Residual(num_channels, num_channels))
-    return block
+				 first_block=False):
+	block = []
+	for i in range(num_residuals):
+		if i == 0 and not first_block:
+			block.append(Residual(input_channels, num_channels,
+								  use_1x1conv=True, strides=2))
+		else:
+			block.append(Residual(num_channels, num_channels))
+	return block
+
+
 def resNet_18(n_classes):
-    #full ResNet-18
-    b1 = nn.Sequential(nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
-                       nn.BatchNorm2d(64), nn.ReLU(),
-                       nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
-    b2 = nn.Sequential(*resnet_block(64, 64, 2, first_block=True))
-    b3 = nn.Sequential(*resnet_block(64, 128, 2))
-    b4 = nn.Sequential(*resnet_block(128, 256, 2))
-    b5 = nn.Sequential(*resnet_block(256, 512, 2))
-    return nn.Sequential(b1, b2, b3, b4, b5,
-                        nn.AdaptiveAvgPool2d((1,1)),
-                        nn.Flatten(), nn.Linear(512, n_classes))
+	# full ResNet-18
+	b1 = nn.Sequential(nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
+					   nn.BatchNorm2d(64), nn.ReLU(),
+					   nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+	b2 = nn.Sequential(*resnet_block(64, 64, 2, first_block=True))
+	b3 = nn.Sequential(*resnet_block(64, 128, 2))
+	b4 = nn.Sequential(*resnet_block(128, 256, 2))
+	b5 = nn.Sequential(*resnet_block(256, 512, 2))
+	return nn.Sequential(b1, b2, b3, b4, b5,
+						 nn.AdaptiveAvgPool2d((1, 1)),
+						 nn.Flatten(), nn.Linear(512, n_classes))
+
 
 net = resNet_18(n_classes=100)
 X = torch.rand(size=(1, 3, 256, 256))
 for layer in net:
-    X = layer(X)
-    print(layer.__class__.__name__,'output shape:\t', X.shape)
+	X = layer(X)
+	print(layer.__class__.__name__, 'output shape:\t', X.shape)
 
 
 def calculate_accuracy(model, data_loader, device):
@@ -167,6 +176,7 @@ import torch.optim as optim
 
 
 def train(model, dataloaders, epochs, criterion, optimizer):
+	train_acc, test_acc = [], []
 	for epoch in range(epochs):
 		for batch_idx, (data, target) in enumerate(dataloaders['train']):
 			data, target = data.to(device), target.to(device)
@@ -177,51 +187,62 @@ def train(model, dataloaders, epochs, criterion, optimizer):
 			optimizer.step()
 			# scheduler.step()
 
-			if (batch_idx) % 100 == 0:
+			if (batch_idx) % 10 == 0:
 				train_accuracy = calculate_accuracy(model, dataloaders['train'], device)
 				test_accuracy = calculate_accuracy(model, dataloaders['test'], device)
+				train_acc.append(train_accuracy)
+				test_acc.append(test_accuracy)
 				print(f"epoch: {epoch} ",
 					  f"[{batch_idx * batch_size}/{len(dataloaders['train'].dataset)} ({100. * batch_idx / len(dataloaders['train']):.0f}%)]\t"
 					  f"loss: {loss.item():.6f}\t ",
 					  f"train accuracy: {100. * test_accuracy :.2f}%\t",
 					  f"test accuracy:  {100. * train_accuracy:.2f}%")
+	plt.plot(list(range(len(train_acc))), train_acc,label='train accuracy')
+	plt.plot(list(range(len(train_acc))), test_acc,label='test accuracy')
+	plt.xlabel(' epochs')
+	plt.ylabel(' acc ')
+	plt.savefig('acc.png')
+	plt.show()
+
+
 # GPU training
 train_on_gpu = torch.cuda.is_available()
 if not train_on_gpu:
-    print('Training on CPU')
+	print('Training on CPU')
 else:
-    print('Training on GPU')
+	print('Training on GPU')
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-#resnet18
-batch_size = 128
-#img_size  = 48
-epochs = 50
-dataloaders,class_names,predict_dataset = load_dataset(batch_size=128,img_size=256)
-model  = resNet_18(len(class_names))
-model.to(device)
-display_data(dataloaders,class_names)
-criterion = nn.CrossEntropyLoss() #nn.CrossEntropyLoss function includes a softmax
-optimizer = optim.Adam(model.parameters(), lr=0.001) #sdg
-train(model,dataloaders,epochs,criterion,optimizer)
+# resnet18
+# batch_size, epochs = 128, 50
+batch_size, epochs = 8, 1
 
-#submission
-dataloaders,class_names,predict_dataset = load_dataset(batch_size=128,img_size=256)
+dataloaders, class_names, predict_dataset = load_dataset(batch_size=128, img_size=256)
+model = resNet_18(len(class_names))
+model.to(device)
+display_data(dataloaders, class_names)
+criterion = nn.CrossEntropyLoss()  # nn.CrossEntropyLoss function includes a softmax
+optimizer = optim.Adam(model.parameters(), lr=0.001)  # sdg
+
+train(model, dataloaders, epochs, criterion, optimizer)
+
+# submission
+dataloaders, class_names, predict_dataset = load_dataset(batch_size=128, img_size=256)
 net, preds = model, []
-test_loader = DataLoader(predict_dataset, batch_size=batch_size, shuffle=False,num_workers=4,pin_memory=True)
+test_loader = DataLoader(predict_dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
 for X in test_loader:
-    y_hat = net(X.to(device))
-    preds.extend(y_hat.argmax(dim=1).type(torch.int32).cpu().numpy())
-#label encoder, str to int
+	y_hat = net(X.to(device))
+	preds.extend(y_hat.argmax(dim=1).type(torch.int32).cpu().numpy())
+# label encoder, str to int
 train_csv = pd.read_csv("../data/train.csv")
 leaves_labels = train_csv.iloc[:, 1].unique()
 n_classes = len(leaves_labels)
 class_to_num = dict(zip(leaves_labels, range(n_classes)))
-num_to_class = dict(zip( range(n_classes),leaves_labels))
+num_to_class = dict(zip(range(n_classes), leaves_labels))
 
 result = []
 for i in preds:
-    result.append(num_to_class[i])
+	result.append(num_to_class[i])
 
 test_data = pd.read_csv("../data/test.csv")
 test_data['label'] = pd.Series(result)
