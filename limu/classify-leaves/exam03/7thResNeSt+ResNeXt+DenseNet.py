@@ -145,7 +145,49 @@ img_path = '../data/'
 
 train_val_dataset = TrainValidData(train_val_path, img_path)
 test_dataset = TestData(test_path, img_path, transform=val_test_transform)
-print('3' * 100)
-print(train_val_dataset.data_info)
-print('4' * 100)
-print(test_dataset.data_info)
+
+
+# 是否东住前面的曾
+def set_parameter_requires_grad(model, feature_extracting):
+	if feature_extracting:
+		model = model
+		for param in model.parameters():
+			param.requires_grad = False
+
+
+def resnest_model(num_classes, feature_extract=False):
+	model_ft = resnest50(pretrained=True)
+	set_parameter_requires_grad(model_ft, feature_extract)
+	num_ftrs = model_ft.in_features
+
+
+def get_deviec():
+	return 'cuda:0' if torch.cuda.is_available() else 'cpu'
+
+
+device = get_deviec()
+print(device)
+
+# Configuration options
+k_folds = 5
+num_epochs = 30
+learning_rate = 1e-4
+weight_decay = 1e-3
+train_loss_function = CutMixCrossEntropyLoss(True)
+valid_loss_function = nn.CrossEntropyLoss()
+# For fold results
+results = {}
+torch.manual_seed(42)
+kfold = KFold(n_splits=k_folds, shuffle=True)
+# Start print
+print('--------------------------------------')
+for fold, (train_ids, valid_ids) in enumerate(kfold.split(train_val_dataset)):
+	print(f'Fold {fold}')
+	print('--------------------------------------')
+	# Sample elements randomly from a given list of ids, no replacement.
+	train_subsampler = torch.utils.data.SubsetRandomSampler(train_ids)
+	valid_subsampler = torch.utils.data.SubsetRandomSampler(valid_ids)
+	# Define data loaders for training and testing data in this fold
+	trainloader=torch.utils.data.DataLoader(
+		CutMix()
+	)
