@@ -18,9 +18,9 @@ class model(nn.Module):
 
 net_1 = model()
 optimizer_1 = torch.optim.Adam(net_1.parameters(), lr=initial_lr)
-schedualer_1 = CosineAnnealingLR(optimizer_1, T_max=20)
+schedualer_1 = CosineAnnealingLR(optimizer_1, T_max=5,eta_min=0.001)
 print('初始化的学习率', optimizer_1.defaults['lr'])
-for epoch in range(1, 11):
+for epoch in range(1, 19):
 	optimizer_1.zero_grad()
 	optimizer_1.step()
 	print(f'第{epoch}个epoch的学习率，{optimizer_1.param_groups[0]["lr"]}')
