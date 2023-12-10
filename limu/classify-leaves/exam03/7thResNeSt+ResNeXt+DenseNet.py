@@ -745,7 +745,7 @@ def predict3(k_folds=5, batch_size=32):
 			preds.append(num_to_class[i])
 		test_data = pd.read_csv(test_path)
 		test_data['label'] = pd.Series(preds)
-		submission = pd.concat([test_data['image'], test_data['label']], axis=-1)
+		submission = pd.concat([test_data['image'], test_data['label']], axis=1)
 		submission.to_csv(saveFileName, index=False)
 		print('Dense model Results Done !!!!!!')
 	df0 = pd.read_csv('./submission-fold-0.csv')
