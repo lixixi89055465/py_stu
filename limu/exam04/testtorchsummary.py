@@ -4,7 +4,7 @@
 # @Site    : 
 # @File    : testtorchsummary.py
 # @Software: PyCharm 
-# @Comment :
+# @Comment :https://blog.csdn.net/Wenyuanbo/article/details/118514709
 from torchsummary import summary
 from torchvision.models import vgg16
 import torch
