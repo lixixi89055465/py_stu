@@ -679,7 +679,7 @@ def train3(k_folds=5, batch_size=32, num_epochs=30):
 					loss.backward()
 					optimizer.step()
 					train_losses.append(loss.item())
-
+				print("第%d个epoch的学习率：%f" % (epoch + 1, optimizer.param_groups[0]['lr']))
 				scheduler.step()
 				train_loss = np.mean(train_losses, axis=-1)
 				print(f'[ Train | {epoch + 1} /{num_epochs}] loss = {train_loss}')
@@ -688,31 +688,32 @@ def train3(k_folds=5, batch_size=32, num_epochs=30):
 			print(f'saving model with loss:{train_loss}')
 			torch.save(model.state_dict(), save_path)
 
-		model.eval()
-		valid_losses = []
-		valid_accs = []
-		with torch.no_grad():
-			for batch in tqdm(validloader):
-				imgs, labels = batch
-				imgs, labels = imgs.to(device), labels.to(device)
-				loss = valid_loss_function(logits, labels)
-				acc = (logits.argmax(dim=-1) == labels).float().mean()
-				valid_losses.append(loss)
-				valid_accs.append(acc)
-			valid_loss = np.mean(valid_losses, axis=-1)
-			valid_acc = np.mean(valid_accs, axis=-1)
-			print(f"[ Valid | {epoch + 1:03d}/{num_epochs:03d} ] loss = {valid_loss:.5f}, acc = {valid_acc:.5f}")
-			print('Accuracy for fold %d: %d' % (fold, valid_acc))
-			print('--------------------------------------')
-			results[fold] = valid_acc
-		# Print fold results
-		print(f'K-FOLD CROSS VALIDATION RESULTS FOR {k_folds} FOLDS')
-		print('--------------------------------')
-		total_summation = 0.0
-		for key, value in results.items():
-			print(f'Fold {key}: {value} ')
-			total_summation += value
-		print(f'Average: {total_summation / len(results.items())} ')
+			model.eval()
+			valid_losses = []
+			valid_accs = []
+			with torch.no_grad():
+				for batch in tqdm(validloader):
+					imgs, labels = batch
+					imgs, labels = imgs.to(device), labels.to(device)
+					logits=model(imgs)
+					loss = valid_loss_function(logits, labels)
+					acc = (logits.argmax(dim=-1) == labels).float().mean()
+					valid_losses.append(loss.item())
+					valid_accs.append(acc.item())
+				valid_loss = np.mean(valid_losses, axis=-1)
+				valid_acc = np.mean(valid_accs, axis=-1)
+				print(f'loss = {valid_loss:.5f}, acc = {valid_acc:.5f}')
+				print('Accuracy for fold %d: %d' % (fold, valid_acc))
+				print('--------------------------------------')
+				results[fold] = valid_acc
+			# Print fold results
+			print(f'K-FOLD CROSS VALIDATION RESULTS FOR {k_folds} FOLDS')
+			print('--------------------------------')
+			total_summation = 0.0
+			for key, value in results.items():
+				print(f'Fold {key}: {value} ')
+				total_summation += value
+			print(f'Average: {total_summation / len(results.items())} ')
 
 
 def predict3(k_folds=5, batch_size=32):
@@ -744,7 +745,7 @@ def predict3(k_folds=5, batch_size=32):
 			preds.append(num_to_class[i])
 		test_data = pd.read_csv(test_path)
 		test_data['label'] = pd.Series(preds)
-		submission = pd.concat([test_data['images'], test_data['label']], axis=-1)
+		submission = pd.concat([test_data['image'], test_data['label']], axis=-1)
 		submission.to_csv(saveFileName, index=False)
 		print('Dense model Results Done !!!!!!')
 	df0 = pd.read_csv('./submission-fold-0.csv')
