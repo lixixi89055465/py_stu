@@ -163,7 +163,8 @@ def adjust_learning_rate(optimizer, epoch, params, batch=0, nBatch=None):
 		param_group['lr'] = new_lr
 	return new_lr
 
-params={
+
+params = {
 	'model': 'seresnext50_32x4d',
 	# 'model': 'resnet50d',
 	'device': device,
@@ -175,6 +176,99 @@ params={
 	'weight_decay': 1e-5
 }
 
-class LeafNet(nn.Module):
-	pass
 
+class LeafNet(nn.Module):
+	def __init__(self, model_name=params['model'], \
+				 out_feature=params['out_features'], \
+				 pretrained=True):
+		super().__init__()
+		self.model = timm.create_model(model_name, pretrained=pretrained)
+		n_features = self.model.fc.in_features
+		self.model.fc = nn.Linear(n_features, out_feature)
+
+	def forward(self, X):
+		X = self.model(X)
+		return X
+
+
+def train(train_loader, model, criterion, optimizer, epoch, params):
+	metric_monitor = MetricMonitor()
+	model.train()
+	nBatch = len(train_loader)
+	stream = tqdm(train_loader)
+	for i, (images, target) in enumerate(stream, start=1):
+		images = images.to(params['device'], non_blocking=True)
+		target = target.to(params['device'], non_blocking=True)
+		output = model(images)
+		loss = criterion(output, target)
+		f1_macro = calculate_f1_macro(output, target)
+		acc = accuracy(output, target)
+		metric_monitor.update('Loss', loss.item())
+		metric_monitor.update('F1', f1_macro.item())
+		metric_monitor.update('Accuracy', acc.item())
+		optimizer.zero_grad()
+		loss.backward()
+		optimizer.step()
+		lr = adjust_learning_rate(optimizer, epoch, params, i, nBatch)
+		stream.set_description(f'Epoch:{epoch}. Train .   {metric_monitor}')
+		return metric_monitor.metrics['Accuracy']['avg']
+
+
+def validate(val_loader, model, criterion, epoch, params):
+	metric_monitor = MetricMonitor()
+	model.eval()
+	stream = tqdm(val_loader)
+	with torch.no_grad():
+		for i, (images, target) in enumerate(stream, start=1):
+			images = images.to(params['device'], non_blocking=True)
+			target = target.to(params['device'], non_blocking=True)
+			output = model(images)
+			loss = criterion(output, target)
+			f1_macro = calculate_f1_macro(output, target)
+			acc = accuracy(output, target)
+			metric_monitor.update('Loss', loss.item())
+			metric_monitor.update('F1', f1_macro)
+			metric_monitor.update('Accuracy', acc)
+			stream.set_description(f'Epoch :{epoch},Validation . {metric_monitor}')
+	return metric_monitor.metrics['Accuracy']['avg']
+
+
+kf = StratifiedKFold(n_splits=5)
+for k, (train_index, test_index) in enumerate(kf.split(df['image'], df['label'])):
+	train_img, valid_img = df['image'][train_index], df['image'][test_index]
+	train_labels, valid_labels = df['label'][train_index], df['label'][test_index]
+	train_paths = '../data/' + train_img
+	valid_paths = '../data/' + valid_img
+	test_paths = '../data/' + sub_df['image']
+	train_dataset = LeafDataset(images_filepaths=train_paths.values, \
+								labels=train_labels.values, \
+								transform=get_train_transforms())
+	valid_dataset = LeafDataset(images_filepaths=valid_paths.values, \
+								labels=valid_labels.values, \
+								transform=get_valid_transforms())
+	train_loader = DataLoader(
+		train_dataset, \
+		batch_size=params['batch_size'], \
+		shuffle=True, \
+		num_workers=params['num_workers'], \
+		pin_memory=True
+	)
+	valid_loader = DataLoader(
+		valid_dataset, \
+		batch_size=params['batch_size'], \
+		shuffle=False, \
+		num_workers=params['num_workers'], \
+		pin_memory=True
+	)
+	model = LeafNet()
+	model = nn.DataParallel(model)
+	model = model.to(params['device'])
+	############TODO
+	criterion = nn.CrossEntropyLoss().to(params['device'])
+	optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'], \
+								  weight_decay=params['weight_decay'])
+	for epoch in range(1, params['epochs'] + 1):
+		train(train_loader, model, criterion, optimizer, epoch, params)
+		acc = validate(valid_loader, model, criterion, epoch, params)
+		torch.save(model.state_dict(), f'./checkpoints/{params["model"]}_{k}fold_{epoch}'
+		f'epochs_accuracy{acc:.5f}_weight.pth')
