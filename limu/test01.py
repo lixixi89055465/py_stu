@@ -9,7 +9,6 @@
 import os
 import torch
 
-X = torch.ones((3, 2))
-
-dropout = 0.5
-print((torch.randn(X.shape) > dropout).float())
+print(torch.cuda.is_available())
+print(torch.version.cuda)
+print(torch.__version__)

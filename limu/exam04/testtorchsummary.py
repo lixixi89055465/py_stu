@@ -9,7 +9,7 @@ from torchsummary import summary
 from torchvision.models import vgg16
 import torch
 
-device=torch.device('cuda:0')
+device=torch.device('cpu')
 myNet = vgg16().to(device)
 print('0' * 100)
-summary(myNet,input_size=(3,64,64))
+summary(myNet,input_size=(3,64,64),device='cpu')
