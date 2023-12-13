@@ -1,10 +1,10 @@
 import torch
 import timm
 
-# model = timm.create_model('resnet34')
-# print(model.default_cfg)#查看模型cfg
-# print('0'*100)
-
+model = timm.create_model('resnet50d')
+print(model.default_cfg)  # 查看模型cfg
+print('0' * 100)
+# TODO timm 案例
 model_resnet34 = timm.create_model(
 	'resnet34',
 	pretrained=True,
@@ -51,5 +51,5 @@ model_resnet34 = timm.create_model(
 	pretrained_cfg_overlay=dict(file='./resnet34_a1_0-46f8f793.pth'),
 
 )
-out=model_resnet34(x)
+out = model_resnet34(x)
 print(out.shape)
