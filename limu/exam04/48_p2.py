@@ -66,7 +66,8 @@ d2l.plt.imshow(img.permute(1, 2, 0))
 print('output image shape:', out_img.shape)
 d2l.plt.imshow(out_img)
 
-print('5' * 100)
-W = bilinear_kernel(num_classes, num_classes, 64)
-print('6' * 100)
-print(net.transpose_conv.weight.data.copy_(W).shape)
+
+print('5'*100)
+W=bilinear_kernel(num_classes,num_classes,64)
+print('6'*100)
+print(net.transpose_conv.weight.data.copy_(W))
