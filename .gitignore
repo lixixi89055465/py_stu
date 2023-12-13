@@ -18,3 +18,4 @@ machinelearn/bias+correction+of+numerical+prediction+model+temperature+forecast.
 *.bat
 *.dat
 data
+*.pth
