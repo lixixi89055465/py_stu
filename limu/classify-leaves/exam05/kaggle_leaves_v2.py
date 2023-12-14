@@ -18,7 +18,8 @@ from albumentations import pytorch as AT
 
 # below are all from https://github.com/seefun/TorchUtils, thanks seefun to provide such useful tools
 # import torch_utils as tu
-
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(f'device:{device}')
 seed = 415
 os.environ['PYTHONHASHSEED'] = str(seed)
 np.random.seed(seed)
@@ -39,14 +40,15 @@ val_folds = []
 for train_idx, val_idx in sfolder.split(csv['image'], csv['label']):
 	train_folds.append(train_idx)
 	val_folds.append(val_idx)
-	print(len(train_idx), len(val_idx))
+# print(len(train_idx), len(val_idx))
 
 labelmap_list = sorted(list(set(csv['label'])))
 labelmap = dict()
 for i, label in enumerate(labelmap_list):
 	labelmap[label] = i
 
-print(labelmap)
+
+# print(labelmap)
 
 
 class LeavesDataset(torch.utils.data.Dataset):
@@ -142,12 +144,73 @@ train_dl, val_dl, n_train, n_val = create_dls(train_csv, \
 											  train_transform=train_transform1,
 											  test_transform=test_transform1, \
 											  bs=64, num_workers=4)
-for x, y in train_dl:
-	# imgs_train, labels_train = mixup_fn(x, y)
-	break
-print('6' * 100)
-print(y.shape)
-print('7' * 100)
-show_img((x[2]))
 
-print(x.shape)
+
+class LabelSmoothing(nn.Module):
+	'''
+	NLL loss with label smoothing
+	'''
+
+	def __init__(self, smoothing=0.0):
+		super(LabelSmoothing, self).__init__()
+		self.confidence = 1. - smoothing
+		self.smoothing = smoothing
+
+	def forward(self, x, target):
+		logprobs = torch.nn.functional.softmax(x, dim=-1)
+		nll_loss = -logprobs.gather(dim=-1, index=target.unsqueeze(1))
+		nll_loss = nll_loss.squeeze(1)
+		smooth_loss = -logprobs.mean(dim=-1)
+		loss = self.confidence * nll_loss + self.smoothing * smooth_loss
+		return loss.mean()
+
+
+def find_lr(model, factor, train_dl, optimizer, loss_fn, \
+			device, init_lr=1e-8, \
+			final_lr=1e-1, beta=0.98, plot=True, save_dir=None):
+	num = len(train_dl) - 1
+	mult = (find_lr / init_lr) ** (1 / num)
+	lr = init_lr
+	optimizer.param_groups[0]['lr'] = lr
+	avg_loss=0.0
+	pass
+
+
+if __name__ == '__main__':
+	for x, y in train_dl:
+		# imgs_train, labels_train = mixup_fn(x, y)
+		break
+	# show_img((x[2]))
+	print(x.shape)
+
+	model = timm.create_model(
+		"resnet50d",
+		pretrained=True,
+		pretrained_cfg_overlay=dict(file='../../classify-leaves/pth/resnet50d.pth')
+	)
+
+	model.fc = nn.Linear(model.fc.in_features, len(labelmap_list))
+	nn.init.xavier_normal_(model.fc.weight)
+	model = model.to(device)
+
+	print('end' * 100)
+
+	params_1x = [param for name, param in model.named_parameters()
+				 if name not in ['fc.weight', 'fc.bias']]
+	lr = 5e-4
+	optimizer = torch.optim.AdamW([{'params': params_1x},
+								   {'params': model.fc.parameters(),
+									'lr': lr * 10}],
+								  lr=lr, weight_decay=1e-3)  # finetuning
+	'''
+	from optim import RangerLars
+	optimizer = RangerLars([{'params': params_1x},
+	                        {'params': model.fc.parameters(),
+	                                    'lr': lr * 10}], lr=lr, weight_decay=0.001)
+	'''
+	# optimizer=torch.optim.AdamW(model.parameters(),lr=lr,weight_decay=0.001)
+
+	loss_fn = LabelSmoothing(0.1)
+	import math
+	import matplotlib.pyplot as plt
+	import numpy as np
