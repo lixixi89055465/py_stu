@@ -9,7 +9,7 @@ import torch
 from torch import nn
 from d2l import torch as d2l
 
-
+print(torch.cuda.is_available())
 def resnet18(num_classes, in_channels=1):
     def resnet_block(in_channels, out_channels, num_residuals, \
                      first_block=False):

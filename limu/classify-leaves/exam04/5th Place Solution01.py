@@ -242,102 +242,99 @@ def validate(val_loader, model, criterion, epoch, params):
 	return metric_monitor.metrics['Accuracy']['avg']
 
 
-kf = StratifiedKFold(n_splits=5)
-for k, (train_index, test_index) in enumerate(kf.split(df['image'], df['label'])):
-	train_img, valid_img = df['image'][train_index], df['image'][test_index]
-	train_labels, valid_labels = df['label'][train_index], df['label'][test_index]
+# kf = StratifiedKFold(n_splits=5)
+# for k, (train_index, test_index) in enumerate(kf.split(df['image'], df['label'])):
+# 	train_img, valid_img = df['image'][train_index], df['image'][test_index]
+# 	train_labels, valid_labels = df['label'][train_index], df['label'][test_index]
+# 	train_paths = '../data/' + train_img
+# 	valid_paths = '../data/' + valid_img
+# 	test_paths = '../data/' + sub_df['image']
+# 	train_dataset = LeafDataset(images_filepaths=train_paths.values, \
+# 								labels=train_labels.values, \
+# 								transform=get_train_transforms())
+# 	valid_dataset = LeafDataset(images_filepaths=valid_paths.values, \
+# 								labels=valid_labels.values, \
+# 								transform=get_valid_transforms())
+# 	train_loader = DataLoader(
+# 		train_dataset, \
+# 		batch_size=params['batch_size'], \
+# 		shuffle=True, \
+# 		num_workers=params['num_workers'], \
+# 		pin_memory=True
+# 	)
+# 	valid_loader = DataLoader(
+# 		valid_dataset, \
+# 		batch_size=params['batch_size'], \
+# 		shuffle=False, \
+# 		num_workers=params['num_workers'], \
+# 		pin_memory=True
+# 	)
+# 	model = LeafNet()
+# 	model = nn.DataParallel(model)
+# 	model = model.to(params['device'])
+# 	############TODO
+# 	criterion = nn.CrossEntropyLoss().to(params['device'])
+# 	optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'], \
+# 								  weight_decay=params['weight_decay'])
+# 	for epoch in range(1, params['epochs'] + 1):
+# 		train(train_loader, model, criterion, optimizer, epoch, params)
+# 		acc = validate(valid_loader, model, criterion, epoch, params)
+# 		torch.save(model.state_dict(), f'./checkpoints/{params["model"]}_{k}fold_{epoch}'
+# 		f'epochs_accuracy{acc:.5f}_weight.pth')
+
+
+if __name__ == '__main__':
+	train_img, valid_img = df['image'], df['image']
+	train_labels, valid_labels = df['label'], df['label']
 	train_paths = '../data/' + train_img
 	valid_paths = '../data/' + valid_img
 	test_paths = '../data/' + sub_df['image']
-	train_dataset = LeafDataset(images_filepaths=train_paths.values, \
-								labels=train_labels.values, \
-								transform=get_train_transforms())
-	valid_dataset = LeafDataset(images_filepaths=valid_paths.values, \
-								labels=valid_labels.values, \
-								transform=get_valid_transforms())
-	train_loader = DataLoader(
-		train_dataset, \
-		batch_size=params['batch_size'], \
-		shuffle=True, \
-		num_workers=params['num_workers'], \
-		pin_memory=True
+
+	model_name = ['seresnext50_32x4d', 'resnet50d']
+	model_path_list = [
+		'./acheckpoints/seresnext50_32x4d_0fold_50epochs_accuracy0.97761_weight.pth',
+		'./acheckpoints/seresnext50_32x4d_1fold_50epochs_accuracy0.97772_weight.pth',
+		'./acheckpoints/seresnext50_32x4d_2fold_50epochs_accuracy0.97364_weight.pth',
+		'./acheckpoints/seresnext50_32x4d_3fold_50epochs_accuracy0.98179_weight.pth',
+		'./acheckpoints/seresnext50_32x4d_4fold_50epochs_accuracy0.97880_weight.pth',
+		'./acheckpoints/resnet50d_0fold_35epochs_accuracy0.97615_weight.pth',
+		'./acheckpoints/resnet50d_1fold_49epochs_accuracy0.97636_weight.pth',
+		'./acheckpoints/resnet50d_2fold_49epochs_accuracy0.97527_weight.pth',
+		'./acheckpoints/resnet50d_3fold_50epochs_accuracy0.97853_weight.pth',
+		'./acheckpoints/resnet50d_4fold_50epochs_accuracy0.97609_weight.pth',
+	]
+	model_list = []
+	for i in range(len(model_path_list)):
+		if i < 5:
+			model_list.append(LeafNet(model_name[0]))
+		if 5 <= i < 10:
+			model_list.append(LeafNet(model_name[1]))
+		model_list[i] = nn.DataParallel(model_list[i])
+		model_list[i] = model_list[i].to(params['device'])
+		init = torch.load(model_path_list[i])
+		model_list[i].load_state_dict(init)
+		model_list[i].eval()
+		model_list[i].cuda()
+
+	labels = np.zeros(len(test_paths))  # Fake Labels
+	test_dataset = LeafDataset(images_filepaths=test_paths, \
+							   labels=labels, \
+							   transform=get_valid_transforms())
+	test_loader = DataLoader(
+		test_dataset, batch_size=128, shuffle=False, num_workers=4, pin_memory=True
 	)
-	valid_loader = DataLoader(
-		valid_dataset, \
-		batch_size=params['batch_size'], \
-		shuffle=False, \
-		num_workers=params['num_workers'], \
-		pin_memory=True
-	)
-	model = LeafNet()
-	model = nn.DataParallel(model)
-	model = model.to(params['device'])
-	############TODO
-	criterion = nn.CrossEntropyLoss().to(params['device'])
-	optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'], \
-								  weight_decay=params['weight_decay'])
-	for epoch in range(1, params['epochs'] + 1):
-		train(train_loader, model, criterion, optimizer, epoch, params)
-		acc = validate(valid_loader, model, criterion, epoch, params)
-		torch.save(model.state_dict(), f'./checkpoints/{params["model"]}_{k}fold_{epoch}'
-		f'epochs_accuracy{acc:.5f}_weight.pth')
+	predicted_labels = []
+	pred_string = []
+	preds = []
+	with torch.no_grad():
+		for (images, target) in test_loader:
+			images = images.cuda()
+			onehots = sum([model(images) for model in model_list]) / len(model_list)
+			for oh, name in zip(onehots, target):
+				lbs = label_inv_map[torch.argmax(oh).item()]
+				preds.append(dict(image=name, labels=lbs))
 
-
-
-
-'''
-train_img, valid_img = df['image'], df['image']
-train_labels, valid_labels = df['label'], df['label']
-train_paths = '../data/' + train_img
-valid_paths = '../data/' + valid_img
-test_paths = '../data/' + sub_df['image']
-
-model_name = ['seresnext50_32x4d', 'resnet50d']
-model_path_list = [
-	'../input/checkpoints/seresnext50_32x4d_0flod_50epochs_accuracy0.97985_weights.pth',
-	'../input/checkpoints/seresnext50_32x4d_1flod_50epochs_accuracy0.97872_weights.pth',
-	'../input/checkpoints/seresnext50_32x4d_2flod_36epochs_accuracy0.97710_weights.pth',
-	'../input/checkpoints/seresnext50_32x4d_3flod_40epochs_accuracy0.98303_weights.pth',
-	'../input/checkpoints/seresnext50_32x4d_4flod_46epochs_accuracy0.97899_weights.pth',
-	'../input/checkpoints/resnet50d_0flod_40epochs_accuracy0.98087_weights.pth',
-	'../input/checkpoints/resnet50d_1flod_46epochs_accuracy0.97710_weights.pth',
-	'../input/checkpoints/resnet50d_2flod_32epochs_accuracy0.97656_weights.pth',
-	'../input/checkpoints/resnet50d_3flod_38epochs_accuracy0.97953_weights.pth',
-	'../input/checkpoints/resnet50d_4flod_50epochs_accuracy0.97791_weights.pth',
-]
-model_list = []
-for i in range(len(model_path_list)):
-	if i < 5:
-		model_list.append(LeafNet(model_name[0]))
-	if 5 <= i < 10:
-		model_list.append(LeafNet(model[1]))
-	model_list[i] = nn.DataParallel(model_list[i])
-	model_list[i] = model_list[i].to(params['device'])
-	init = torch.load(model_path_list)
-	model_list[i].load_state_dict(init)
-	model_list[i].eval()
-	model_list[i].cuda()
-
-labels = np.zeros(len(test_paths))  # Fake Labels
-test_dataset = LeafDataset(images_filepaths=test_paths, \
-						   labels=labels, \
-						   transform=get_valid_transforms())
-test_loader = DataLoader(
-	test_dataset, batch_size=128, shuffle=False, num_workers=4, pin_memory=True
-)
-predicted_labels = []
-pred_string = []
-preds = []
-with torch.no_grad():
-	for (images, target) in test_loader:
-		images = images.cuda()
-		onehots = sum([model(images) for model in model_list]) / len(model_list)
-		for oh, name in zip(onehots, target):
-			lbs = label_inv_map[target.argmax(oh).item()]
-			preds.append(dict(image=name, labels=lbs))
-
-df_preds = pd.DataFrame(preds)
-sub_df['label'] = df_preds['labels']
-sub_df.to_csv('submission.csv', index=False)
-sub_df.head()
-'''
+	df_preds = pd.DataFrame(preds)
+	sub_df['label'] = df_preds['labels']
+	sub_df.to_csv('submission.csv', index=False)
+	sub_df.head()
