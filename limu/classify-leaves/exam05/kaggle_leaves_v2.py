@@ -172,8 +172,12 @@ def find_lr(model, factor, train_dl, optimizer, loss_fn, \
 	mult = (find_lr / init_lr) ** (1 / num)
 	lr = init_lr
 	optimizer.param_groups[0]['lr'] = lr
-	avg_loss=0.0
-	pass
+	avg_loss = 0.0
+	best_loss = 0.
+	batch_num = 0
+	losses = []
+	log_lrs = []
+	scaler = torch.cuda.amp.GradScaler()
 
 
 if __name__ == '__main__':
