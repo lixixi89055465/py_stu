@@ -1,3 +1,4 @@
+import ttach as tta
 import numpy as np
 import pandas as pd
 import os
@@ -22,11 +23,10 @@ from sklearn.metrics import f1_score, accuracy_score
 import albumentations
 from albumentations.pytorch.transforms import ToTensorV2
 
-# if torch.cuda.is_available():
-# 	device = torch.device('cuda')
-# else:
-# 	device = torch.device('cpu')
-device = torch.device('cpu')
+if torch.cuda.is_available():
+	device = torch.device('cuda')
+else:
+	device = torch.device('cpu')
 print(f'using deviec {device}')
 
 seed = 415
@@ -303,6 +303,10 @@ for i in range(len(model_path_list)):
 	model_list[i] = model_list[i].to(params['device'])
 	init = torch.load(model_path_list)
 	model_list[i].load_state_dict(init)
+	model_list[i]=tta.ClassificationTTAWrapper(
+		model_list[i],\
+		tta.aliases.five_crop_transform(200,200)
+	)
 	model_list[i].eval()
 	model_list[i].cuda()
 
