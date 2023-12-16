@@ -2,7 +2,7 @@
 # @Time    : 2023/9/22 14:15
 # @Author  : nanji
 # @Site    : 
-# @File    : test01.py
+# @File    : 48_2.py
 # @Software: PyCharm 
 # @Comment :
 import numpy as np

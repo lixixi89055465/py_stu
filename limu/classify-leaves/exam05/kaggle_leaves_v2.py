@@ -177,7 +177,57 @@ def find_lr(model, factor, train_dl, optimizer, loss_fn, \
 	batch_num = 0
 	losses = []
 	log_lrs = []
-	scaler = torch.cuda.amp.GradScaler()
+	scaler = torch.cuda.amp.GradScaler()  # for AMP training
+	if 1:
+		for x, y in train_dl:
+			x, y = x.to(device), y.to(device)
+			batch_num += 1
+			optimizer.zero_grad()
+			with torch.cuda.amp.autocast():
+				out = model(x)
+				loss = loss_fn(out, y)
+			# smoothen the loss
+			avg_loss = beta * avg_loss + \
+					   (1 - beta) * loss.data.item()
+			smoothed_loss = avg_loss / (1 - beta ** batch_num)  # bias correction
+			# stop if loss explodes
+			if batch_num > 1 and smoothed_loss > 4 * best_loss:  # prevents explosion
+				break
+			if smoothed_loss < best_loss or batch_num == 1:
+				best_loss = smoothed_loss
+			# record the best loss
+			losses.append(smoothed_loss)
+			log_lrs.append(math.log10(lr))
+			# do the sgd step
+			# loss.backward()
+			# optimizer.step()
+			scaler.scale(loss).backward()
+			scaler.step(optimizer)
+			scaler.update()
+			# update the lr for the next step
+			lr *= mult
+			optimizer.param_groups[0]['lr'] = lr
+	# Suggest a learning rate
+	log_lrs, losses = np.array(log_lrs), np.array(losses)
+	idx_min = np.argmin(losses)
+	min_log_lr = log_lrs[idx_min]
+	lr_auto = (10 ** (min_log_lr)) / factor
+	if plot:
+		selected = [np.argmin(np.abs(log_lrs - (min_log_lr - 1)))]  # high lights the suggsted lr
+		plt.figure()
+		plt.plot(log_lrs, losses, '-gD', markevery=selected)
+		plt.xlabel('log_lrs')
+		plt.ylabel('loss')
+		plt.title('LR Range Test')
+		if save_dir is not None:
+			plt.savefig(f'{save_dir}/lr_range_test.png')
+		else:
+			plt.savefig(f'lr_range_test.png')
+	return lr_auto
+
+
+def get_learner(lr, nb, epochs, model_name='resnet50d', MIXUP=0.1):
+	pass
 
 
 if __name__ == '__main__':
@@ -218,3 +268,6 @@ if __name__ == '__main__':
 	import math
 	import matplotlib.pyplot as plt
 	import numpy as np
+# lr_suggested=find_lr(model,100,train_dl,optimizer,loss_fn,'cuda',init_lr=1e-10,\
+# 					 find_lr=1.)#run if u want suggestion from autolr
+# lr_suggested
