@@ -37,11 +37,6 @@ def tokenize(lines, token='word'):
         print('错误：未知令牌类型:' + token)
 
 
-tokens = tokenize(lines)
-for i in range(11):
-    print(tokens[i])
-
-
 class Vocab:  # @save
     """文本词表"""
 
@@ -55,15 +50,15 @@ class Vocab:  # @save
         self._token_freqs = sorted(counter.items(), key=lambda x: x[1],
                                    reverse=True)
         # 未知词元的索引为0
-        self.unk, uniq_tokens = 0, ['<unk>'] + reserved_tokens
-        uniq_tokens += [
-            token for token, freq in self.token_freqs
-            if freq >= min_freq and token not in uniq_tokens
-        ]
-        self.idx_to_token, self.token_to_idx = [], dict()
-        for token in uniq_tokens:
-            self.idx_to_token.append(token)
-            self.token_to_idx[token] = len(self.idx_to_token) - 1
+        self.idx_to_token = ['<unk>'] + reserved_tokens
+        self.token_to_idx = {token: idx
+                             for idx, token in enumerate(self.idx_to_token)}
+        for token, freq in self._token_freqs:
+            if freq < min_freq:
+                break
+            if token not in self.token_to_idx:
+                self.idx_to_token.append(token)
+                self.token_to_idx[token] = len(self.idx_to_token) - 1
 
     def __len__(self):
         return len(self.idx_to_token)
@@ -86,6 +81,11 @@ class Vocab:  # @save
     def token_freqs(self):
         return self._token_freqs
 
+    def to_tokens(self, indices):
+        if not isinstance(indices, (list, tuple)):
+            return self.idx_to_token[indices]
+        return [self.idx_to_token[index] for index in indices]
+
 
 def count_corpus(tokens):  # @save
     """统计词元的频率"""
@@ -94,3 +94,37 @@ def count_corpus(tokens):  # @save
         # 将词元列表展平成一个列表
         tokens = [token for line in tokens for token in line]
     return collections.Counter(tokens)
+
+
+def load_corpus_time_machine(max_tokens=-1):
+    '''
+    返回时光机器数据集的标记索引列表和词汇表
+    :param max_tokens:
+    :return:
+    '''
+    lines = read_time_machine()
+    tokens = tokenize(lines, 'char')
+    vocab = Vocab(tokens)
+    corpus = [vocab[token] for line in tokens for token in line]
+    if max_tokens > 0:
+        corpus = corpus[:max_tokens]
+    return corpus, vocab
+
+
+
+if __name__ == '__main__':
+    tokens = tokenize(lines)
+    for i in range(11):
+        print(tokens[i])
+
+    vocab = Vocab(tokens)
+    print('0' * 100)
+    print(list(vocab.token_to_idx.items())[:10])
+
+    print('1' * 100)
+    for i in [0, 10]:
+        print('words:', tokens[i])
+        print('indices:', vocab[tokens[i]])
+    print('2'*100)
+    corpus,vocab=load_corpus_time_machine()
+    print(len(corpus), len(vocab))
