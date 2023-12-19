@@ -51,6 +51,58 @@ def seq_data_iter_random(corpus, batch_size, num_steps):
 
 
 my_seq = list(range(35))
-print('5' * 100)
-for X, Y in seq_data_iter_random(my_seq, batch_size=2, num_steps=5):
-    print('X:', X, '\nY: ', Y)
+
+
+# print('5' * 100)
+# for X, Y in seq_data_iter_random(my_seq, batch_size=2, num_steps=5):
+#     print('X:', X, '\nY: ', Y)
+
+
+def seq_data_iter_sequential(corpus, batch_size, num_steps):
+    '''使用顺序分区生成一个小批量子序列。'''
+    offset = random.randint(0, num_steps)
+    num_tokens = ((len(corpus) - offset - 1) // batch_size) * batch_size
+    Xs = torch.tensor(corpus[offset:offset + num_tokens])
+    Ys = torch.tensor(corpus[offset + 1:offset + 1 + num_tokens])
+    Xs, Ys = Xs.reshape(batch_size, -1), Ys.reshape(batch_size, -1)
+    num_batches = Xs.shape[1] // num_steps
+    for i in range(0, num_steps * num_batches, num_batches):
+        X = Xs[:, i:i + num_steps]
+        Y = Ys[:, i:i + num_steps]
+        yield X, Y
+
+
+# for X, Y in seq_data_iter_sequential(my_seq, batch_size=2, num_steps=5):
+#     print('X:', X, '\nY:', Y)
+#     print('6' * 100)
+#     break
+
+
+class SeqDataLoader:
+    '''加载序列数据的迭代器。'''
+
+    def __init__(self, batch_size, num_steps, use_random_iter, \
+                 max_tokens):
+        if use_random_iter:
+            self.data_iter_fn = d2l.seq_data_iter_random
+        else:
+            self.data_iter_fn = d2l.seq_data_iter_sequential
+        self.corpus, self.vocab = d2l.load_corpus_time_machine(max_tokens)
+        self.batch_size, self.num_steps = batch_size, num_steps
+
+    def __iter__(self):
+        return self.data_iter_fn(self.corpus, self.batch_size, self.num_steps)
+
+
+print('2' * 100)
+
+for X, Y in seq_data_iter_sequential(my_seq, batch_size=2, num_steps=5):
+    print('X:', X, '\nY,', Y)
+
+
+def load_data_time_machine(batch_size, num_steps, \
+                           use_random_iter=False, max_tokens=10000):
+    '''返回时光机器数据集的迭代器和词汇表  '''
+    data_iter = SeqDataLoader(batch_size, \
+                              num_steps, use_random_iter, max_tokens)
+    return data_iter, data_iter.vocab
