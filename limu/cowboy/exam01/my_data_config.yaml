@@ -1,0 +1,12 @@
+download: None
+names:
+- belt
+- sunglasses
+- boot
+- cowboy_hat
+- jacket
+nc: 5
+path: ./data
+test: images/test
+train: images/train
+val: images/val
