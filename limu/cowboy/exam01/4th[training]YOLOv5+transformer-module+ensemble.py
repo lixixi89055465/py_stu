@@ -11,7 +11,7 @@ import pandas as pd
 # wandb.login(key=key)
 # !wandb off
 
-data = json.load(open('../../data/cowboyoutfits/train.json', 'r'))
+data = json.load(open('./cowboyoutfits/train.json', 'r'))
 ann = data['annotations']
 random.seed(34)
 random.shuffle(ann)
@@ -72,15 +72,15 @@ for each_ann in ann:
 			break
 len(train_id), len(train_ann)
 
-os.makedirs('../../data/cowboyoutfits/images/train', exist_ok=True)
-os.makedirs('../../data/cowboyoutfits/images/val', exist_ok=True)
+os.makedirs('./cowboyoutfits/images/train', exist_ok=True)
+os.makedirs('./cowboyoutfits/images/val', exist_ok=True)
 
 train_img = []
 # Move train images
 for j in data['images']:
 	for i in train_id:
 		if j['id'] == i:
-			shutil.copy('../../data/cowboyoutfits/images/' + j['file_name'], '../../data/cowboyoutfits/train')
+			shutil.copy('./cowboyoutfits/images/' + j['file_name'], './cowboyoutfits/train')
 			train_img.append(j)
 
 val_img = []
@@ -88,14 +88,14 @@ val_img = []
 for j in data['images']:
 	for i in val_id:
 		if j['id'] == i:
-			shutil.copy('../../data/cowboyoutfits/images/' + j['file_name'], '../../data/cowboyoutfits/val')
+			shutil.copy('./cowboyoutfits/images/' + j['file_name'], './cowboyoutfits/val')
 			val_img.append(j)
 
 print('0' * 100)
 print(len(val_img), len(train_img))
 
-os.makedirs('../../data/cowboyoutfits/labels/train', exist_ok=True)
-os.makedirs('../../data/cowboyoutfits/labels/val', exist_ok=True)
+os.makedirs('./cowboyoutfits/labels/train', exist_ok=True)
+os.makedirs('./cowboyoutfits/labels/val', exist_ok=True)
 
 train_info = [(each['id'], each['file_name'].split('.')[0], each['width'], each['height']) for each in train_img]
 val_info = [(each['id'], each['file_name'].split('.')[0], each['width'], each['height']) for each in val_img]
@@ -104,7 +104,7 @@ trans = {f'{each}': f'{idx}' for (idx, each) in enumerate(ci)}  # Mapping the ca
 
 # Create *.txt files for training
 for (imid, fn, w, h) in train_info:
-	with open('../../data/cowboyoutfits/labels/train/' + fn + '.txt', 'w') as t_f:
+	with open('./cowboyoutfits/labels/train/' + fn + '.txt', 'w') as t_f:
 		for t_ann in train_ann:
 			if t_ann['image_id'] == imid:
 				# convert X_min,Y_min,w,h to X_center/width,Y_center/height,w/width,h/height
@@ -117,7 +117,7 @@ for (imid, fn, w, h) in train_info:
 
 # Create *.txt files for evaluating
 for (imid, fn, w, h) in val_info:
-	with open('../../data/cowboyoutfits/labels/val/' + fn + '.txt', 'w') as v_f:
+	with open('./cowboyoutfits/labels/val/' + fn + '.txt', 'w') as v_f:
 		for v_ann in val_ann:
 			if v_ann['image_id'] == imid:
 				# convert X_min,Y_min,w,h to X_center/width,Ycenter/height,w/width,h/height
@@ -129,7 +129,7 @@ for (imid, fn, w, h) in val_info:
 				v_f.write('\n')
 
 data_yaml = dict(
-	path='../../data/cowboyoutfits',  # dataset root dir
+	path='./cowboyoutfits',  # dataset root dir
 	train='train',  # train images (relative to 'path')
 	val='val',  # val images (relative to 'path')
 	test='test',  # test images (relative to 'path') 推理的时候才用得到
@@ -346,12 +346,16 @@ model3_yaml = dict(
 with open('./yolov5l6-transformer.yaml', 'w') as f:
 	yaml.dump(model3_yaml, f, default_flow_style=True)
 
+print('yml end')
 '''
 python ./yolov5/train.py \
-          --data /home/dske/workspace/py_stu/limu/cowboy/exam01/my_data_config.yaml \
-          --cfg /home/dske/workspace/py_stu/limu/cowboy/exam01/yolov5x6.yaml \
-          --hyp /home/dske/workspace/py_stu/limu/cowboy/exam01/my_hyp_config.yaml \
+          --data ./my_data_config.yaml \
+          --cfg ./yolov5x6.yaml \
+          --hyp ./my_hyp_config.yaml \
           --cache --exist-ok --multi-scale \
-          --project /home/dske/workspace/py_stu/limu/cowboy/exam01/Cow_Boy_Outfits_Detection --name yolov5x6 \
-          --img-size 1088 --batch-size 2 --epochs 1 --workers 2 --weights yolov5x6.pt  #  实际train了100个epoch
+          --project ./Cow_Boy_Outfits_Detection --name yolov5x6 \
+          --img-size 1088 --batch-size 2 --epochs 1 --workers 2 --weights yolov5x6.pt  
+          
+          #  实际train了100个epoch
+          
 '''
