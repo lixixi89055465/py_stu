@@ -49,26 +49,26 @@ def cc2yolo_bbox(img_width, img_height, bbox):
 
 
 # transfer the annotation, and generated a train dataframe file
-# f = open('train.csv', 'w')
-# f.write('id,file_name\n')
-# for i in tqdm(range(len(data['images']))):
-# 	filename = data['images'][i]['file_name']
-# 	img_width = data['images'][i]['width']
-# 	img_height = data['images'][i]['height']
-# 	img_id = data['images'][i]['id']
-# 	yolo_txt_name = filename.split('.')[0] + '.txt'  # remove .jpg
-#
-# 	f.write('{},{}\n'.format(img_id, filename))
-# 	yolo_txt_file = open(os.path.join(yolo_anno_path, yolo_txt_name), 'w')
-#
-# 	for anno in data['annotations']:
-# 		if anno['image_id'] == img_id:
-# 			yolo_bbox = cc2yolo_bbox(img_width, img_height, anno['bbox'])  # "bbox": [x,y,width,height]
-# 			yolo_txt_file.write(
-# 				'{} {} {} {} {}\n'.format(cate_id_map[anno['category_id']], yolo_bbox[0], yolo_bbox[1], yolo_bbox[2],
-# 										  yolo_bbox[3]))
-# 	yolo_txt_file.close()
-# f.close()
+f = open('train.csv', 'w')
+f.write('id,file_name\n')
+for i in tqdm(range(len(data['images']))):
+	filename = data['images'][i]['file_name']
+	img_width = data['images'][i]['width']
+	img_height = data['images'][i]['height']
+	img_id = data['images'][i]['id']
+	yolo_txt_name = filename.split('.')[0] + '.txt'  # remove .jpg
+
+	f.write('{},{}\n'.format(img_id, filename))
+	yolo_txt_file = open(os.path.join(yolo_anno_path, yolo_txt_name), 'w')
+
+	for anno in data['annotations']:
+		if anno['image_id'] == img_id:
+			yolo_bbox = cc2yolo_bbox(img_width, img_height, anno['bbox'])  # "bbox": [x,y,width,height]
+			yolo_txt_file.write(
+				'{} {} {} {} {}\n'.format(cate_id_map[anno['category_id']], yolo_bbox[0], yolo_bbox[1], yolo_bbox[2],
+										  yolo_bbox[3]))
+	yolo_txt_file.close()
+f.close()
 
 # generate training dataframe
 train = pd.read_csv('./train.csv')
@@ -94,30 +94,30 @@ os.makedirs('./training/cowboy/labels/valid', exist_ok=True)
 
 # move the images and annotations to relevant splited folders
 
-# for i in tqdm(range(len(df))):
-# 	row=df.loc[i]
-# 	name=row.file_name.split('.')[0]
-# 	if row.split=='train':
-# 		copyfile(f'./cowboyoutfits/images/{name}.jpg',
-# 				 f'./training/cowboy/images/train/{name}.jpg')
-# 		copyfile(f'./training/yolo_anno/{name}.txt',
-# 				 f'./training/cowboy/images/train/{name}.txt')
-# 	else:
-# 		copyfile(f'./cowboyoutfits/images/{name}.jpg',
-# 				 f'./training/cowboy/images/train/{name}.jpg')
-# 		copyfile(f'./training/yolo_anno/{name}.txt',
-# 				 f'./training/cowboy/labels/valid/{name}.txt')
+for i in tqdm(range(len(df))):
+	row=df.loc[i]
+	name=row.file_name.split('.')[0]
+	if row.split=='train':
+		copyfile(f'./cowboyoutfits/images/{name}.jpg',
+				 f'./training/cowboy/images/train/{name}.jpg')
+		copyfile(f'./training/yolo_anno/{name}.txt',
+				 f'./training/cowboy/labels/train/{name}.txt')
+	else:
+		copyfile(f'./cowboyoutfits/images/{name}.jpg',
+				 f'./training/cowboy/images/valid/{name}.jpg')
+		copyfile(f'./training/yolo_anno/{name}.txt',
+				 f'./training/cowboy/labels/valid/{name}.txt')
 
 # Create yaml file
 # cd ./training
 data_yaml = dict(
-	train='../cowboy/images/train/',
-	val='../cowboy/images/valid',
+	train='./training/cowboy/images/train/',
+	val='./training/cowboy/images/valid/',
 	nc=5,
 	names=['belt', 'sunglasses', 'boot', 'cowboy_hat', 'jacket']
 )
 # we will make the file under the yolov5/data/ directory.
-with open('./training/yolov5/data/data.yaml', 'w') as outfile:
+with open('./data/data.yaml', 'w') as outfile:
 	yaml.dump(data_yaml, outfile, default_flow_style=True)
 
 lr0: 0.01  # initial learning rate (SGD=1E-2, Adam=1E-3)
@@ -165,4 +165,45 @@ python train.py --batch 32 \
                  --project ./working/kaggle-cwoboy \
                  --name yolov5m.pt_BS_32_EP_5 \
                  --cache-images
+                 
+python ./train.py --batch 16 \
+                 --epochs 5 \
+                 --data ./data/data.yaml \
+                 --weights  yolov5m.pt \
+                 --project ./working/kaggle-cwoboy \
+                 --name yolov5m.pt_BS_32_EP_5 
+                 
+                 
+/home/sdb2/aidata/workspace/py_stu/limu/cowboy/exam02/training/cowboy/labels/train.cache               
+/home/sdb2/aidata/workspace/py_stu/limu/cowboy/exam02/training/cowboy/labels/train.cache
+
+/home/sdb2/aidata/workspace/py_stu/limu/data/cowboyoutfits/images/valid
+ /home/sdb2/aidata/workspace/py_stu/limu/data/cowboyoutfits
+ /home/sdb2/aidata/workspace/py_stu/limu/cowboy/exam02/yolov5/working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt
                  '''
+
+valid_df = pd.read_csv('./cowboyoutfits/valid.csv')
+test_df = pd.read_csv('./cowboyoutfits/test.csv')
+print(valid_df.head())
+print(valid_df.shape)
+os.makedirs('./inference/valid', exist_ok=True)
+os.makedirs('./inference/test', exist_ok=True)
+# copy the validation image to inference folder for detection process
+for i in tqdm(range(len(valid_df))):
+    row = valid_df.loc[i]
+    name = row.file_name.split('.')[0]
+    copyfile(f'./cowboyoutfits/images/{name}.jpg', f'./inference/valid/{name}.jpg')
+
+VALID_PATH = './cowboyoutfits/inference/valid/'
+MODEL_PATH = '. /input/cowboy-object-detection-models/v0_ep20_best.pt'
+IMAGE_PATH = './working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt'
+
+'''
+python detect.py --weights ./working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt \
+                  --source ./inference/valid/ \
+                  --conf 0.546 \
+                  --iou-thres 0.5 \
+                  --save-txt \
+                  --save-conf \
+                  --augment
+                  '''

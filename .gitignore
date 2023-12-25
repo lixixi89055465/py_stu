@@ -19,3 +19,4 @@ machinelearn/bias+correction+of+numerical+prediction+model+temperature+forecast.
 *.dat
 data
 *.pth
+yolov5
