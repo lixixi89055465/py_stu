@@ -44,22 +44,48 @@ class AdditiveAttention(nn.Module):
         self.W_k = nn.Linear(key_size, num_hiddens, bias=False)
         self.W_q = nn.Linear(query_size, num_hiddens, bias=False)
         self.W_v = nn.Linear(num_hiddens, 1, bias=False)
-        self.dropout = dropout
+        self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, queries, keys, values, valid_lens):
-        queries, keys = self.W_q(queries), self.W_k(self.keys)
+        queries, keys = self.W_q(queries), self.W_k(keys)
         features = queries.unsqueeze(2) + keys.unsqueeze(1)
         features = torch.tanh(features)
-        scores = self.W_v(features).squeeze(-1)
+        score = self.W_v(features).squeeze(-1)
+        self.attention_weights = masked_softmax(score, valid_lens)
+        return torch.bmm(self.dropout(self.attention_weights), values)
+
+
+queries, keys = torch.normal(0, 1, (2, 1, 20)), torch.ones((2, 10, 2))
+values = torch.arange(40, dtype=torch.float32).reshape(1, 10, 4). \
+    repeat(2, 1, 1)
+
+valid_lens = torch.tensor([2, 6])
+
+attention = AdditiveAttention(key_size=2, query_size=20, \
+                              num_hiddens=10, dropout=0.1)
+
+
+# attention.eval()
+# print(attention(queries, keys, values, valid_lens))
+
+# d2l.show_heatmaps(attention.attention_weights.reshape((1, 1, 2, 10)), \
+#                   xlabel='keys', ylabel='Queries')
+
+class DotProductAttention(nn.Module):
+    '''缩放点积注意力'''
+
+    def __init__(self, dropout, **kwargs):
+        super(DotProductAttention, self).__init__(**kwargs)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, queries, keys, values, valid_lens=None):
+        d = queries.shape[-1]
+        scores = torch.bmm(queries, keys.transpose(1, 2)) / math.sqrt(d)
         self.attention_weights = masked_softmax(scores, valid_lens)
         return torch.bmm(self.dropout(self.attention_weights), values)
 
 
-queries, keys = torch.normal(0, 1, (2, 1, 10)), torch.ones((2, 10, 2))
-values = torch.arange(40, dtype=torch.float32).reshape(1, 10, 4). \
-    repeat(2, 1, 1)
-
-attention = AdditiveAttention(key_size=2, query_size=20, \
-                              num_hiddens=10, dropout=0.1)
+queries = torch.normal(0, 1, (2, 1, 2))
+attention = DotProductAttention(dropout=0.5)
 attention.eval()
-attention(queries, keys, values, valid_lens)
+print(attention(queries, keys, values, valid_lens))
