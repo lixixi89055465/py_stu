@@ -194,9 +194,9 @@ for i in tqdm(range(len(valid_df))):
     name = row.file_name.split('.')[0]
     copyfile(f'./cowboyoutfits/images/{name}.jpg', f'./inference/valid/{name}.jpg')
 
-VALID_PATH = './cowboyoutfits/inference/valid/'
-MODEL_PATH = '. /input/cowboy-object-detection-models/v0_ep20_best.pt'
-IMAGE_PATH = './working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt'
+VALID_PATH = './inference/valid/'
+MODEL_PATH = './cowboy-object-detection-models/v0_ep20_best.pt'
+IMAGE_PATH = './cowboyoutfits/images/'
 
 '''
 python detect.py --weights ./working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt \
