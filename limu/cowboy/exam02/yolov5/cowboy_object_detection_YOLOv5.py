@@ -16,8 +16,8 @@ json_file_path = './cowboyoutfits/train.json'
 data = json.load(open(json_file_path, 'r'))
 yolo_anno_path = './training/yolo_anno/'
 
-if not os.path.exists(yolo_anno_path):
-	os.makedirs(yolo_anno_path)
+# if not os.path.exists(yolo_anno_path):
+# 	os.makedirs(yolo_anno_path)
 # 需要注意下因为我们的annotation lable是不连续的,会导致后面报错,所以这里生成一个map映射
 cate_id_map = {}
 num = 0
@@ -49,26 +49,26 @@ def cc2yolo_bbox(img_width, img_height, bbox):
 
 
 # transfer the annotation, and generated a train dataframe file
-f = open('train.csv', 'w')
-f.write('id,file_name\n')
-for i in tqdm(range(len(data['images']))):
-	filename = data['images'][i]['file_name']
-	img_width = data['images'][i]['width']
-	img_height = data['images'][i]['height']
-	img_id = data['images'][i]['id']
-	yolo_txt_name = filename.split('.')[0] + '.txt'  # remove .jpg
-
-	f.write('{},{}\n'.format(img_id, filename))
-	yolo_txt_file = open(os.path.join(yolo_anno_path, yolo_txt_name), 'w')
-
-	for anno in data['annotations']:
-		if anno['image_id'] == img_id:
-			yolo_bbox = cc2yolo_bbox(img_width, img_height, anno['bbox'])  # "bbox": [x,y,width,height]
-			yolo_txt_file.write(
-				'{} {} {} {} {}\n'.format(cate_id_map[anno['category_id']], yolo_bbox[0], yolo_bbox[1], yolo_bbox[2],
-										  yolo_bbox[3]))
-	yolo_txt_file.close()
-f.close()
+# f = open('train.csv', 'w')
+# f.write('id,file_name\n')
+# for i in tqdm(range(len(data['images']))):
+# 	filename = data['images'][i]['file_name']
+# 	img_width = data['images'][i]['width']
+# 	img_height = data['images'][i]['height']
+# 	img_id = data['images'][i]['id']
+# 	yolo_txt_name = filename.split('.')[0] + '.txt'  # remove .jpg
+#
+# 	f.write('{},{}\n'.format(img_id, filename))
+# 	yolo_txt_file = open(os.path.join(yolo_anno_path, yolo_txt_name), 'w')
+#
+# 	for anno in data['annotations']:
+# 		if anno['image_id'] == img_id:
+# 			yolo_bbox = cc2yolo_bbox(img_width, img_height, anno['bbox'])  # "bbox": [x,y,width,height]
+# 			yolo_txt_file.write(
+# 				'{} {} {} {} {}\n'.format(cate_id_map[anno['category_id']], yolo_bbox[0], yolo_bbox[1], yolo_bbox[2],
+# 										  yolo_bbox[3]))
+# 	yolo_txt_file.close()
+# f.close()
 
 # generate training dataframe
 train = pd.read_csv('./train.csv')
@@ -86,27 +86,27 @@ print(df.sample(10))
 # mdke directory for traning secti
 # cd /kaggle/training/
 # ls
-os.makedirs('./training/cowboy/images/train', exist_ok=True)
-os.makedirs('./training/cowboy/images/valid', exist_ok=True)
-
-os.makedirs('./training/cowboy/labels/train', exist_ok=True)
-os.makedirs('./training/cowboy/labels/valid', exist_ok=True)
+# os.makedirs('./training/cowboy/images/train', exist_ok=True)
+# os.makedirs('./training/cowboy/images/valid', exist_ok=True)
+#
+# os.makedirs('./training/cowboy/labels/train', exist_ok=True)
+# os.makedirs('./training/cowboy/labels/valid', exist_ok=True)
 
 # move the images and annotations to relevant splited folders
 
-for i in tqdm(range(len(df))):
-	row=df.loc[i]
-	name=row.file_name.split('.')[0]
-	if row.split=='train':
-		copyfile(f'./cowboyoutfits/images/{name}.jpg',
-				 f'./training/cowboy/images/train/{name}.jpg')
-		copyfile(f'./training/yolo_anno/{name}.txt',
-				 f'./training/cowboy/labels/train/{name}.txt')
-	else:
-		copyfile(f'./cowboyoutfits/images/{name}.jpg',
-				 f'./training/cowboy/images/valid/{name}.jpg')
-		copyfile(f'./training/yolo_anno/{name}.txt',
-				 f'./training/cowboy/labels/valid/{name}.txt')
+# for i in tqdm(range(len(df))):
+# 	row = df.loc[i]
+# 	name = row.file_name.split('.')[0]
+# 	if row.split == 'train':
+# 		copyfile(f'./cowboyoutfits/images/{name}.jpg',
+# 				 f'./training/cowboy/images/train/{name}.jpg')
+# 		copyfile(f'./training/yolo_anno/{name}.txt',
+# 				 f'./training/cowboy/labels/train/{name}.txt')
+# 	else:
+# 		copyfile(f'./cowboyoutfits/images/{name}.jpg',
+# 				 f'./training/cowboy/images/valid/{name}.jpg')
+# 		copyfile(f'./training/yolo_anno/{name}.txt',
+# 				 f'./training/cowboy/labels/valid/{name}.txt')
 
 # Create yaml file
 # cd ./training
@@ -117,8 +117,8 @@ data_yaml = dict(
 	names=['belt', 'sunglasses', 'boot', 'cowboy_hat', 'jacket']
 )
 # we will make the file under the yolov5/data/ directory.
-with open('./data/data.yaml', 'w') as outfile:
-	yaml.dump(data_yaml, outfile, default_flow_style=True)
+# with open('./data.yaml', 'w') as outfile:
+# 	yaml.dump(data_yaml, outfile, default_flow_style=True)
 
 lr0: 0.01  # initial learning rate (SGD=1E-2, Adam=1E-3)
 lrf: 0.2  # final OneCycleLR learning rate (lr0 * lrf)
@@ -168,8 +168,8 @@ python train.py --batch 32 \
                  
 python ./train.py --batch 16 \
                  --epochs 5 \
-                 --data ./data/data.yaml \
-                 --weights  yolov5m.pt \
+                 --data ./data.yaml \
+                 --weights  ./yolov5m.pt \
                  --project ./working/kaggle-cwoboy \
                  --name yolov5m.pt_BS_32_EP_5 
                  
@@ -180,26 +180,31 @@ python ./train.py --batch 16 \
 /home/sdb2/aidata/workspace/py_stu/limu/data/cowboyoutfits/images/valid
  /home/sdb2/aidata/workspace/py_stu/limu/data/cowboyoutfits
  /home/sdb2/aidata/workspace/py_stu/limu/cowboy/exam02/yolov5/working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt
+ 
+  working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_53
                  '''
 
 valid_df = pd.read_csv('./cowboyoutfits/valid.csv')
 test_df = pd.read_csv('./cowboyoutfits/test.csv')
 print(valid_df.head())
 print(valid_df.shape)
-os.makedirs('./inference/valid', exist_ok=True)
-os.makedirs('./inference/test', exist_ok=True)
+# os.makedirs('./inference/valid', exist_ok=True)
+# os.makedirs('./inference/test', exist_ok=True)
 # copy the validation image to inference folder for detection process
-for i in tqdm(range(len(valid_df))):
-    row = valid_df.loc[i]
-    name = row.file_name.split('.')[0]
-    copyfile(f'./cowboyoutfits/images/{name}.jpg', f'./inference/valid/{name}.jpg')
+# for i in tqdm(range(len(valid_df))):
+# 	row = valid_df.loc[i]
+# 	name = row.file_name.split('.')[0]
+# 	copyfile(f'./cowboyoutfits/images/{name}.jpg', f'./inference/valid/{name}.jpg')
 
 VALID_PATH = './inference/valid/'
 MODEL_PATH = './cowboy-object-detection-models/v0_ep20_best.pt'
 IMAGE_PATH = './cowboyoutfits/images/'
 
 '''
-python detect.py --weights ./working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weights/best.pt \
+# go to yolov5 main folder for detection
+%cd /kaggle/training/yolov5/
+
+python ./detect.py --weights ./working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_5/weights/best.pt \
                   --source ./inference/valid/ \
                   --conf 0.546 \
                   --iou-thres 0.5 \
@@ -207,3 +212,70 @@ python detect.py --weights ./working/kaggle-cwoboy/yolov5m.pt_BS_32_EP_524/weigh
                   --save-conf \
                   --augment
                   '''
+# read the output log , indicated our prediction result was saved under `runs/detect/exp/`
+# PRED_PATH = './training/yolov5/runs/detect/exp/labels/'
+PRED_PATH = './runs/detect/exp6/labels/'
+# with open('./training/yolov5/runs/detect/exp/labels/010fb53ff39a0ea1.txt', 'r') as file:
+with open('./runs/detect/exp6/labels/010fb53ff39a0ea1.txt', 'r') as file:
+	for line in file:
+		print(line)
+
+
+from PIL import Image
+# Image.open('./training/yolov5/runs/detect/exp/010fb53ff39a0ea1.jpg')
+Image.open('./runs/detect/exp6/010fb53ff39a0ea1.jpg')
+
+
+# list our prediction files path
+prediction_files = os.listdir(PRED_PATH)
+print('Number of test images with detections: ', len(prediction_files))
+
+
+# convert yolo to coco annotation format
+def yolo2cc_bbox(img_width, img_height, bbox):
+	x = (bbox[0] - bbox[2] * 0.5) * img_width
+	y = (bbox[1] - bbox[3] * 0.5) * img_height
+	w = bbox[2] * img_width
+	h = bbox[3] * img_height
+
+	return (x, y, w, h)
+
+# reverse the categories numer to the origin id
+re_cate_id_map = dict(zip(cate_id_map.values(), cate_id_map.keys()))
+
+print(re_cate_id_map)
+
+def make_submission(df, PRED_PATH, IMAGE_PATH):
+    output = []
+    for i in tqdm(range(len(df))):
+        row = df.loc[i]
+        image_id = row['id']
+        file_name = row['file_name'].split('.')[0]
+        if f'{file_name}.txt' in prediction_files:
+            img = Image.open(f'{IMAGE_PATH}/{file_name}.jpg')
+            width, height = img.size
+            with open(f'{PRED_PATH}/{file_name}.txt', 'r') as file:
+                for line in file:
+                    preds = line.strip('\n').split(' ')
+                    preds = list(map(float, preds)) #conver string to float
+                    cc_bbox = yolo2cc_bbox(width, height, preds[1:-1])
+                    result = {
+                        'image_id': image_id,
+                        'category_id': re_cate_id_map[preds[0]],
+                        'bbox': cc_bbox,
+                        'score': preds[-1]
+                    }
+
+                    output.append(result)
+    return output
+
+sub_data = make_submission(valid_df, PRED_PATH, IMAGE_PATH)
+op_pd = pd.DataFrame(sub_data)
+
+op_pd.sample(10)
+import zipfile
+
+op_pd.to_json('./working/answer.json',orient='records')
+zf = zipfile.ZipFile('./working/sample_answer.zip', 'w')
+zf.write('./working/answer.json', 'answer.json')
+zf.close()
