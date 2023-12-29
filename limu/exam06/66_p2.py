@@ -68,3 +68,26 @@ X = torch.zeros((4, 7), dtype=torch.long)
 state = decoder.init_state(encoder(X), None)
 output, state = decoder(X, state)
 print(output.shape, len(state), state[0].shape, len(state[1]), state[1][0].shape)
+
+embed_size, num_hiddens, num_layers, dropout = 32, 32, 2, 0.1
+batch_size, num_steps = 64, 10
+lr, num_epochs, device = 0.005, 250, d2l.try_gpu()
+
+train_iter, src_vocab, tgt_vocab = d2l.load_data_nmt(batch_size, num_steps)
+encoder = d2l.Seq2SeqEncoder(
+	len(src_vocab), embed_size, num_hiddens, num_layers, dropout
+)
+decoder = Seq2SeqAttentionDecoder(
+	len(tgt_vocab), embed_size, num_hiddens, num_layers, dropout
+)
+net = d2l.EncoderDecoder(encoder, decoder)
+d2l.train_seq2seq(net, train_iter, lr, num_epochs, tgt_vocab, device)
+
+print('i' * 100)
+engs = ['go .', "i lost .", 'he\'s calm .', 'i\'m home .']
+fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
+for eng, fra in zip(engs, fras):
+	translation, dec_attention_weight_seq = d2l.predict_seq2seq(
+		net, eng, src_vocab, tgt_vocab, num_steps, device, True)
+	print(f'{eng} => {translation},',
+		  f'bleu {d2l.bleu(translation, fra, k=2):.3f}')
