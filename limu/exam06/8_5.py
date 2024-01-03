@@ -11,25 +11,35 @@ from torch import nn
 from d2l import torch as d2l
 from torch.nn import functional as F
 
+seed = 415
+os.environ['PYTHONHASHSEED'] = str(seed)
+# np.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = True
+
 device = d2l.try_gpu()
 
 batch_size, num_steps = 32, 35
 train_iter, vocab = d2l.load_data_time_machine(batch_size, num_steps)
-print(F.one_hot(torch.tensor([0, 2]), len(vocab)))
+# print(F.one_hot(torch.tensor([0, 2]), len(vocab)))
 
 X = torch.arange(10).reshape((2, 5))
-print('0' * 100)
-print(F.one_hot(X.T, 28).shape)
+
+
+# print('0' * 100)
+# print(F.one_hot(X.T, 28).shape)
 
 
 def get_params(vocab_size, num_hiddens, device):
 	num_inputs = num_outputs = vocab_size
 
 	def normal(shape):
-		return torch.randn(size=shape, device=device) * 0.01
+		return torch.randn(shape, device=device) * 0.01
 
 	W_xh = normal((num_inputs, num_hiddens))
-	W_hh = normal((num_hiddens, num_hiddens))
+	W_hh = normal((num_inputs, num_hiddens))
 	b_h = torch.zeros((num_hiddens), device=device)
 	W_hq = normal((num_hiddens, num_outputs))
 	b_q = torch.zeros((num_outputs), device=device)
@@ -60,7 +70,7 @@ class RNNModelScratch:
 				 get_params, init_state, forward_fn):
 		self.vocab_size, self.num_hiddens = vocab_size, num_hiddens
 		self.params = get_params(vocab_size, num_hiddens, device)
-		self.init_state, self.forward_fn = init_state, forward_fn
+		self.init_state, self.Forward_fn = init_state, forward_fn
 
 	def __call__(self, X, state):
 		X = F.one_hot(X.T, self.vocab_size).type(torch.float32)
@@ -75,6 +85,33 @@ net = RNNModelScratch(len(vocab), num_hiddens, d2l.try_gpu(), get_params,
 					  init_rnn_state, rnn)
 state = net.begin_state(X.shape[0], device=device)
 Y, new_state = net(X.to(device), state)
-print('0' * 100)
-print(Y.shape, len(new_state), new_state[0].shape)
 
+
+# print('0' * 100)
+# print(Y.shape, len(new_state), new_state[0].shape)
+# print('0'*100)
+
+
+def predict_ch8(prefix, num_preds,  device):
+	state = net.begin_state(batch_s=1, device=device)
+	outputs = [vocab[prefix[0]]]
+	get_inputs = lambda: torch.tensor([outputs[-1]], device=device).reshape((1, 1))
+	for y in prefix[1:]:
+		_, state = net(get_inputs(), state)
+		outputs.append(vocab[y])
+	for _ in range(num_preds):
+		y, state = net(get_inputs(), state)
+		outputs.append(int(y.argmax(dim=1).reshape(1)))
+	return ''.join([vocab.idx_to_token[i] for i in outputs])
+
+
+# print(predict_ch8('time traveller', 10, net, vocab, d2l.try_gpu()))
+def grad_clipping(net, theta):
+	if isinstance(net, nn.Module):
+		params = [p for p in net.parameters() if p.requires_grad]
+	else:
+		params = net.params
+	norm = torch.sqrt(torch.sum(sum((p.grad ** 2)) for p in params))
+	if norm > theta:
+		for param in params:
+			param.grad[:] *= theta / norm
