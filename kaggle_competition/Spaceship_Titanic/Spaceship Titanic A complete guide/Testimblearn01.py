@@ -24,13 +24,12 @@ X0 = X[y == 0]
 y0 = y[y == 0]
 X1 = X[y == 1][num_0]
 y1 = y[y == 1][num_0]
-print(X0)
-print('3' * 100)
-print(X1)
 X = np.concatenate([X0, X1], axis=0)
+y = np.concatenate([y0, y1], axis=0)
 X_shuffle_index = np.arange(0, 150)
 np.random.shuffle(X_shuffle_index)
-print(X[:20])
+X=X[X_shuffle_index]
+y=y[X_shuffle_index]
 rus = RandomUnderSampler(random_state=0)
 
 X_resampled, y_resampled = rus.fit_resample(X, y)
