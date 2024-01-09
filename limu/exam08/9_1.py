@@ -47,7 +47,7 @@ def gru(inputs, state, params):
 	for X in inputs:
 		Z = torch.sigmoid((X @ W_xz) + (H @ W_hz) + b_z)
 		R = torch.sigmoid((X @ W_xr) + (H @ W_hr) + b_r)
-		H_tilda = torch.tanh((X @ W_xh) + (R * H) * W_hh) + b_h
+		H_tilda = torch.tanh((X @ W_xh) + (R * H) @ W_hh) + b_h
 		H = Z * H + (1 - Z) * H_tilda
 		Y = H @ W_hq + b_q
 		outputs.append(Y)
@@ -59,3 +59,11 @@ num_epochs, lr = 500, 1
 model = d2l.RNNModelScratch(len(vocab), num_hiddens, device, \
 							get_params, init_gru_state, gru)
 d2l.train_ch8(model, train_iter, vocab, lr, num_epochs, device)
+
+from torch import nn
+
+num_inputs = vocab_size
+gru_layer = nn.GRU(num_inputs, num_hiddens)
+model = d2l.RNNModel(gru_layer, len(vocab)).to(device)
+d2l.train_ch8(model, train_iter, vocab, lr, num_epochs, device)
+
