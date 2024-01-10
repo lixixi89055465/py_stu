@@ -61,10 +61,19 @@ def lstm(inputs, state, params):
 	return torch.cat(outputs, dim=0), (H, C)
 
 
-vocab_size, num_hiddens, device = len(vocab),256, d2l.try_gpu(2)
+vocab_size, num_hiddens, device = len(vocab), 256, d2l.try_gpu(2)
 num_epochs, lr = 500, 1
 model = d2l.RNNModelScratch(len(vocab), \
 							num_hiddens, \
 							device, \
-							get_lstm_params, init_lstm_state,lstm)
+							get_lstm_params, init_lstm_state, lstm)
 d2l.train_ch8(model, train_iter, vocab, lr, num_epochs, device)
+
+
+print('0' * 100)
+num_inputs = vocab_size
+lstm_layer = nn.LSTM(num_inputs, num_hiddens)
+
+model=d2l.RNNModel(lstm_layer,len(vocab))
+model=model.to(device)
+d2l.train_ch8(model,train_iter,vocab,lr,num_epochs,device)
