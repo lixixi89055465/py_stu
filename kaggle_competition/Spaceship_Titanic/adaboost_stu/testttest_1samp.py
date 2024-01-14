@@ -5,13 +5,22 @@
 # @File : testttest_1samp.py
 # @Software: PyCharm 
 # @Comment :
+# Import numpy and scipy
+# Import numpy and scipy
 import numpy as np
-from scipy  import stats
-a = np.full(shape=(30, 355), fill_value=3)
-b = np.random.normal(0, 3, 30)
-print(a.shape)
-print(b.shape)
-factory_a = np.full(shape=(30, 355)) + np.random.normal(0, 3, 30)
-factory_b = np.full(shape=(30, 355)) + np.random.normal(0, 3, 30)
-# a_stat,a_pval=stats.ttest_1samp(a=factory_a,popmean=)
+from scipy import stats
 
+# Create array of worker bottling rates between 10 and 20 bottles/min
+pre_training = np.random.randint(low=10, high=20, size=30)
+
+# Define "training" function and apply
+def apply_training(worker):
+    return worker + np.random.randint(-1, 4)
+
+post_training = list(map(apply_training, pre_training))
+
+# Run a paired t-test to compare worker productivity before & after the training
+tstat, pval = stats.ttest_rel(post_training, pre_training)
+
+# Display results
+print("t-stat: {:.2f}   pval: {:.4f}".format(tstat, pval))
