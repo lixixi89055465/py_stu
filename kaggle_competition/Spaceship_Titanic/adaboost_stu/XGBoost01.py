@@ -16,6 +16,8 @@ from sklearn.datasets import load_boston
 import matplotlib
 import matplotlib.pyplot as plt
 import os
+import warnings
+warnings.filterwarnings("ignore")
 
 iris = load_iris()
 X, y = iris.data, iris.target
@@ -40,5 +42,14 @@ params = {
 	'colsample_bytree': 0.7,  # 建立树时对特征进行采样的比例
 	'min_child_weight': 3,  # 叶子节点继续划分的最小的样本权重和
 	'eta': 0.1,  # 加法模型中使用的收缩步长
-
 }
+plst=list(params.items())
+dtrain=xgb.DMatrix(X_train,y_train)
+dtest=xgb.DMatrix(X_test )
+num_rounds=50
+model=xgb.train(plst,dtrain,num_rounds)
+y_pred=model.predict(dtest )
+
+accuracy=accuracy_score(y_test,y_pred )
+print('accuracy : %.2f%%'%(accuracy*100.0))
+
