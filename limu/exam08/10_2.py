@@ -25,5 +25,13 @@ n_test = len(x_test)
 print('0' * 100)
 print(n_test)
 
+
 def plot_kernel_reg(y_hat):
-	d2l.plot(x_test,[y_truth,y_hat],'x')
+	d2l.plot(x_test, [y_truth, y_hat], 'x', 'y', legend=['Truth', 'Pred'], \
+			 xlim=[0, 5], ylim=[-1, 5])
+	d2l.plt.plot(x_train, y_train, 'o', alpha=0.5)
+
+
+y_hat = torch.repeat_interleave(y_train.mean(), n_test)
+
+
