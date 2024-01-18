@@ -33,5 +33,44 @@ def plot_kernel_reg(y_hat):
 
 
 y_hat = torch.repeat_interleave(y_train.mean(), n_test)
+# plot_kernel_reg(y_hat)
 
+print('2' * 100)
+X_repeat = x_test.repeat_interleave(n_train).reshape((-1, n_train))
+attention_weights = nn.functional.softmax(-(X_repeat - x_train) ** 2 / 2, dim=1)
+y_hat = torch.matmul(attention_weights, y_train)
+# plot_kernel_reg(y_hat)
+#
+# d2l.show_heatmaps(attention_weights.unsqueeze(0).unsqueeze(0), \
+# 				  xlabel='Sorted train inputs', \
+# 				  ylabel='Sorted test inputs')
+print('3' * 100)
+X = torch.ones((2, 1, 4))
+Y = torch.ones((2, 4, 6))
+print(torch.bmm(X, Y).shape)
+
+weights = torch.ones((2, 10)) * 0.1
+values = torch.arange(20.0).reshape((2, 10))
+result = torch.bmm(weights.unsqueeze(1), values.unsqueeze(-1))
+print('4' * 100)
+print(result.shape)
+
+
+class MWKernelRegression(nn.Module):
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.w = nn.Parameter(torch.rand((1,), requires_grad=True))
+
+	def forward(self, queries, keys, values):
+		queries = queries.repeat_interleave(keys.shape[1]).reshape((-1, keys.shape[1]))
+		self.attention_weights = nn.functional.softmax(
+			-((queries - keys) * self.w) ** 2 / 2, dim=1
+		)
+		return torch.bmm(self.attention_weights.unsqueeze(1), \
+						 values.unsqueeze(-1)).reshape(-1)
+
+
+X_tile=x_train.repeat((n_train,1))
+Y_tile=y_train.repeat((n_train,1))
+keys=X_tile[(1-torch.eye(n_train)).type(torch.bool)].reshape((n_train,-1))
 
