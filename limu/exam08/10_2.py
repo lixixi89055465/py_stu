@@ -70,7 +70,9 @@ class MWKernelRegression(nn.Module):
 						 values.unsqueeze(-1)).reshape(-1)
 
 
-X_tile=x_train.repeat((n_train,1))
-Y_tile=y_train.repeat((n_train,1))
-keys=X_tile[(1-torch.eye(n_train)).type(torch.bool)].reshape((n_train,-1))
+X_tile = x_train.repeat((n_train, 1))
+Y_tile = y_train.repeat((n_train, 1))
+keys = X_tile[(1 - torch.eye(n_train)).type(torch.bool)].reshape((n_train, -1))
+values = X_tile[(1 - torch.eye(n_train)).type(torch.bool)].reshape((n_train, -1))
 
+print(values)
