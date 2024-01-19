@@ -11,4 +11,6 @@ from torch import nn
 from d2l import torch as d2l
 
 x = torch.tensor([1, 2, 3])
+print(x.shape)
+print('0'*100)
 print(x.repeat(4, 2))

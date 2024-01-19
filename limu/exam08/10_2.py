@@ -56,7 +56,7 @@ print('4' * 100)
 print(result.shape)
 
 
-class MWKernelRegression(nn.Module):
+class NWKernelRegression(nn.Module):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.w = nn.Parameter(torch.rand((1,), requires_grad=True))
@@ -76,3 +76,27 @@ keys = X_tile[(1 - torch.eye(n_train)).type(torch.bool)].reshape((n_train, -1))
 values = X_tile[(1 - torch.eye(n_train)).type(torch.bool)].reshape((n_train, -1))
 
 print(values)
+
+net = NWKernelRegression()
+loss = nn.MSELoss(reduction='none')
+trainer = torch.optim.SGD(net.parameters(), lr=0.5)
+# animator = d2l.Animator(xlabel='epoch', ylabel='loss', \
+# 						xlim=[1, 5])
+for epoch in range(5):
+	trainer.zero_grad()
+	l = loss(net(x_train, keys, values), y_train)
+	l.sum().backward()
+	trainer.step()
+	print(f' epoch {epoch} ,loss {float(l.sum()):.6f}')
+	# animator.add(epoch + 1, float(l.sum()))
+
+
+print('2'*100)
+keys=x_train.repeat((n_test,1))
+values=y_train.repeat((n_test,1 ))
+y_hat=net(x_test,keys,values).unsqueeze(1).detach()
+plot_kernel_reg(y_hat)
+print('3'*100)
+d2l.show_heatmaps(net.attention_weights.unsqueeze(0).unsqueeze(0),
+                  xlabel='Sorted training inputs',
+                  ylabel='Sorted testing inputs')
