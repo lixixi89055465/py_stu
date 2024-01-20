@@ -17,6 +17,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import warnings
+
 warnings.filterwarnings("ignore")
 
 iris = load_iris()
@@ -43,13 +44,32 @@ params = {
 	'min_child_weight': 3,  # 叶子节点继续划分的最小的样本权重和
 	'eta': 0.1,  # 加法模型中使用的收缩步长
 }
-plst=list(params.items())
-dtrain=xgb.DMatrix(X_train,y_train)
-dtest=xgb.DMatrix(X_test )
-num_rounds=50
-model=xgb.train(plst,dtrain,num_rounds)
-y_pred=model.predict(dtest )
+plst = list(params.items())
+dtrain = xgb.DMatrix(X_train, y_train)
+dtest = xgb.DMatrix(X_test)
+num_rounds = 50
+model = xgb.train(plst, dtrain, num_rounds)
+y_pred = model.predict(dtest)
 
-accuracy=accuracy_score(y_test,y_pred )
-print('accuracy : %.2f%%'%(accuracy*100.0))
+accuracy = accuracy_score(y_test, y_pred)
+print('accuracy : %.2f%%' % (accuracy * 100.0))
+# 显示重要特征
+plot_importance(model)
+plt.show()
+
+# plot_tree(model,num_trees=17)
+model.dump_model('model2.txt')
+
+print('0'*100)
+iris=load_iris()
+X,y=iris.data,iris.target
+feature_name=iris.feature_names
+
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=3)
+model=xgb.XGBClassifier(max_depth=5,n_estimators=50,objective='multi:softmax',\
+						feature_names=feature_name)
+model.fit(X_train,y_train)
+y_pred=model.predict(X_test)
+accuracy=accuracy_score(y_test,y_pred)
+print('accuracy : %.2f %%' %(accuracy*100.0))
 
