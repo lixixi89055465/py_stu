@@ -17,14 +17,15 @@ class PositionWiseFFN(nn.Module):
 		super(PositionWiseFFN, self).__init__(**kwargs)
 		self.dense1 = nn.Linear(ffn_num_input, ffn_num_hiddens)
 		self.relu = nn.ReLU()
-		self.dense2 = nn.Linear(ffn_num_hiddens, ffn_num_hiddens)
+		self.dense2 = nn.Linear(ffn_num_hiddens, ffn_num_outputs)
 
 	def forward(self, X):
 		return self.dense2(self.relu(self.dense1(X)))
 
 
-ffn = PositionWiseFFN(4, 4, 8)
-ffn.eval()
+
+# ffn = PositionWiseFFN(4, 4, 8)
+# ffn.eval()
 
 
 # result=ffn(torch.ones((2, 3, 4)))
@@ -36,6 +37,8 @@ ffn.eval()
 # print('layer norm :', ln(X), '\n batch norm :', bn(X))
 
 class AddNorm(nn.Module):
+	"""残差连接后进行层规范化"""
+
 	def __init__(self, normalized_shape, dropout, **kwargs):
 		super(AddNorm, self).__init__(**kwargs)
 		self.dropout = nn.Dropout(dropout)
@@ -44,22 +47,34 @@ class AddNorm(nn.Module):
 	def forward(self, X, Y):
 		return self.ln(self.dropout(Y) + X)
 
-
 add_norm = AddNorm([3, 4], 0.5)
 add_norm.eval()
-result = add_norm(torch.ones((2, 3, 4)), torch.ones((2, 3, 4)))
-
+add_norm(torch.ones((2, 3, 4)), torch.ones((2, 3, 4))).shape
 
 # print('1' * 100)
 # print(result)
 
+#@save
 class EncoderBlock(nn.Module):
-	def __init__(self, key_size, query_size, value_size, num_hiddens, \
-				 norm_shape, ffn_num_input, ffn_num_hiddens, num_heads, \
-				 dropout, use_bias=False, **kwargs):
-		super(EncoderBlock, self).__init__(**kwargs)
-		self.attention = d2l.MultiHeadAttention(
-			key_size, query_size, value_size, \
-			num_hiddens, num_heads, dropout, \
-			use_bias)
-		self.addnorm1 = AddNorm(norm_shape, dropout)
+    """Transformer编码器块"""
+    def __init__(self, key_size, query_size, value_size, num_hiddens,
+                 norm_shape, ffn_num_input, ffn_num_hiddens, num_heads,
+                 dropout, use_bias=False, **kwargs):
+        super(EncoderBlock, self).__init__(**kwargs)
+        self.attention = d2l.MultiHeadAttention(
+            key_size, query_size, value_size, num_hiddens, num_heads, dropout,
+            use_bias)
+        self.addnorm1 = AddNorm(norm_shape, dropout)
+        self.ffn = PositionWiseFFN(
+            ffn_num_input, ffn_num_hiddens, num_hiddens)
+        self.addnorm2 = AddNorm(norm_shape, dropout)
+
+    def forward(self, X, valid_lens):
+        Y = self.addnorm1(X, self.attention(X, X, X, valid_lens))
+        return self.addnorm2(Y, self.ffn(Y))
+
+X = torch.ones((2, 100, 24))
+valid_lens = torch.tensor([3, 2])
+encoder_blk = EncoderBlock(24, 24, 24, 24, [100, 24], 24, 48, 8, 0.5)
+encoder_blk.eval()
+print(encoder_blk(X, valid_lens).shape)
