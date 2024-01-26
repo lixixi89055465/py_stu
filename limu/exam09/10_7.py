@@ -81,7 +81,9 @@ class EncoderBlock(nn.Module):
 
 X = torch.ones((2, 100, 24))
 valid_lens = torch.tensor([3, 2])
-# encoder_blk = EncoderBlock(24, 24, 24, 24, [100, 24], 24, 48, 8, 0.5)
+
+
+encoder_blk = EncoderBlock(24, 24, 24, 24, [100, 24], 24, 48, 8, 0.5)
 # encoder_blk.eval()
 # print(encoder_blk(X, valid_lens).shape)
 
@@ -112,5 +114,49 @@ class TransformerEncoder(d2l.Encoder):
 encoder = TransformerEncoder(
 	200, 24, 24, 24, 24, [100, 24], 24, 48, 8, 2, 0.5
 )
-encoder.eval()
-print(encoder(torch.ones((2, 100), dtype=torch.long), valid_lens).shape)
+
+
+# encoder.eval()
+# print(encoder(torch.ones((2, 100), dtype=torch.long), valid_lens).shape)
+
+class DecoderBlock(nn.Module):
+	def __init__(self, key_size, query_size, value_size, num_hiddens, \
+				 norm_shape, ffn_num_input, ffn_num_hiddens, num_heads, \
+				 dropout, i, **kwargs):
+		super(DecoderBlock, self).__init__(**kwargs)
+		self.i = i
+		self.attention1 = d2l.MultiHeadAttention(key_size, query_size, value_size, num_hiddens, num_heads, dropout)
+		self.addnorm1 = AddNorm(norm_shape, dropout)
+		self.attention2 = d2l.MultiHeadAttention(key_size, query_size, value_size, num_hiddens, num_heads, dropout)
+		self.addnorm2 = AddNorm(norm_shape, dropout)
+		self.ffn = PositionWiseFFN(ffn_num_input, ffn_num_hiddens, \
+								   num_hiddens)
+		self.addnorm3 = AddNorm(norm_shape, dropout)
+
+	def forward(self, X, state):
+		enc_output, enc_valid_lens = state[0], state[1]
+		if state[2][self.i] is None:
+			key_values = X
+		else:
+			key_values = torch.cat((state[2][self.i], X), axis=1)
+		state[2][self.i] = key_values
+		if self.training:
+			batch_size, num_steps, _ = X.shape
+			dec_valid_lens = torch.arange(1, num_steps + 1, device=X.device).repeat(batch_size, 1)
+		else:
+			dec_valid_lens = None
+		# 自注意力
+		X2 = self.attention1(X, key_values, key_values, dec_valid_lens)
+		Y = self.addnorm1(X, X2)
+		Y2 = self.attention2(Y, enc_output, enc_output, enc_valid_lens)
+		Z = self.addnorm2(Y, Y2)
+		return self.addnorm3(Z, self.ffn(Z)), state
+
+
+decoder_blk = DecoderBlock(
+	24, 24, 24, 24, [100, 24], 24, 48, 8, 0.5, 0
+)
+decoder_blk.eval()
+X = torch.ones((2, 100, 24))
+state = [encoder_blk(X, valid_lens), valid_lens, [None]]
+decoder_blk(X, state)[0].shape
