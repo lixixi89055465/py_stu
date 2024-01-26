@@ -51,9 +51,9 @@ class AddNorm(nn.Module):
 		return self.ln(self.dropout(Y) + X)
 
 
-add_norm = AddNorm([3, 4], 0.5)
-add_norm.eval()
-add_norm(torch.ones((2, 3, 4)), torch.ones((2, 3, 4))).shape
+# add_norm = AddNorm([3, 4], 0.5)
+# add_norm.eval()
+# add_norm(torch.ones((2, 3, 4)), torch.ones((2, 3, 4))).shape
 
 
 # @save
@@ -81,7 +81,7 @@ X = torch.ones((2, 100, 24))
 valid_lens = torch.tensor([3, 2])
 encoder_blk = EncoderBlock(24, 24, 24, 24, [100, 24], 24, 48, 8, 0.5)
 encoder_blk.eval()
-encoder_blk(X, valid_lens).shape
+print(encoder_blk(X, valid_lens).shape)
 
 
 # @save
@@ -118,7 +118,7 @@ class TransformerEncoder(d2l.Encoder):
 encoder = TransformerEncoder(
 	200, 24, 24, 24, 24, [100, 24], 24, 48, 8, 2, 0.5)
 encoder.eval()
-encoder(torch.ones((2, 100), dtype=torch.long), valid_lens).shape
+print(encoder(torch.ones((2, 100), dtype=torch.long), valid_lens).shape)
 
 
 class DecoderBlock(nn.Module):
