@@ -22,18 +22,19 @@ class DataBinWrapper:
 		self.XrangeMap = None  # 箱（区间数）
 
 	def fit(self, x):
-		if x.ndim == 1:
-			n_features = 1
-			x = x[:, np.newaxis]
+		if x.ndim==1:
+			n_features=1
+			x=x[:,np.newaxis]
 		else:
-			n_features = x.shape[1]
-		self.XrangeMap = [[] for _ in range(n_features)]
+			n_features=x.shape[1]
+		self.XrangeMap=[[] for _ in range(n_features)]
 		for idx in range(n_features):
-			x_sorted = sorted(x[:, idx])
-			for bin in range(1, self.max_bins):
-				percent_val = np.percentile(x_sorted, (1.0 * bin / self.max_bins) * 100.0 // 1)
+			x_sorted=sorted(x[:,idx])
+			for bin in range(1,self.max_bins):
+				percent_val=np.percentile(x_sorted,(1.0*bin/self.max_bins*100.0//1))
 				self.XrangeMap[idx].append(percent_val)
-			self.XrangeMap[idx] = sorted(list(set(self.XrangeMap[idx])))
+			self.XrangeMap[idx]=sorted(list(set(self.XrangeMap[idx])))
+
 
 	def transform(self, x_samples, XrangeMap=None):
 		'''
@@ -45,6 +46,7 @@ class DataBinWrapper:
 			return np.asarray([np.digitize(x, self.XrangeMap[0])]).reshape(-1)
 		else:
 			return np.asarray([np.digitize(x[:, i], self.XrangeMap[i]) for i in range(x.shape[1])]).T
+
 
 
 if __name__ == '__main__':
