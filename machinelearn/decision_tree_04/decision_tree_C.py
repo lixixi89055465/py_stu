@@ -11,6 +11,7 @@ from machinelearn.decision_tree_04.utils.tree_node import TreeNode_C
 from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
 
 
+import time
 class DecisionTreeClassifier:
 	'''
 	分类决策树算法实现: 无论是ID3,C4.5或CART,统一按照二叉树构造
@@ -74,7 +75,6 @@ class DecisionTreeClassifier:
 					x_samples_prob.append(x_samples[:, i])
 		return np.asarray(x_samples_prob).T
 
-
 	def fit(self, x_train, y_train, sample_weight=None):
 		'''
 		决策树的创建，递归操作
@@ -97,8 +97,6 @@ class DecisionTreeClassifier:
 		elif self.dbw_feature_idx:
 			x_train = self._data_bin_wrapper(x_train)
 		self._build_tree(1, self.root_node, x_train, y_train, sample_weight)
-
-
 
 	def _build_tree(self, cur_depth, cur_node: TreeNode_C, x_train, y_train, sample_weight):
 		'''
@@ -147,6 +145,8 @@ class DecisionTreeClassifier:
 		cur_node.feature_idx = best_idx  # 最佳特征所在样本的索引
 		cur_node.feature_val = best_index_val  # 最佳特征取值
 		cur_node.criterion_val = best_criterion_val  # 最佳特征取值的标准
+		selected_x = x_train[:, best_idx]
+
 		# print('当前划分的特征索引：', best_idx, '\t取值：', best_index_val, '\t最佳标准值：', best_criterion_val)
 		# print('当前节点的类别分布', target_dist)
 
@@ -159,13 +159,48 @@ class DecisionTreeClassifier:
 			self._build_tree(cur_depth + 1, left_child_node, x_train[left_index],
 							 y_train[left_index], sample_weight[left_index])
 		# 创建右子树，并递归创建以右子树为子树根节点的左子树
-		right_index = np.where(x_train[:, best_idx] != best_index_val)  # 右子树所包含的样本子集索引
+		right_index = np.where(selected_x != best_index_val)  # 右子树所包含的样本子集索引
 		if len(right_index[0]) >= self.min_sample_leaf:  # 小于叶子节点所包含的最少样本量，则标记为叶子节点
 			right_child_Node = TreeNode_C()  # 创建右子树空树节点
 			# 以当前节点为右子节点，递归创建
 			cur_node.right_child_node = right_child_Node
 			self._build_tree(cur_depth + 1, right_child_Node, x_train[right_index],
 							 y_train[right_index], sample_weight[right_index])
+
+	def _search_node(self, cur_node: TreeNode_C, x_test, class_num):
+		'''
+		:param cur_node:
+		:param x_test:
+		:param class_num:
+		:return:
+		'''
+		if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
+			return self._search_node(cur_node.left_child_node, x_test, class_num)
+		elif cur_node.right_child_node and x_test[cur_node.feature_idx]!=cur_node.feature_val:
+			return self._search_node(cur_node.right_child_node,x_test,class_num)
+		else:
+			class_p=np.zeros(class_num)
+			for c in range(class_num):
+				class_p[c]=cur_node.target_dist.get(c,0)*cur_node.weight_dist.get(c,1.0)
+			class_p/=np.sum(class_p)
+			return class_p
+	def predict_probability(self,x_test,root_node=None):
+		if self.is_feature_all_R:
+			x_test=self.dbw.transform(x_test)
+		elif self.dbw_feature_idx is not None:
+			x_test=self._data_bin_wrapper(x_test)
+		time_start=time.time()
+		prob_dist=[]
+		class_num=len(self.root_node.target_dist)
+		for i in range(x_test.shape[0]):
+			prob_dist.append(self._search_node(self.root_node,x_test[i],class_num))
+		time_end=time.time()
+		print('对测试样本进行预测（即从根节点到叶子节点搜索），耗时 %f second'%(time_end-time_start))
+		return np.asarray(prob_dist)
+
+
+
+
 
 
 def _search_tree_predict(self, cur_node: TreeNode_C, x_test):
