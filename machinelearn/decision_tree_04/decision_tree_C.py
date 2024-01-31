@@ -10,8 +10,9 @@ from machinelearn.decision_tree_04.utils.entropy_utils import EntropyUtils
 from machinelearn.decision_tree_04.utils.tree_node import TreeNode_C
 from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
 
-
 import time
+
+
 class DecisionTreeClassifier:
 	'''
 	分类决策树算法实现: 无论是ID3,C4.5或CART,统一按照二叉树构造
@@ -38,7 +39,7 @@ class DecisionTreeClassifier:
 		self.is_feature_all_R = is_feature_all_R  # 所有样本呢特征是否全是连续数据
 		self.dbw_feature_idx = dbw_feature_idx  # 混合类型数据，可指定连续特征属性的索引
 		self.max_depth = max_depth  # 树的最大深度，不传参，则一直划分下去
-		self.min_samples_split = min_samples_split  # 最小的划分节点的样本量，小于则不划分
+		self.min_sample_split = min_samples_split  # 最小的划分节点的样本量，小于则不划分
 		self.min_sample_leaf = min_samples_leaf  # 叶子节点所包含的最小样本量，剩余的样本小于这个值，标记叶子节点
 		self.min_impurity_decrease = min_impurity_decrease  # 最小结点不纯度减少值，小于这个值，不足以划分
 		self.max_bins = max_bins  # 连续数据的分箱数，越大，则划分越细
@@ -105,67 +106,58 @@ class DecisionTreeClassifier:
 		@param cur_node: 递归后的当前根节点
 		@param x_train: 递归划分后的训练样本
 		@param y_train: 递归划分后的目标集合
-		@param sample_weight: 递归划分后的各样本权重
+		@param sample_weight: 递归划分后的各样本权重R
 		@return:
 		'''
-		n_samples, n_features = x_train.shape  # 当前样本子集中的样本量和特征属性数目
-		target_dist, weight_dist = {}, {}  # 当前样本子集中的样本量和特征属性数目
-		class_labels = np.unique(y_train)  # 当前样本类别分布和权重分布:0-->30%,1-->70%
+		n_samples, n_features = x_train.shape
+		target_dist, weight_dist = {}, {}
+		class_labels = np.unique(y_train)
 		for label in class_labels:
-			target_dist[label] = len(y_train[y_train == label]) / n_samples
+			target_dist[label] = len(y_train == label) / n_samples
 			weight_dist[label] = np.mean(sample_weight[y_train == label])
 		cur_node.target_dist = target_dist
 		cur_node.weight_dist = weight_dist
 		cur_node.n_samples = n_samples
-		# 判断停止的条件
-		if len(target_dist) <= 1:  # 剩余样本仅包括一个类别，无需划分
+		if len(target_dist) <= 1:
 			return
-		if n_samples < self.min_samples_split:  # 剩余样本量小于最小节点划分标准
+		if n_samples < self.min_sample_split:
 			return
-		# 达到树的最大深度
 		if self.max_depth is not None and cur_depth > self.max_depth:
 			return
-
-		# 寻找最佳的特征以及取值
-		best_idx, best_index_val, best_criterion_val = None, None, 0.0
+		best_idx, best_index_val, best_criterion_val = None, None, 0
 		for k in range(n_features):
-			for f_val in np.unique(x_train[:, k]):
-				feat_k_values = (x_train[:, k] == f_val).astype(int)  # 是当前取值f_val 就是1，否则就是0
+			for f_val in set(x_train[:, k]):
+				feat_k_values = (x_train[:, k] == f_val).astype(int)
 				criterion_val = self.criterion_func(feat_k_values, y_train, sample_weight)
 				if criterion_val > best_criterion_val:
-					best_criterion_val = criterion_val  # 最佳的划分标准值
-					best_idx, best_index_val = k, f_val  # 当前最佳的特征索引以及取值
-
-		# 递归出口判断
-		if best_idx is None:  # 当前属性为空，或者所有样本在所欲属性上取值相同，无法划分
+					best_criterion_val = criterion_val
+					best_idx, best_index_val = k, f_val
+		if best_idx is None:
 			return
-		if best_criterion_val <= self.min_impurity_decrease:  # 小于最小纯度阈值，不划分
+		if best_criterion_val <= self.min_impurity_decrease:
 			return
-		# 满足划分条件，仅当前最佳特征索引和特征取值切分节点，填充树节点信息
-		cur_node.feature_idx = best_idx  # 最佳特征所在样本的索引
-		cur_node.feature_val = best_index_val  # 最佳特征取值
-		cur_node.criterion_val = best_criterion_val  # 最佳特征取值的标准
+		cur_node.feature_idx = best_idx
+		cur_node.feature_val = best_index_val
+		cur_node.criterion_val = best_criterion_val
 		selected_x = x_train[:, best_idx]
-
-		# print('当前划分的特征索引：', best_idx, '\t取值：', best_index_val, '\t最佳标准值：', best_criterion_val)
-		# print('当前节点的类别分布', target_dist)
-
-		# 创建左子树，并递归创建以当前节点为子树根节点的左子树
-		left_index = np.where(x_train[:, best_idx] == best_index_val)  # 左子树所包含的样本子集索引
-		if len(left_index[0]) >= self.min_sample_leaf:  # 小于叶子节点所包含的最小样本量，则标记为叶子节点
-			left_child_node = TreeNode_C()  # 创建左子树空节点
+		left_index = np.where(selected_x == best_index_val)
+		if len(left_index[0]) >= self.min_sample_leaf:
+			left_child_node = TreeNode_C()
 			cur_node.left_child_node = left_child_node
-			# 以当前节点为子树根节点，递归创建
-			self._build_tree(cur_depth + 1, left_child_node, x_train[left_index],
-							 y_train[left_index], sample_weight[left_index])
-		# 创建右子树，并递归创建以右子树为子树根节点的左子树
-		right_index = np.where(selected_x != best_index_val)  # 右子树所包含的样本子集索引
-		if len(right_index[0]) >= self.min_sample_leaf:  # 小于叶子节点所包含的最少样本量，则标记为叶子节点
-			right_child_Node = TreeNode_C()  # 创建右子树空树节点
-			# 以当前节点为右子节点，递归创建
-			cur_node.right_child_node = right_child_Node
-			self._build_tree(cur_depth + 1, right_child_Node, x_train[right_index],
-							 y_train[right_index], sample_weight[right_index])
+			self._build_tree(cur_depth + 1, left_child_node, \
+							 x_train[left_index], \
+							 y_train[left_index], \
+							 sample_weight[left_index])
+		right_index = np.where(selected_x != best_index_val)
+		if len(right_index[0]) >= self.min_sample_leaf:
+			right_child_node = TreeNode_C()
+			cur_node.right_child_node = right_child_node
+			self._build_tree(
+				cur_depth + 1, \
+				right_child_node, \
+				x_train[right_index], \
+				y_train[right_index], \
+				sample_weight[right_index])
 
 	def _search_node(self, cur_node: TreeNode_C, x_test, class_num):
 		'''
@@ -176,130 +168,36 @@ class DecisionTreeClassifier:
 		'''
 		if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
 			return self._search_node(cur_node.left_child_node, x_test, class_num)
-		elif cur_node.right_child_node and x_test[cur_node.feature_idx]!=cur_node.feature_val:
-			return self._search_node(cur_node.right_child_node,x_test,class_num)
+		elif cur_node.right_child_node and x_test[cur_node.feature_idx] != cur_node.feature_val:
+			return self._search_node(cur_node.right_child_node, x_test, class_num)
 		else:
-			class_p=np.zeros(class_num)
+			class_p = np.zeros(class_num)
 			for c in range(class_num):
-				class_p[c]=cur_node.target_dist.get(c,0)*cur_node.weight_dist.get(c,1.0)
-			class_p/=np.sum(class_p)
+				class_p[c] = cur_node.target_dist.get(c, 0) * cur_node.weight_dist.get(c, 1.0)
+			class_p = class_p / np.sum(class_p)
 			return class_p
-	def predict_probability(self,x_test,root_node=None):
+
+	def predict_probability(self, x_test, root_node=None):
 		if self.is_feature_all_R:
-			x_test=self.dbw.transform(x_test)
+			x_test = self.dbw.transform(x_test)
 		elif self.dbw_feature_idx is not None:
-			x_test=self._data_bin_wrapper(x_test)
-		time_start=time.time()
-		prob_dist=[]
-		class_num=len(self.root_node.target_dist)
+			x_test = self._data_bin_wrapper(x_test)
+		time_start = time.time()
+		prob_dist = []
+		class_num = len(self.root_node.target_dist)
 		for i in range(x_test.shape[0]):
-			prob_dist.append(self._search_node(self.root_node,x_test[i],class_num))
-		time_end=time.time()
-		print('对测试样本进行预测（即从根节点到叶子节点搜索），耗时 %f second'%(time_end-time_start))
+			prob_dist.append(self._search_node(self.root_node, x_test[i], class_num))
+		time_end = time.time()
 		return np.asarray(prob_dist)
 
+	def predict(self, x_test):
+		return np.argmax(self.predict_probability(x_test), axis=1)
 
 
+from sklearn.datasets import load_breast_cancer
 
+bc_data = load_breast_cancer()
+feature_names = bc_data.feature_names
+print('0' * 100)
 
-
-def _search_tree_predict(self, cur_node: TreeNode_C, x_test):
-	'''
-	根据测试样本从根节点到叶子节点搜索路径，判定类别
-	搜索：按照后续遍历
-	@param cur_node: 单个测试样本
-	@param x_test:
-	@return:
-	'''
-	if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
-		return self._search_tree_predict(cur_node.left_child_node, x_test)
-	elif cur_node.right_child_node and x_test[cur_node.feature_idx] != cur_node.feature_val:
-		return self._search_tree_predict(cur_node.right_child_node, x_test)
-	else:
-		# 叶子节点 :类别，包含有类别分布
-		class_p = np.zeros(len(self.class_values))  # 测试样本类别概率
-		for i, c in enumerate(self.class_values):
-			class_p[i] = cur_node.target_dist.get(c, 0) * cur_node.weight_dist.get(c, 1.0)
-		class_p /= np.sum(class_p)  # 归一化
-		return class_p
-
-
-def predict_proba(self, x_test):
-	'''
-	预测样本x_test 的类别概率
-	@param x_test:  测试样本ndarray,numpy数值运算
-	@return:
-	'''
-	x_test = np.asarray(x_test)  # 避免传DataFrame,List
-	if self.is_feature_all_R:
-		if self.dbw_XrangeMap is not None:
-			x_test = self.dbw.transform(x_test)
-		else:
-			raise ValueError("请先创建决策树...")
-	elif self.dbw_feature_idx is not None:
-		x_test = self._data_bin_wrapper(x_test)
-	prob_dist = []  # 用于存储测试样本呢的类别概率分布
-	for i in range(x_test.shape[0]):
-		prob_dist.append(self._search_tree_predict(self.root_node, x_test[i]))
-	return np.asarray(prob_dist)
-
-
-def predict(self, x_test):
-	'''
-	预测测试样本的类别
-	@param x_test: 测试样本
-	@return:
-	'''
-	x_test = np.asarray(x_test)  # 避免传递DataFrame,list....
-	return np.argmax(self.predict_proba(x_test), axis=1)
-
-
-def _prune_node(self, cur_node: TreeNode_C, alpha):
-	'''
-	递归剪枝，针对决策树中的内部节点，自底向上，逐个考察
-	@param cur_node: 当前递归的决策树的内部节点
-	@param alpha:
-	@return:
-	'''
-	# 若左子树存在，递归左子树进行剪枝
-	if cur_node.left_child_node:
-		self._prune_node(cur_node.left_child_node, alpha)
-	# 若右子树存在，递归右子树进行剪枝
-	if cur_node.right_child_node:
-		self._prune_node(cur_node.right_child_node, alpha)
-	if cur_node.left_child_node is not None or cur_node.right_child_node is not None:
-		for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
-			if child_node is None:
-				# 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
-				continue
-			if child_node.left_child_node is not None or child_node.right_child_node is not None:
-				return
-		# 计算剪枝前的损失值，2表示当前节点包含两个叶子节点
-		pre_prune_value = 2 * alpha
-		for child_node in [cur_node.left_child_node, cur_node.right_child_node]:
-			# 计算左右叶子节点的经验熵
-			# 可能存在左右子树之一为空的情况，当左右子树划分的样本子集数小于min_samples_leaf
-			if child_node is None:
-				continue
-			for key, value in child_node.target_dist.items():  # 对每个叶子节点的类别分布
-				pre_prune_value += -1 * child_node.n_samples * value * \
-								   np.log(value) * child_node.weight_dist.get(key, 1.0)
-		# 计算剪枝后的损失值，当前节点既是叶子节点，
-		after_prune_value = alpha
-		for key, value in cur_node.target_dist.items():
-			after_prune_value += -1 * cur_node.n_samples * value * np.log(value) * \
-								 cur_node.weight_dist.get(key, 1.0)
-		if after_prune_value <= pre_prune_value:
-			cur_node.left_child_node = None
-			cur_node.right_child_node = None
-			cur_node.feature_idx, cur_node.feature_val = None, None
-
-
-def prune(self, alpha=0.01):
-	'''
-	决策树后剪枝算法（李航）C(T)+alpha*|T|
-	@param alpha:  剪纸阈值，权衡莫ing对训练数据的拟合成都与模型的复杂度
-	@return:
-	'''
-	self._prune_node(self.root_node, alpha)
-	return self.root_node
+print(feature_names)
