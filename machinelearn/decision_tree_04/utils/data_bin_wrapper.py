@@ -42,10 +42,10 @@ class DataBinWrapper:
 		:param x_samples: 样本(二维数组n*k),或一个特征属性的数据（二维数组n*1)
 		:return:
 		'''
-		if x.ndim == 1:
-			return np.asarray([np.digitize(x, self.XrangeMap[0])]).reshape(-1)
+		if x_samples.ndim == 1:
+			return np.asarray([np.digitize(x_samples, self.XrangeMap[0])]).reshape(-1)
 		else:
-			return np.asarray([np.digitize(x[:, i], self.XrangeMap[i]) for i in range(x.shape[1])]).T
+			return np.asarray([np.digitize(x_samples[:, i], self.XrangeMap[i]) for i in range(x_samples.shape[1])]).T
 
 
 

@@ -5,12 +5,13 @@
 # @Author  : nanji
 # @File    : decision_tree_C.py
 # @Description :
+import time
+
 import numpy as np
+
+from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
 from machinelearn.decision_tree_04.utils.entropy_utils import EntropyUtils
 from machinelearn.decision_tree_04.utils.tree_node import TreeNode_C
-from machinelearn.decision_tree_04.utils.data_bin_wrapper import DataBinWrapper
-
-import time
 
 
 class DecisionTreeClassifier:
@@ -47,6 +48,8 @@ class DecisionTreeClassifier:
 		self.dbw = DataBinWrapper(max_bins=max_bins)  # 连续数据离散化对象
 		self.dbw_XrangeMap = {}  # 存储训练样本连续特征分箱的段点
 		self.class_num = class_num
+		self.n_features = None
+		self.prune_nums = 0
 		if class_num is not None:
 			self.class_values = np.arange(class_num)  # 样本的类别取值
 
@@ -97,7 +100,12 @@ class DecisionTreeClassifier:
 			x_train = self.dbw.transform(x_train)
 		elif self.dbw_feature_idx:
 			x_train = self._data_bin_wrapper(x_train)
+		# 递归构建树
+		time_start = time.time()
 		self._build_tree(1, self.root_node, x_train, y_train, sample_weight)
+		time_end = time.time()
+		print('决策树模型递归构建完成，耗时 : %f second' % (time_end - time_start))
+
 
 	def _build_tree(self, cur_depth, cur_node: TreeNode_C, x_train, y_train, sample_weight):
 		'''
@@ -113,7 +121,7 @@ class DecisionTreeClassifier:
 		target_dist, weight_dist = {}, {}
 		class_labels = np.unique(y_train)
 		for label in class_labels:
-			target_dist[label] = len(y_train == label) / n_samples
+			target_dist[label] = len(y_train[y_train==label])/n_samples
 			weight_dist[label] = np.mean(sample_weight[y_train == label])
 		cur_node.target_dist = target_dist
 		cur_node.weight_dist = weight_dist
@@ -164,7 +172,7 @@ class DecisionTreeClassifier:
 		:param cur_node:
 		:param x_test:
 		:param class_num:
-		:return:
+		:return
 		'''
 		if cur_node.left_child_node and x_test[cur_node.feature_idx] == cur_node.feature_val:
 			return self._search_node(cur_node.left_child_node, x_test, class_num)
@@ -196,8 +204,30 @@ class DecisionTreeClassifier:
 
 from sklearn.datasets import load_breast_cancer
 
+
+def target_encoding(y):
+	target_dict = {}
+	y_unique = set(y)
+	for i, k in enumerate(y_unique):
+		target_dict[k] = i
+	n_samples, n_class = len(y), len(set(y))
+	target = -1.0 / (n_class - 1) * np.ones((n_samples, n_class))
+	for i in range(n_samples):
+		target[i, target_dict[y[i]]] = 1
+	return target, target_dict
+
+
+from sklearn.model_selection import train_test_split
 bc_data = load_breast_cancer()
 feature_names = bc_data.feature_names
-print('0' * 100)
-
-print(feature_names)
+X, y = bc_data.data, bc_data.target
+# y, y_labels_dict = target_encoding(y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, \
+													random_state=22, \
+													stratify=y)
+tree = DecisionTreeClassifier(is_feature_all_R=True, max_bins=10, criterion='c45', max_depth=10)
+tree.fit(X_train, y_train)
+# tree.out_decision_tree(feature_names=feature_names)
+y_test_pred = tree.predict(X_test)
+from sklearn.metrics import classification_report
+print(classification_report(y_test, y_test_pred))
