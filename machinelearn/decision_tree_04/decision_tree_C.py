@@ -90,7 +90,7 @@ class DecisionTreeClassifier:
 		x_train, y_train = np.asarray(x_train), np.asarray(y_train)
 		if self.class_num is None:
 			self.class_values = np.unique(y_train)  # 样本的类别取值
-		n_sample, n_features = x_train.shape  # 训练样本的样本量和特征属性数目
+		n_sample, self.n_features = x_train.shape  # 训练样本的样本量和特征属性数目
 		if sample_weight is None:
 			sample_weight = np.asarray([1.0] * n_sample)
 
@@ -106,7 +106,6 @@ class DecisionTreeClassifier:
 		time_end = time.time()
 		print('决策树模型递归构建完成，耗时 : %f second' % (time_end - time_start))
 
-
 	def _build_tree(self, cur_depth, cur_node: TreeNode_C, x_train, y_train, sample_weight):
 		'''
 		递归创建决策树算法,核心算法
@@ -121,7 +120,7 @@ class DecisionTreeClassifier:
 		target_dist, weight_dist = {}, {}
 		class_labels = np.unique(y_train)
 		for label in class_labels:
-			target_dist[label] = len(y_train[y_train==label])/n_samples
+			target_dist[label] = len(y_train[y_train == label]) / n_samples
 			weight_dist[label] = np.mean(sample_weight[y_train == label])
 		cur_node.target_dist = target_dist
 		cur_node.weight_dist = weight_dist
@@ -218,16 +217,23 @@ def target_encoding(y):
 
 
 from sklearn.model_selection import train_test_split
+
 bc_data = load_breast_cancer()
 feature_names = bc_data.feature_names
 X, y = bc_data.data, bc_data.target
 # y, y_labels_dict = target_encoding(y)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, \
-													random_state=22, \
-													stratify=y)
-tree = DecisionTreeClassifier(is_feature_all_R=True, max_bins=10, criterion='c45', max_depth=10)
+X_train, X_test, y_train, y_test = \
+	train_test_split(X, y, \
+					 test_size=0.3, \
+					 random_state=22, \
+					 stratify=y)
+tree = DecisionTreeClassifier(is_feature_all_R=True, \
+							  max_bins=10, \
+							  criterion='c45', \
+							  max_depth=10)
 tree.fit(X_train, y_train)
 # tree.out_decision_tree(feature_names=feature_names)
 y_test_pred = tree.predict(X_test)
 from sklearn.metrics import classification_report
+
 print(classification_report(y_test, y_test_pred))

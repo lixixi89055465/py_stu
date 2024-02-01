@@ -38,7 +38,7 @@ class DataBinWrapper:
         for idx in range(n_features):
             x_sorted = sorted(x_samples[:, idx])  # 按特征索引取值，并从小到大排序
             for bin in range(1, self.max_bins):
-                p = (bin / self.max_bins) * 100
+                p = (bin / self.max_bins) * 100.0//1
                 p_val = np.percentile(x_sorted, p)
                 self.XrangeMap[idx].append(p_val)
             self.XrangeMap[idx]=sorted(list(set(self.XrangeMap[idx])))
@@ -49,7 +49,7 @@ class DataBinWrapper:
         :return:
         '''
         if x_samples.ndim==1:
-            return np.asarray(np.digitize(x_samples,self.XrangeMap[0])).reshape(-1)
+            return np.asarray([np.digitize(x_samples,self.XrangeMap[0])]).reshape(-1)
         else:
             return np.asarray([np.digitize(x_samples[:,i],self.XrangeMap[i]) for i in range(x_samples.shape[1])]).T
 
