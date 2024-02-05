@@ -31,3 +31,12 @@ for k in k_neighbors:
 		train_scores.append(accuracy_score(y[train_idx],y_train_pred))
 		del knn
 
+import matplotlib.pyplot as plt
+plt.figure(k_neighbors,train_accuracy_scores,'ko-',lw=1,label='Train scoreing')
+plt.figure(k_neighbors,test_accuracy_scores,'rs-',lw=1,label='Testing scoreing')
+plt.grid(ls=':')
+plt.legend(frameon=False)
+plt.xlabel('K neigbor',fontdict={'fontsize':12})
+plt.ylabel('K neigbor',fontdict={'fontsize':12})
+
+
