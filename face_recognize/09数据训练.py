@@ -33,8 +33,6 @@ def getImageAndLabels(path):
 	print('fs:', faceSamples)
 	return faceSamples, ids
 
-	pass
-
 
 if __name__ == '__main__':
 	# 图片路径
@@ -44,4 +42,7 @@ if __name__ == '__main__':
 	# 获取 识别器
 	recognizer = cv2.face.LBPHFaceRecognizer_create()
 	# 训练
+	recognizer.train(faces,np.array(ids))
+	# 保存文件
+	recognizer.write('trainer/trainer.yml')
 
