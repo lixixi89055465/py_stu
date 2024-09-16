@@ -34,3 +34,14 @@ def getImageAndLabels(path):
 	return faceSamples, ids
 
 	pass
+
+
+if __name__ == '__main__':
+	# 图片路径
+	path = './data/jm/'
+	# 获取图片数组和id标签数组和姓名
+	faces, ids = getImageAndLabels(path)
+	# 获取 识别器
+	recognizer = cv2.face.LBPHFaceRecognizer_create()
+	# 训练
+
