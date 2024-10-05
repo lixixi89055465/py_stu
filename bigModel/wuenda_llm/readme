@@ -1,1 +1,4 @@
 # 使用 Colab 执行
+
+pip install data-utilities datasets torch transformers
+
