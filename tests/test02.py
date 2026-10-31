@@ -5,8 +5,8 @@ import numpy as np
 import onnxruntime as ort
 
 # ============ 配置 ============
-DET_ONNX = r"D:\workspace\OnnxOCR\models\det.onnx"  # 你的检测模型
-TEST_IMG = r"D:\workspace\OnnxOCR\tests\test.jpg"
+DET_ONNX = r"D:\workspace\py_stu\models\det.onnx"  # 你的检测模型
+TEST_IMG = r"D:\workspace\py_stu\tests\test.jpg"
 USE_GPU = True
 INPUT_SIZE = (960, 736)  # (w, h)，PP-OCR 常用 960x736；也可用 (640, 640)
 THRESH = 0.3  # 二值化阈值

@@ -1,0 +1,15 @@
+{
+    "vim.useCtrlKeys": false,
+    // 关键：关闭自动把src加入搜索路径
+    "python.analysis.autoSearchPaths": false,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}"
+    ],
+    "python-envs.pythonProjects": [
+        {
+            "path": "src/onnxocr",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        }
+    ]
+}
