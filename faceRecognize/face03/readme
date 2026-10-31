@@ -1,2 +1,0 @@
-pip install dlib-19.17.99-cp37-cp37m-win_amd64.whl
-pip install face_recognition
