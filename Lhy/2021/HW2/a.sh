@@ -1,2 +1,0 @@
-python SHARE_MLSpring2021_HW2_1_focal_norm_xavier_normal_leakyRelu_scheduler_momentum_8.py > SHARE_MLSpring2021_HW2_1_focal_norm_xavier_normal_leakyRelu_scheduler_momentum_8.py.log
-

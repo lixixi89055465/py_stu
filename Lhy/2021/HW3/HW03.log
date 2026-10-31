@@ -1,7 +1,0 @@
-  0%|          | 0/6786 [00:00<?, ?it/s]  0%|          | 0/6786 [00:00<?, ?it/s]
-Traceback (most recent call last):
-  File "HW03.py", line 183, in <module>
-    pseudo_set = get_pseudo_labels(unlabeled_set, model)
-  File "HW03.py", line 145, in get_pseudo_labels
-    labels += img_label.numpy().tolist()
-TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.

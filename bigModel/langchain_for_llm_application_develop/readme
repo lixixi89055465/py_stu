@@ -1,3 +1,0 @@
-pip install openai
-pip install -U python-dotenv
-
