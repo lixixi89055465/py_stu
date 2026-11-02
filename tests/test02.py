@@ -25,7 +25,10 @@ def create_session(onnx_path, use_gpu=False):
     opts.intra_op_num_threads = 4
 
     if use_gpu and "CUDAExecutionProvider" in ort.get_available_providers():
-        providers = [("CUDAExecutionProvider", {"device_id": 0}), "CPUExecutionProvider"]
+        providers = [
+            ("CUDAExecutionProvider", {"device_id": 0}),
+            "CPUExecutionProvider",
+        ]
         print("[info] 使用 GPU 推理")
     else:
         providers = ["CPUExecutionProvider"]
@@ -70,10 +73,20 @@ def unclip(box, unclip_ratio):
     if length == 0:
         return box
     distance = area * unclip_ratio / length
-    return np.array(cv2.approxPolyDP(
-        cv2.approxPolyDP(poly, 2, True) +
-        (np.outer(np.concatenate([np.ones(len(poly)), np.ones(len(poly))]), [distance])
-         if False else poly), 2, True))  # 占位，下面用标准写法
+    return np.array(
+        cv2.approxPolyDP(
+            cv2.approxPolyDP(poly, 2, True)
+            + (
+                np.outer(
+                    np.concatenate([np.ones(len(poly)), np.ones(len(poly))]), [distance]
+                )
+                if False
+                else poly
+            ),
+            2,
+            True,
+        )
+    )  # 占位，下面用标准写法
 
 
 def get_mini_boxes(contour):
@@ -98,30 +111,43 @@ def box_score_fast(bitmap: np.ndarray, box: np.ndarray) -> float:
     :param box: (4,2) float32 四点四边形
     :return: 框内mask区域平均灰度
     """
-    h, w = bitmap.shape[:2]
-    xmin = max(0, int(box[:, 0].min()))
-    xmax = min(w - 1, int(box[:, 0].max()))
-    ymin = max(0, int(box[:, 1].min()))
-    ymax = min(h - 1, int(box[:, 1].max()))
+    # h, w = bitmap.shape[:2]
+    # xmin = max(0, int(box[:, 0].min()))
+    # xmax = min(w - 1, int(box[:, 0].max()))
+    # ymin = max(0, int(box[:, 1].min()))
+    # ymax = min(h - 1, int(box[:, 1].max()))
 
+    # if xmax <= xmin or ymax <= ymin:
+    #     return 0.0
+
+    # roi_h = ymax - ymin + 1
+    # roi_w = xmax - xmin + 1
+    # mask = np.zeros((roi_h, roi_w), dtype=np.uint8)
+
+    # # 坐标平移到roi局部坐标系
+    # shifted = box.copy()
+    # shifted[:, 0] -= xmin
+    # shifted[:, 1] -= ymin
+
+    # cv2.fillPoly(mask, [shifted.astype(np.int32)], 1)
+
+    # # ✅ 修正切片 ymin:ymax+1 , xmin:xmax+1
+    # roi = bitmap[ymin:ymax + 1, xmin:xmax + 1]
+    # mean_val = cv2.mean(roi, mask)[0]
+    # return float(mean_val)
+    h, w = bitmap.shape[:2]
+    xmin = max(0, bitmap[:, 0].min())
+    xmax = min(w - 1, bitmap[:, 0].max())
+    ymin = max(0, bitmap[:, 1].min())
+    ymax = min(0, bitmap[:, 1].max())
     if xmax <= xmin or ymax <= ymin:
         return 0.0
-
     roi_h = ymax - ymin + 1
     roi_w = xmax - xmin + 1
     mask = np.zeros((roi_h, roi_w), dtype=np.uint8)
-
-    # 坐标平移到roi局部坐标系
     shifted = box.copy()
     shifted[:, 0] -= xmin
-    shifted[:, 1] -= ymin
-
-    cv2.fillPoly(mask, [shifted.astype(np.int32)], 1)
-
-    # ✅ 修正切片 ymin:ymax+1 , xmin:xmax+1
-    roi = bitmap[ymin:ymax + 1, xmin:xmax + 1]
-    mean_val = cv2.mean(roi, mask)[0]
-    return float(mean_val)
+    shifted[:, 1] -= xmax
 
 
 def polygons_from_bitmap(bitmap, orig_h, orig_w, scale):
@@ -142,7 +168,9 @@ def polygons_from_bitmap(bitmap, orig_h, orig_w, scale):
         # 外接矩形快速打分
         rect = cv2.minAreaRect(approx)
         box = cv2.boxPoints(rect).astype(np.int32)
-        score = box_score_fast((bitmap / 255.0).astype(np.float32), box.astype(np.float32))
+        score = box_score_fast(
+            (bitmap / 255.0).astype(np.float32), box.astype(np.float32)
+        )
         if score < BOX_THRESH:
             continue
 
@@ -153,6 +181,7 @@ def polygons_from_bitmap(bitmap, orig_h, orig_w, scale):
         if length > 0:
             distance = area * UNCLIP_RATIO / length
             from numpy.linalg import norm
+
             # 简单外扩：沿法线方向平移（用 cv2.approxPolyDP 的简化版）
             center = poly.mean(axis=0)
             vecs = poly - center
@@ -198,19 +227,21 @@ def postprocess(out, img_shape, scale):
     return polygons_from_bitmap(prob_map, h, w, scale)
 
 
-    
-
-
-
-
 # ============ 4. 可视化 ============
 def draw_boxes(img, boxes):
     out = img.copy()
     for poly, score in boxes:
         pts = poly.astype(np.int32)
         cv2.polylines(out, [pts], True, (0, 255, 0), 2)
-        cv2.putText(out, f"{score:.2f}", tuple(pts[0]),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+        cv2.putText(
+            out,
+            f"{score:.2f}",
+            tuple(pts[0]),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (0, 0, 255),
+            1,
+        )
     return out
 
 
